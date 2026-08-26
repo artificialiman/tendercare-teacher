@@ -38,25 +38,26 @@ Two removal paths, deliberately different:
 
 ## Roster data provenance
 
-Seeded from `Teacher-care`'s `tcc_broadsheet.html` (376 students, 12
-classes) — chosen as authoritative after cross-checking against every other
-candidate "admin broadsheet" file in that repo:
+Seeded from `UTMEDaily`'s `Tendercare/Directory/student-directory.html`
+(376 students, 12 classes) — confirmed authoritative directly.
 
-- `sheet.html` (2025/2026, also claimed 376) has a column-shift bug in its
-  SS1 Actuarial section — it returns first-name-only students that actually
-  belong to SS3 Science. Not used.
-- `admin-broadsheet.html` has the same shift bug and is short 2 students
-  (374). Not used.
-- `admin_broadsheet.html` (374) agrees with `tcc_broadsheet.html` on **all
-  374 names they share, zero spelling disagreements** — it's just missing
-  `TCH-2025-074` and `TCH-2025-323`. This cross-check is what confirms
-  `tcc_broadsheet.html` rather than just picking the highest count.
+An earlier version of this seed used `Teacher-care`'s `tcc_broadsheet.html`
+instead, cross-checked against `admin_broadsheet.html` for confidence. That
+cross-check turned out to be worthless: both files share the *same*
+column-shift bug from `TCH-2025-234` onward (143 students — the entire SS1
+Actuarial through SS3 Actuarial range), so them agreeing with each other
+didn't actually prove anything. `student-directory.html` doesn't have that
+shift and was confirmed correct directly, so it replaced `tcc_broadsheet.html`
+as the source. Full comparison and reasoning in
+`supabase/seed/001_roster_2024_2025.sql`'s header comment.
 
-See `supabase/seed/001_roster_2024_2025.sql`.
+Class/subject structure (which classes exist, which subjects each class
+takes) still comes from `tcc_broadsheet.html` — that part was never
+affected, only the per-student ID-to-name mapping was.
 
 ## Score data: loaded as-is, known to be messy
 
-`supabase/seed/002_scores_asis.sql` (2,826 rows) comes from 9 CSV exports
+`supabase/seed/002_scores_asis.sql` (2,847 rows) comes from 9 CSV exports
 in the old `Teacher-care` repo — each in a **different schema** (long
 format, wide format with `_CA`/`_Exam` suffixes, slash-delimited
 `CA/Exam/Total` in a single cell, pipe-delimited `CA|Exam|Total`, one file
@@ -69,14 +70,14 @@ disagree. Known issues, left as-is on purpose:
   actual subjects (`Maths`/`MATHS`/`Mathematics`, `Eng`/`ENGLISH`/`English`,
   etc.) — not normalized into the canonical `subjects` list from the
   roster seed. Real cleanup work, not something to guess at now.
-- **12 student names in the CSVs don't match the verified 376-student
-  roster** (`Adio Daniel`, `Ilo Joseph`, `Ilo David`, and 9 others) — their
-  143 score rows were skipped rather than inserted with a broken foreign
-  key. Listed in full in the SQL file's header comment. Some of these look
-  like new/transferred-in students per the source files' own notes (one
-  CSV's literal first line says it "combines... newly added students") —
-  worth checking whether they should be added to the roster rather than
-  assumed to be typos.
+- **10 student names in the CSVs don't match the roster** (`Adio Daniel`,
+  `Ilo Joseph`, `Ilo David`, and 7 others) — their 122 score rows were
+  skipped rather than inserted with a broken foreign key. Listed in full
+  in the SQL file's header comment. Some of these look like new/
+  transferred-in students per the source files' own notes (one CSV's
+  literal first line says it "combines... newly added students") — worth
+  checking whether they should be added to the roster rather than assumed
+  to be typos.
 - **Inconsistent term structure per file** — some files specify no term at
   all, one has two terms in wide-format columns. Term IDs carry a
   `(filename.csv)` suffix where the source didn't specify a term, so

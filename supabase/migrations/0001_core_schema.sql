@@ -10,16 +10,17 @@
 -- copy" of a student to live.
 --
 -- This replaces the previous approach: student rosters were hardcoded/
--- copy-pasted across at least 6 different HTML files in the old Teacher-care
--- repo (tcc_broadsheet.html, sheet.html, admin-broadsheet.html,
--- admin_broadsheet.html, TEACHER-CARE Admin.html, index.html), which is how
--- they drifted out of sync in the first place — confirmed during migration:
--- sheet.html and admin-broadsheet.html both had a column-shift bug in the
--- SS1 Actuarial section (names from the wrong class showing up), and
--- admin-broadsheet.html was short 2 students outright. tcc_broadsheet.html
--- (376 students, cross-checked clean against admin_broadsheet.html on every
--- name they shared) was used as the seed data for this table — see
--- supabase/seed/001_students_2024_2025.sql.
+-- copy-pasted across at least 7 different HTML files in the old Teacher-care
+-- and UTMEDaily repos (tcc_broadsheet.html, sheet.html, admin-broadsheet.html,
+-- admin_broadsheet.html, TEACHER-CARE Admin.html, index.html,
+-- student-directory.html), which is how they drifted out of sync in the
+-- first place. tcc_broadsheet.html and admin_broadsheet.html both turned out
+-- to share the same column-shift bug from TCH-2025-234 onward (143 students,
+-- the whole SS1 Actuarial–SS3 Actuarial range) — agreeing with each other
+-- wasn't actually independent verification, since they're corrupted the same
+-- way. student-directory.html (UTMEDaily/Tendercare/Directory) is the
+-- confirmed-authoritative source and was used as the seed data — see
+-- supabase/seed/001_roster_2024_2025.sql for the full story.
 -- ============================================================================
 
 -- ---------------------------------------------------------------------------

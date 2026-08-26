@@ -1,33 +1,44 @@
 """
 Parses the 9 differently-formatted score CSVs from the Teacher-care repo
 into supabase/seed/002_scores_asis.sql. Kept here so this can be re-run
-once the source data is cleaned up (see the header comment in that SQL
-file for the list of known issues: 12 unmatched student names, 69
-un-normalized subject labels, inconsistent term structure per file).
+once the source data is cleaned up.
 
-Expects the source CSVs in ./source-teachercare/ (copy them from the
-Teacher-care repo — j1a.csv, j1b.csv, j2a.csv, j2b.csv, s1act.csv,
-s2act.csv, ss1a3.csv, ss1s23.csv, ss1s3.csv — plus tcc_broadsheet.html
-for roster name-matching) and writes ./scores_parsed.json plus prints a
-match/unmatched summary.
+Student roster for name -> id matching comes from student-directory.html
+(artificialiman/UTMEDaily, Tendercare/Directory/student-directory.html) —
+confirmed as the authoritative name source directly. An earlier version of
+this script used tcc_broadsheet.html instead; that turned out to share a
+column-shift bug with admin_broadsheet.html (which had been used to
+cross-check it), affecting 143 students from TCH-2025-234 onward. See
+supabase/seed/001_roster_2024_2025.sql's header comment for the full story.
+
+Known remaining issues in the score data itself, left as-is on purpose
+(see supabase/seed/002_scores_asis.sql header): 10 unmatched student names,
+69 un-normalized subject label variants, inconsistent term structure
+per source file.
+
+Expects:
+- ./source-teachercare/tcc_broadsheet.html (class/subject structure only —
+  NOT used for student names)
+- ./source-directory/student-directory.html (the roster — copy from
+  UTMEDaily/Tendercare/Directory)
+- ./source-teachercare/{j1a,j1b,j2a,j2b,s1act,s2act,ss1a3,ss1s23,ss1s3}.csv
+  (copy from the Teacher-care repo)
+
+Writes ./scores_parsed.json and prints a match/unmatched summary.
 """
 
-import csv, re, io, json
+import csv, re, io, json, difflib
 
-# Load the verified roster for name -> id matching
+# Load the verified roster for name -> id matching (from student-directory.html,
+# the confirmed-authoritative source — see supabase/seed/001_roster_2024_2025.sql
+# header comment for why tcc_broadsheet.html was NOT used here).
+import json as json_module
 roster_by_name = {}
-with open('./source-teachercare/tcc_broadsheet.html') as f:
-    content = f.read()
-import re as re2
-m = re2.search(r'const DB=(\{.*?\});', content, re2.DOTALL)
-db_str = m.group(1)
-class_blocks = re2.findall(r'"([^"]+)":\{"s":\[(.*?)\],"j":\[([^\]]*)\]\}', db_str)
-for class_name, students_str, subjects_str in class_blocks:
-    for sid, name in re2.findall(r'\["(TCH-\d+-\d+)","([^"]+)"\]', students_str):
-        key = name.strip().lower()
-        roster_by_name[key] = sid
-
-import difflib
+with open('./source-directory/student-directory.html') as f:
+    dir_content = f.read()
+_m = re.search(r'const SEARCH_INDEX = (\[.*?\]);', dir_content, re.DOTALL)
+for s in json_module.loads(_m.group(1)):
+    roster_by_name[s['name'].strip().lower()] = s['id']
 
 def match_student(name):
     key = name.strip().lower()
