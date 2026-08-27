@@ -15,37 +15,24 @@ export interface NewStudentInput {
 }
 
 /**
- * The next student ID in the TCH-2025-NNN sequence. Reads the current max
- * across ALL students (not just active ones), so a soft-deleted student's ID
- * is never reissued to someone else — same guarantee the old flat-file
- * roster had by accident (IDs were assigned once, by hand, and never reused).
- */
-export async function nextStudentId(): Promise<string> {
-	const { data, error } = await supabase
-		.from('students')
-		.select('id')
-		.order('id', { ascending: false })
-		.limit(1);
-	if (error) throw error;
-	const last = data?.[0]?.id ?? 'TCH-2025-000';
-	const n = parseInt(last.split('-')[2], 10) + 1;
-	return `TCH-2025-${String(n).padStart(3, '0')}`;
-}
-
-/**
  * Add a student to the roster. This is the ONLY write path that creates a
  * student anywhere in the suite — tendercare-web and tendercare-portal have
  * no write access to this table at all (enforced by RLS, not just by
  * omission in their UI). The new student is immediately visible to every
  * other app on their next read, since there's no separate copy to update.
+ *
+ * Calls the create_student() Postgres function (0004_atomic_student_id.sql)
+ * rather than reading the current max ID and inserting as two separate
+ * round trips — that older approach raced when two staff added a student
+ * at close to the same moment. The ID allocation and the insert now happen
+ * inside a single database transaction, so concurrent calls genuinely
+ * serialize instead of computing the same "next" ID.
  */
 export async function addStudent(input: NewStudentInput): Promise<Student> {
-	const id = await nextStudentId();
-	const { data, error } = await supabase
-		.from('students')
-		.insert({ id, full_name: input.full_name, class_id: input.class_id })
-		.select()
-		.single();
+	const { data, error } = await supabase.rpc('create_student', {
+		p_full_name: input.full_name,
+		p_class_id: input.class_id
+	});
 	if (error) throw error;
 	return data as Student;
 }
@@ -96,4 +83,75 @@ export async function listRoster(classId?: string): Promise<Student[]> {
 	const { data, error } = await query;
 	if (error) throw error;
 	return data as Student[];
+}
+
+export interface Remark {
+	student_id: string;
+	term_id: string;
+	teacher_remark: string | null;
+	principal_remark: string | null;
+	updated_at: string;
+}
+
+/**
+ * The current term_id (terms.is_current = true). Remarks are entered
+ * against a specific term, and the roster UI only ever edits the
+ * current one -- past terms' remarks are part of that term's already-
+ * generated static report, not something to retroactively change here.
+ */
+export async function getCurrentTermId(): Promise<string | null> {
+	const { data, error } = await supabase.from('terms').select('id').eq('is_current', true).maybeSingle();
+	if (error) throw error;
+	return data?.id ?? null;
+}
+
+/**
+ * Fetch remarks for every student in a class for the current term, in
+ * one query rather than one per student -- keyed by student_id so the
+ * roster UI can look each one up as it renders rows.
+ */
+export async function listRemarksForTerm(
+	studentIds: string[],
+	termId: string
+): Promise<Map<string, Remark>> {
+	if (studentIds.length === 0) return new Map();
+	const { data, error } = await supabase
+		.from('remarks')
+		.select('*')
+		.eq('term_id', termId)
+		.in('student_id', studentIds);
+	if (error) throw error;
+	const map = new Map<string, Remark>();
+	for (const r of (data ?? []) as Remark[]) map.set(r.student_id, r);
+	return map;
+}
+
+/**
+ * Write (or update) a student's remarks for a term. RLS on the remarks
+ * table (0002_rls_policies.sql) already restricts writes to the
+ * `staff` role and read-only self-access for students -- this function
+ * doesn't duplicate that check, it relies on it: an unauthorized caller
+ * gets rejected by Postgres, not by client-side logic that could be
+ * bypassed. student_id + term_id is the table's primary key, so this is
+ * a genuine upsert -- no separate "does a row exist yet" read needed.
+ */
+export async function upsertRemark(
+	studentId: string,
+	termId: string,
+	teacherRemark: string,
+	principalRemark: string
+): Promise<void> {
+	const { error } = await supabase
+		.from('remarks')
+		.upsert(
+			{
+				student_id: studentId,
+				term_id: termId,
+				teacher_remark: teacherRemark.trim() || null,
+				principal_remark: principalRemark.trim() || null,
+				updated_at: new Date().toISOString()
+			},
+			{ onConflict: 'student_id,term_id' }
+		);
+	if (error) throw error;
 }

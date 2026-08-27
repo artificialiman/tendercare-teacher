@@ -1,12 +1,17 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import { goto } from '$app/navigation';
 	import {
 		listRoster,
 		addStudent,
 		removeStudent,
 		restoreStudent,
 		permanentlyEraseStudent,
-		type Student
+		getCurrentTermId,
+		listRemarksForTerm,
+		upsertRemark,
+		type Student,
+		type Remark
 	} from '$lib/roster';
 	import { supabase } from '$lib/supabase';
 
@@ -14,6 +19,7 @@
 	let classes = $state<{ id: string; label: string }[]>([]);
 	let loading = $state(true);
 	let error = $state('');
+	let checkingSession = $state(true);
 
 	let newName = $state('');
 	let newClassId = $state('');
@@ -21,6 +27,16 @@
 
 	let showInactive = $state(false);
 	let confirmingEraseId = $state<string | null>(null);
+
+	// Remarks -- editing a student's teacher/principal comment for the
+	// current term. RLS on the remarks table (staff role only) is the
+	// real gate; this page's session check above is just the UI shell.
+	let currentTermId = $state<string | null>(null);
+	let remarksByStudent = $state<Map<string, Remark>>(new Map());
+	let editingRemarkId = $state<string | null>(null);
+	let editTeacherRemark = $state('');
+	let editPrincipalRemark = $state('');
+	let savingRemark = $state(false);
 
 	async function load() {
 		loading = true;
@@ -34,6 +50,14 @@
 			classes = classData ?? [];
 			students = studentData;
 			if (!newClassId && classes.length) newClassId = classes[0].id;
+
+			currentTermId = await getCurrentTermId();
+			if (currentTermId) {
+				remarksByStudent = await listRemarksForTerm(
+					students.map((s) => s.id),
+					currentTermId
+				);
+			}
 		} catch (e) {
 			error = e instanceof Error ? e.message : 'Failed to load roster';
 		} finally {
@@ -41,7 +65,23 @@
 		}
 	}
 
-	onMount(load);
+	onMount(async () => {
+		// This only guards the UI shell — the real gate is RLS (see
+		// 0002_rls_policies.sql), which rejects writes without a valid
+		// 'staff' JWT claim regardless of what this page does. Someone
+		// bypassing this check client-side still can't write to
+		// `students`; they'd just see error toasts instead of a login
+		// screen, which is why this redirect exists at all.
+		const {
+			data: { session }
+		} = await supabase.auth.getSession();
+		if (!session) {
+			goto('/login');
+			return;
+		}
+		checkingSession = false;
+		await load();
+	});
 
 	async function handleAdd() {
 		if (!newName.trim() || !newClassId) return;
@@ -89,6 +129,35 @@
 		}
 	}
 
+	function openRemarkEditor(studentId: string) {
+		const existing = remarksByStudent.get(studentId);
+		editTeacherRemark = existing?.teacher_remark ?? '';
+		editPrincipalRemark = existing?.principal_remark ?? '';
+		editingRemarkId = studentId;
+	}
+
+	function closeRemarkEditor() {
+		editingRemarkId = null;
+	}
+
+	async function handleSaveRemark() {
+		if (!editingRemarkId || !currentTermId) return;
+		savingRemark = true;
+		error = '';
+		try {
+			await upsertRemark(editingRemarkId, currentTermId, editTeacherRemark, editPrincipalRemark);
+			remarksByStudent = await listRemarksForTerm(
+				students.map((s) => s.id),
+				currentTermId
+			);
+			editingRemarkId = null;
+		} catch (e) {
+			error = e instanceof Error ? e.message : 'Failed to save remark';
+		} finally {
+			savingRemark = false;
+		}
+	}
+
 	const visibleStudents = $derived(students.filter((s) => showInactive || s.active));
 	const activeCount = $derived(students.filter((s) => s.active).length);
 </script>
@@ -97,6 +166,9 @@
 	<title>Roster — Tendercare Teacher Dashboard</title>
 </svelte:head>
 
+{#if checkingSession}
+	<p class="session-check">Checking session…</p>
+{:else}
 <div class="roster-page">
 	<header class="roster-header">
 		<h1>Student Roster</h1>
@@ -160,6 +232,14 @@
 							<td>{s.active ? 'Active' : 'Removed'}</td>
 							<td class="actions-cell">
 								{#if s.active}
+									<button
+										class="btn-remark"
+										onclick={() => openRemarkEditor(s.id)}
+										disabled={!currentTermId}
+										title={currentTermId ? '' : 'No current term set (terms.is_current)'}
+									>
+										{remarksByStudent.has(s.id) ? 'Edit remark' : 'Add remark'}
+									</button>
 									<button class="btn-remove" onclick={() => handleRemove(s.id)}>Remove</button>
 								{:else}
 									<button class="btn-restore" onclick={() => handleRestore(s.id)}>Restore</button>
@@ -187,9 +267,49 @@
 			</table>
 		{/if}
 	</section>
+
+	{#if editingRemarkId}
+		{@const s = students.find((x) => x.id === editingRemarkId)}
+		<div class="remark-modal-backdrop" onclick={closeRemarkEditor}>
+			<div class="remark-modal" onclick={(e) => e.stopPropagation()}>
+				<h2>Remark — {s?.full_name ?? editingRemarkId}</h2>
+				<p class="remark-modal-sub">Current term ({currentTermId}) only. Past terms belong to their already-generated report.</p>
+
+				<label for="teacher-remark">Class Teacher's Comment</label>
+				<textarea
+					id="teacher-remark"
+					rows="3"
+					bind:value={editTeacherRemark}
+					placeholder="e.g. A diligent and attentive student this term…"
+				></textarea>
+
+				<label for="principal-remark">Principal's Comment</label>
+				<textarea
+					id="principal-remark"
+					rows="3"
+					bind:value={editPrincipalRemark}
+					placeholder="e.g. Commendable progress. Keep up the good work."
+				></textarea>
+
+				<div class="remark-modal-actions">
+					<button class="btn-cancel" onclick={closeRemarkEditor} disabled={savingRemark}>Cancel</button>
+					<button class="btn-save-remark" onclick={handleSaveRemark} disabled={savingRemark}>
+						{savingRemark ? 'Saving…' : 'Save remark'}
+					</button>
+				</div>
+			</div>
+		</div>
+	{/if}
 </div>
+{/if}
 
 <style>
+	.session-check {
+		text-align: center;
+		padding: 4rem 1rem;
+		opacity: 0.6;
+		font-family: var(--font-sans, system-ui);
+	}
 	.roster-page {
 		max-width: 900px;
 		margin: 0 auto;
@@ -276,5 +396,73 @@
 		display: flex;
 		flex-direction: column;
 		gap: 0.4rem;
+	}
+	.btn-remark {
+		color: var(--color-purple-deep, #3a1a5c);
+		font-weight: 600;
+	}
+	.btn-remark:disabled {
+		opacity: 0.4;
+		cursor: not-allowed;
+	}
+	.remark-modal-backdrop {
+		position: fixed;
+		inset: 0;
+		background: rgba(20, 20, 30, 0.45);
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		z-index: 40;
+		padding: 1rem;
+	}
+	.remark-modal {
+		background: white;
+		border-radius: 10px;
+		padding: 1.5rem;
+		max-width: 480px;
+		width: 100%;
+		display: flex;
+		flex-direction: column;
+		gap: 0.6rem;
+		box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
+	}
+	.remark-modal h2 {
+		font-size: 1.1rem;
+	}
+	.remark-modal-sub {
+		font-size: 0.8rem;
+		opacity: 0.6;
+		margin-bottom: 0.3rem;
+	}
+	.remark-modal label {
+		font-size: 0.8rem;
+		font-weight: 600;
+		margin-top: 0.3rem;
+	}
+	.remark-modal textarea {
+		width: 100%;
+		font-family: inherit;
+		font-size: 0.9rem;
+		padding: 0.5rem;
+		border: 1px solid #ddd;
+		border-radius: 6px;
+		resize: vertical;
+	}
+	.remark-modal-actions {
+		display: flex;
+		justify-content: flex-end;
+		gap: 0.6rem;
+		margin-top: 0.6rem;
+	}
+	.btn-save-remark {
+		background: var(--color-purple-deep, #3a1a5c);
+		color: white;
+		padding: 0.5rem 1rem;
+		border-radius: 6px;
+		font-weight: 600;
+	}
+	.btn-save-remark:disabled {
+		opacity: 0.5;
+		cursor: not-allowed;
 	}
 </style>
