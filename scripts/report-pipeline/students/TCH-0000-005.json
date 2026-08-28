@@ -1,0 +1,95 @@
+{
+  "student_id": "TCH-0000-005",
+  "full_name": "EXAMPLE STUDENT (JSS3B) \u2014 DEMO DATA, NOT A REAL RECORD",
+  "class_arm": "JSS3B",
+  "entry_year": "2023/2024",
+  "access_code_hint": "12345678",
+  "years": [
+    {
+      "academic_year": "2023/2024",
+      "class_at_time": "(prior year, class not tracked in this demo)",
+      "is_current": false,
+      "terms": [
+        {
+          "term_name": "First",
+          "digitized": false
+        },
+        {
+          "term_name": "Second",
+          "digitized": false
+        },
+        {
+          "term_name": "Third",
+          "digitized": false
+        }
+      ]
+    },
+    {
+      "academic_year": "2024/2025",
+      "class_at_time": "(prior year, class not tracked in this demo)",
+      "is_current": false,
+      "terms": [
+        {
+          "term_name": "First",
+          "digitized": false
+        },
+        {
+          "term_name": "Second",
+          "digitized": false
+        },
+        {
+          "term_name": "Third",
+          "digitized": false
+        }
+      ]
+    },
+    {
+      "academic_year": "2025/2026",
+      "class_at_time": "JSS3B",
+      "is_current": true,
+      "terms": [
+        {
+          "term_name": "First",
+          "digitized": false
+        },
+        {
+          "term_name": "Second",
+          "digitized": false
+        },
+        {
+          "term_name": "Third",
+          "digitized": true,
+          "subjects": [
+            {
+              "name": "Mathematics",
+              "ca": 25,
+              "exam": 40
+            },
+            {
+              "name": "English Language",
+              "ca": 28,
+              "exam": 45
+            },
+            {
+              "name": "Basic Science",
+              "ca": 31,
+              "exam": 50
+            },
+            {
+              "name": "Basic Technology",
+              "ca": 34,
+              "exam": 55
+            },
+            {
+              "name": "Yoruba",
+              "ca": 37,
+              "exam": 60
+            }
+          ],
+          "teacher_remark": null,
+          "principal_remark": null
+        }
+      ]
+    }
+  ]
+}

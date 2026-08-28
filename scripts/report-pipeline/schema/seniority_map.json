@@ -1,0 +1,9 @@
+{
+  "_comment": "How many academic years of history a class-arm's seniority implies, in the standard JSS1-through-SS3 six-year run. Used only to sanity-check that a student's years[] array has a plausible length for their current class_arm -- the generator never fabricates history itself. Every year/term still comes from an explicit entry in that student's own JSON file, digitized:true or false as the real record says.",
+  "JSS1A": 1, "JSS1B": 1,
+  "JSS2A": 2, "JSS2B": 2,
+  "JSS3A": 3, "JSS3B": 3,
+  "SS1 Science": 4, "SS1 Actuarial": 4,
+  "SS2 Science": 5, "SS2 Actuarial": 5,
+  "SS3 Science": 6, "SS3 Actuarial": 6
+}

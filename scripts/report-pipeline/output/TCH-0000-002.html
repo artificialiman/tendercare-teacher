@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Academic Record &ndash; EXAMPLE STUDENT (JSS2A) — DEMO DATA, NOT A REAL RECORD &ndash; Tendercare Comprehensive College</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&family=Bebas+Neue&display=swap" rel="stylesheet">
+<style>
+:root {
+    --pd: #1a3e60; --p: #2a5a8a; --pl: #dce8f5; --pg: #f0f5fc;
+    --lemon: #f0c040; --lemon-s: #f5d780;
+    --ink: #1A1A2E; --ink-s: #3D3D5C; --ash: #6a6a88;
+    --cream: #F8F5EF; --cream-d: #EDE8DF; --white: #FFFFFF;
+    --pass-bg: #E8F8E8; --pass-fg: #1A6640;
+    --fail-bg: #FFE8E8; --fail-fg: #C0392B;
+    --warn-bg: #FFF3C4; --warn-fg: #8A5C00;
+    --fs: 'Cormorant Garamond', Georgia, serif;
+    --fn: 'DM Sans', system-ui, sans-serif;
+    --fd: 'Bebas Neue', sans-serif;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { font-family: var(--fn); background: #e8ebee; min-height: 100vh; padding: 24px 16px 60px 16px; -webkit-font-smoothing: antialiased; color: var(--ink); }
+svg.crest-defs { position: absolute; width: 0; height: 0; overflow: hidden; }
+.gate-wrap { max-width: 420px; margin: 12vh auto 0 auto; background: white; border-radius: 14px; box-shadow: 0 10px 34px rgba(20,40,70,0.16); padding: 40px 34px; text-align: center; border: 1px solid #eef1f5; }
+.gate-crest { width: 58px; height: auto; color: var(--pd); margin: 0 auto 16px auto; display: block; }
+.gate-wrap h1 { font-family: var(--fs); font-size: 22px; color: var(--pd); margin-bottom: 4px; font-weight: 600; }
+.gate-sub { font-size: 12.5px; color: var(--ash); margin-bottom: 24px; letter-spacing: 0.02em; }
+.gate-note { font-size: 11px; color: var(--p); background: var(--pg); border: 1px solid var(--pl); border-radius: 6px; padding: 8px 10px; margin-bottom: 16px; line-height: 1.5; }
+.gate-input { width: 100%; padding: 13px 14px; font-family: var(--fn); font-size: 15px; border: 1.5px solid var(--pl); border-radius: 7px; margin-bottom: 12px; letter-spacing: 0.08em; text-align: center; }
+.gate-input:focus { outline: none; border-color: var(--pd); box-shadow: 0 0 0 3px rgba(26,62,96,0.08); }
+.gate-btn { width: 100%; background: var(--pd); color: white; border: none; font-family: var(--fn); font-weight: 600; font-size: 14px; padding: 13px; border-radius: 7px; cursor: pointer; }
+.gate-btn:hover { background: #14324e; }
+.gate-error { color: var(--fail-fg); font-size: 12.5px; margin-top: 10px; min-height: 16px; }
+#site-content { display: none; }
+.page-wrap { max-width: 1000px; margin: 0 auto; }
+.archive-header { background: linear-gradient(135deg, var(--pd) 0%, #123049 100%); border-radius: 12px 12px 0 0; padding: 24px 28px; color: white; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+.archive-header .ah-left { display: flex; align-items: center; gap: 14px; }
+.archive-header .ah-crest { width: 44px; height: auto; color: var(--lemon); flex-shrink: 0; }
+.archive-header h1 { font-family: var(--fs); font-size: 23px; font-weight: 600; letter-spacing: 0.3px; }
+.archive-header .ah-sub { font-size: 12px; color: rgba(255,255,255,0.68); margin-top: 3px; letter-spacing: 0.02em; }
+.nav-shell { background: white; border-left: 1px solid #d8dde3; border-right: 1px solid #d8dde3; padding: 16px 18px; }
+.nav-hint { font-size: 11px; color: var(--ash); text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 10px; font-weight: 700; }
+.year-section { border: 1px solid #e2e6ea; border-radius: 9px; margin-bottom: 8px; overflow: hidden; }
+.year-section.is-current { border-color: var(--pd); box-shadow: 0 2px 10px rgba(26,62,96,0.08); }
+.year-header { width: 100%; display: flex; align-items: center; justify-content: space-between; background: var(--pg); border: none; padding: 13px 16px; cursor: pointer; font-family: var(--fn); text-align: left; }
+.year-header:hover { background: #e6eef9; }
+.year-section.is-current .year-header { background: var(--pd); }
+.year-section.is-current .year-header:hover { background: #163a58; }
+.year-chevron { font-size: 11px; color: var(--p); transition: transform 0.18s ease; display: inline-block; }
+.year-section.is-current .year-chevron { color: var(--lemon); }
+.year-header[aria-expanded="true"] .year-chevron { transform: rotate(90deg); }
+.year-header-left { display: flex; align-items: center; gap: 10px; }
+.year-label { font-weight: 600; font-size: 14.5px; color: var(--pd); }
+.year-section.is-current .year-label { color: white; }
+.year-class-tag { font-size: 10px; font-weight: 700; letter-spacing: 0.06em; background: var(--pl); color: var(--p); padding: 3px 9px; border-radius: 20px; }
+.year-section.is-current .year-class-tag { background: var(--lemon); color: var(--pd); }
+.year-term-count { font-size: 11px; color: var(--ash); }
+.year-section.is-current .year-term-count { color: rgba(255,255,255,0.65); }
+.year-body { padding: 13px 16px 15px 16px; }
+.term-pills { display: flex; gap: 8px; flex-wrap: wrap; }
+.term-pill { font-family: var(--fn); font-size: 12.5px; font-weight: 600; padding: 8px 17px; border-radius: 20px; border: 1px solid var(--pl); background: white; color: var(--p); cursor: pointer; }
+.term-pill:hover { background: var(--pg); }
+.term-pill.is-placeholder { color: var(--ash); border-style: dashed; }
+.term-pill.is-active { background: var(--pd); color: white; border-color: var(--pd); box-shadow: 0 2px 8px rgba(26,62,96,0.25); }
+.term-pill.is-placeholder.is-active { background: var(--ash); border-color: var(--ash); }
+.panel-viewport { background: #e8ebee; padding: 22px 0 8px 0; }
+.term-panel { display: flex; justify-content: center; }
+.term-panel[hidden] { display: none; }
+.card-inner { max-width: 1000px; width: 100%; background: white; box-shadow: 0 10px 32px rgba(20,40,70,0.14); border-radius: 8px; position: relative; overflow: hidden; padding: 42px 38px 32px 38px; }
+.watermark-crest { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 640px; height: auto; max-height: 94%; color: var(--pd); opacity: 0.045; pointer-events: none; z-index: 0; }
+.corner-logo { position: absolute; top: 24px; right: 28px; width: 54px; height: auto; color: var(--pd); opacity: 0.9; z-index: 2; }
+.school-header { position: relative; z-index: 1; text-align: center; border-bottom: 3px double var(--pd); padding-bottom: 14px; margin-bottom: 20px; }
+.header-logo { width: 66px; height: auto; color: var(--pd); margin: 0 auto 10px auto; display: block; }
+.school-name { font-family: var(--fs); font-size: 27px; font-weight: 700; letter-spacing: 1.5px; color: var(--pd); text-transform: uppercase; }
+.school-address { font-size: 14px; color: #333; margin-top: 5px; font-weight: 500; }
+.school-phone { font-size: 13px; color: #555; margin-top: 2px; }
+.term-badge { text-align: center; margin: 8px 0 18px 0; position: relative; z-index: 1; }
+.term-badge-inner { display: inline-block; background: var(--pd); color: var(--white); padding: 6px 20px; border-radius: 5px; }
+.term-badge .tb-label { font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; opacity: 0.6; display: block; }
+.term-badge .tb-value { font-family: var(--fd); font-size: 1.15rem; letter-spacing: 0.06em; color: var(--lemon); display: block; line-height: 1.25; }
+.student-info { position: relative; z-index: 1; display: flex; justify-content: space-between; font-size: 15px; margin-bottom: 20px; padding: 12px 16px; background: var(--pg); border-radius: 6px; border: 1px solid var(--pl); flex-wrap: wrap; gap: 10px; }
+.student-info .label { font-weight: 600; color: var(--pd); font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; }
+.student-info .value { font-family: var(--fs); font-size: 1.12rem; font-weight: 500; color: var(--ink); display: block; margin-top: 2px; }
+.report-table { position: relative; z-index: 1; width: 100%; border-collapse: collapse; font-size: 13.5px; background: white; }
+.report-table th { background: var(--pd); color: white; padding: 10px 6px; text-align: center; border: 1px solid var(--pd); font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; }
+.report-table td { border: 1px solid #ccc; padding: 8px 6px; text-align: center; vertical-align: middle; }
+.report-table tbody tr:nth-child(even) { background: #f8faff; }
+.subject-name { text-align: left; padding-left: 12px; font-weight: 500; color: var(--ink); }
+.score-cell { font-family: var(--fd); font-size: 1.08rem; color: var(--ink-s); }
+.total-score { font-family: var(--fd); font-size: 1.22rem; color: var(--pd); font-weight: 700; }
+.gdot { display: inline-flex; align-items: center; justify-content: center; width: 27px; height: 27px; border-radius: 50%; font-weight: 700; font-size: 10px; font-family: var(--fn); }
+.ga1 { background: #E8F8E8; color: #1A6640; } .gb2, .gb3 { background: var(--pg); color: var(--p); }
+.gc4, .gc5, .gc6 { background: var(--warn-bg); color: var(--warn-fg); } .gd7 { background: #FFE8D0; color: #A04000; }
+.ge8 { background: #FFE0E0; color: #7A2020; } .gf9 { background: var(--fail-bg); color: var(--fail-fg); }
+.summary-band { position: relative; z-index: 1; margin-top: 18px; background: linear-gradient(135deg, var(--pd) 0%, #123049 100%); border-radius: 9px; padding: 14px 18px; display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.summary-band .sb-item { text-align: center; }
+.summary-band .sb-label { font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.5); display: block; }
+.summary-band .sb-value { font-family: var(--fd); font-size: 1.45rem; color: var(--lemon); line-height: 1; display: block; }
+.summary-band .sb-unit { font-size: 9px; color: rgba(255,255,255,0.35); }
+.remarks { position: relative; z-index: 1; margin-top: 18px; display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.remark-box { background: var(--cream); border: 1px solid var(--cream-d); border-radius: 9px; padding: 15px 17px; position: relative; min-height: 100px; }
+.remark-box .remark-label { font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ash); margin-bottom: 7px; font-weight: 700; }
+.remark-box .remark-content { font-family: var(--fs); font-style: italic; font-size: 13.5px; color: var(--ash); line-height: 1.55; min-height: 40px; }
+.remark-box .remark-line { height: 1px; background: var(--cream-d); margin: 9px 0; }
+.remark-box .remark-signature { font-family: var(--fs); font-style: italic; font-size: 10px; color: var(--ash); margin-top: 4px; }
+.remark-box::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 3px; border-radius: 9px 9px 0 0; }
+.remark-box.teacher::before { background: var(--pd); } .remark-box.principal::before { background: var(--lemon); }
+.footer-note { position: relative; z-index: 1; margin-top: 20px; font-size: 11px; text-align: right; border-top: 1px solid #ccc; padding-top: 11px; color: #555; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; }
+.grade-key { display: flex; gap: 7px; flex-wrap: wrap; font-size: 9px; color: var(--ash); }
+.grade-key span { white-space: nowrap; }
+.placeholder-notice { position: relative; z-index: 1; display: flex; gap: 16px; align-items: flex-start; background: var(--pg); border: 1px dashed var(--pl); border-radius: 9px; padding: 30px 28px; margin-top: 8px; }
+.placeholder-icon { font-size: 30px; line-height: 1; opacity: 0.5; flex-shrink: 0; }
+.placeholder-text { display: flex; flex-direction: column; gap: 6px; }
+.placeholder-text strong { font-family: var(--fs); font-size: 17px; color: var(--pd); }
+.placeholder-text span { font-size: 13px; color: var(--ash); line-height: 1.55; max-width: 520px; }
+.grade-note { position: relative; z-index: 1; margin-top: 10px; font-size: 11px; border: 1px solid var(--pl); background: var(--pg); color: var(--p); border-radius: 6px; padding: 8px 12px; line-height: 1.5; }
+@media print {
+    body { background: white; padding: 0; }
+    .gate-wrap { display: none !important; }
+    .archive-header, .nav-shell { display: none !important; }
+    .card-inner { box-shadow: none; border-radius: 0; padding: 20px; }
+    .watermark-crest { opacity: 0.07; }
+    .term-panel[hidden] { display: none !important; }
+}
+@media screen and (max-width: 700px) {
+    .archive-header { padding: 18px 18px; } .archive-header h1 { font-size: 18px; }
+    .nav-shell { padding: 12px 12px; } .card-inner { padding: 18px 12px; }
+    .school-name { font-size: 20px; } .report-table { font-size: 11px; }
+    .student-info { flex-direction: column; gap: 6px; } .remarks { grid-template-columns: 1fr; }
+    .corner-logo { width: 40px; top: 14px; right: 14px; } .watermark-crest { width: 420px; }
+}
+</style>
+</head>
+<body>
+<svg class="crest-defs" xmlns="http://www.w3.org/2000/svg">
+    <symbol id="crest-symbol" viewBox="0 0 312.517888 359.467970"><g transform="translate(0.000000,366.000000) scale(0.100000,-0.100000)"
+fill="currentColor" stroke="none">
+<path d="M0 2875 l0 -785 26 0 c49 0 62 15 57 65 -6 50 -11 48 87 50 l45 1 3
+69 c2 51 6 66 13 55 8 -11 9 -2 6 33 -3 26 -2 49 2 51 3 2 22 5 41 7 19 2 38
+8 42 14 4 5 8 -95 8 -224 0 -129 2 -232 4 -230 2 2 6 308 10 679 5 625 6 676
+22 687 14 10 245 13 1108 15 1035 1 1115 5 471 23 -143 4 -262 9 -264 11 -2 2
+137 5 310 6 173 1 297 3 276 5 -42 5 -41 23 2 23 30 0 67 29 40 31 -16 1 62
+20 101 24 39 4 40 4 38 18 -2 7 9 13 25 15 15 2 27 8 27 13 0 5 27 9 60 9 48
+0 60 3 60 16 0 8 6 22 14 30 17 16 30 19 21 4 -4 -6 9 -10 32 -9 30 0 34 2 18
+9 -18 8 -17 9 8 9 17 1 27 6 27 16 0 11 11 15 43 15 30 0 38 3 27 10 -10 6 46
+10 165 12 99 2 -530 5 -1397 6 l-1578 2 0 -785z m207 -577 c-2 -13 -4 -5 -4
+17 -1 22 1 32 4 23 2 -10 2 -28 0 -40z"/>
+<path d="M2613 3363 c9 -2 25 -2 35 0 9 3 1 5 -18 5 -19 0 -27 -2 -17 -5z"/>
+<path d="M400 2444 c0 -764 2 -873 16 -937 17 -74 53 -176 81 -231 67 -131
+221 -304 353 -398 69 -49 246 -141 293 -152 15 -3 27 -11 27 -17 0 -8 -16 -9
+-52 -5 -29 4 -126 16 -216 25 -90 10 -168 23 -173 28 -6 6 -6 19 1 37 19 52
+13 63 -72 128 -46 34 -117 96 -158 138 -79 78 -190 218 -190 238 0 7 -8 12
+-19 12 -22 0 -31 -50 -31 -171 l0 -79 -42 1 c-24 0 -68 4 -98 9 -31 4 -59 4
+-64 -1 -25 -23 120 -235 227 -335 l69 -64 -20 -43 c-34 -74 -35 -83 -9 -109
+14 -12 39 -31 57 -41 31 -16 32 -19 26 -60 -9 -58 -2 -73 43 -90 59 -24 448
+-84 666 -103 464 -41 1025 -9 1455 81 110 23 114 26 106 95 -7 57 -7 57 25 70
+44 19 89 58 89 79 0 10 -11 39 -24 65 l-24 47 80 81 c43 44 98 108 122 142 52
+73 106 163 106 177 0 7 -35 8 -103 3 l-104 -7 -7 104 c-12 176 -19 183 -86 79
+-55 -87 -187 -221 -302 -308 -92 -70 -99 -82 -78 -138 7 -17 7 -31 1 -37 -14
+-14 -471 -67 -471 -54 0 3 24 13 53 23 167 55 317 151 457 293 141 142 211
+263 273 466 20 68 21 89 24 948 l4 877 -1155 0 -1156 0 0 -866z m2258 16 c2
+-711 1 -805 -14 -885 -57 -306 -221 -533 -509 -708 -211 -128 -534 -187 -786
+-142 -443 77 -826 437 -889 835 -11 72 -15 1682 -3 1693 3 4 499 6 1102 4
+l1096 -2 3 -795z m-2294 -1315 c56 -73 200 -211 252 -241 24 -14 44 -28 44
+-30 0 -2 -41 -3 -92 -1 l-92 2 -46 -74 c-25 -41 -51 -76 -56 -78 -17 -6 -158
+142 -214 223 l-52 75 91 -3 c50 -2 91 -3 91 -3 1 0 3 38 6 85 3 47 7 91 10 99
+5 16 4 17 58 -54z m2436 -36 l0 -89 90 0 c50 0 90 -2 90 -5 0 -7 -66 -100
+-114 -160 -44 -56 -134 -145 -146 -145 -5 0 -30 39 -55 86 l-47 86 -72 -5
+c-39 -2 -79 -8 -88 -12 -39 -16 -15 16 45 58 81 58 183 157 237 229 23 32 46
+55 51 52 5 -3 9 -45 9 -95z m-2142 -281 c30 -9 33 -13 27 -37 -4 -14 -8 -28
+-11 -30 -2 -2 -29 1 -59 8 -51 12 -95 45 -95 73 0 10 89 1 138 -14z m1916 -1
+c-12 -27 -64 -56 -112 -63 l-52 -7 0 32 c0 37 5 39 91 50 70 8 81 6 73 -12z
+m-2055 -51 c20 -32 26 -34 133 -54 328 -61 785 -89 1178 -72 135 6 268 15 295
+20 28 5 86 14 130 20 44 6 126 20 183 32 57 11 106 17 110 14 13 -14 98 -354
+89 -362 -9 -10 -247 -54 -392 -74 -77 -10 -262 -26 -412 -36 -254 -16 -289
+-16 -535 0 -240 15 -446 36 -633 66 -93 15 -208 41 -217 49 -4 3 0 33 7 66 8
+33 15 74 14 90 l0 30 -14 -32 c-8 -18 -17 -33 -21 -33 -17 0 -73 34 -79 48 -7
+20 113 262 131 262 7 0 22 -15 33 -34z m2162 -81 c32 -61 59 -119 59 -131 0
+-14 -13 -28 -41 -43 -22 -13 -42 -21 -44 -19 -7 7 -85 233 -85 246 0 18 33 62
+44 59 4 -2 35 -52 67 -112z"/>
+<path d="M1025 3145 c-55 -54 -19 -145 56 -145 51 0 71 19 67 60 -3 37 -28 50
+-58 30 -13 -9 -13 -12 3 -24 9 -7 17 -16 17 -20 0 -11 -46 -6 -58 6 -32 32 7
+100 47 79 27 -15 41 -14 41 4 0 39 -80 46 -115 10z"/>
+<path d="M1180 3085 c0 -78 2 -85 20 -85 15 0 20 7 20 25 0 14 3 25 6 25 3 0
+15 -11 26 -25 33 -42 63 -29 36 15 -10 16 -10 24 0 40 31 50 3 90 -64 90 l-44
+0 0 -85z m78 32 c2 -12 -3 -17 -17 -17 -12 0 -21 6 -21 13 0 31 32 34 38 4z"/>
+<path d="M1345 3145 c-54 -53 -16 -145 59 -145 25 0 40 7 55 26 45 58 10 144
+-59 144 -19 0 -40 -9 -55 -25z m91 -40 c10 -40 -4 -65 -36 -65 -43 0 -57 57
+-19 84 26 18 47 11 55 -19z"/>
+<path d="M1507 3163 c-14 -13 -7 -118 9 -141 20 -29 76 -30 104 -2 16 16 20
+33 20 85 0 58 -2 65 -20 65 -18 0 -20 -7 -20 -60 0 -49 -3 -61 -20 -70 -26
+-14 -40 13 -40 79 0 36 -4 51 -13 51 -8 0 -17 -3 -20 -7z"/>
+<path d="M1664 3157 c-3 -8 -3 -31 0 -53 2 -21 5 -54 5 -71 1 -40 28 -46 33
+-7 2 20 11 29 38 38 30 9 35 16 38 46 3 24 -2 38 -14 47 -24 17 -93 17 -100 0z
+m71 -42 c0 -10 -5 -20 -11 -22 -13 -4 -27 24 -18 38 9 15 29 4 29 -16z"/>
+<path d="M1885 3144 c-51 -56 -15 -144 59 -144 49 0 76 31 76 86 0 34 -5 47
+-26 63 -37 29 -79 27 -109 -5z m91 -39 c7 -29 -2 -61 -20 -68 -21 -8 -56 22
+-56 48 0 52 64 68 76 20z"/>
+<path d="M2045 3158 c-3 -7 -4 -44 -2 -83 2 -57 6 -70 20 -73 11 -2 17 3 17
+16 0 36 12 52 36 52 15 0 24 6 24 15 0 9 -9 15 -24 15 -14 0 -28 5 -32 11 -8
+14 15 30 41 26 12 -1 20 4 20 13 0 20 -93 27 -100 8z"/>
+<path d="M607 3108 c5 -18 3 -21 -7 -11 -16 15 -40 6 -40 -16 0 -10 11 -28 25
+-41 l25 -24 28 21 c32 24 39 54 17 77 -25 25 -54 21 -48 -6z"/>
+<path d="M767 2933 c-12 -11 -8 -1216 4 -1275 15 -73 54 -177 88 -230 33 -51
+138 -157 197 -198 103 -72 258 -131 394 -151 101 -15 101 -15 215 5 339 58
+587 255 663 529 15 56 17 127 17 692 l0 630 -786 3 c-432 1 -789 -1 -792 -5z
+m1516 -51 c17 -4 18 -34 15 -611 l-3 -606 -24 -68 c-86 -242 -332 -422 -643
+-468 -211 -31 -501 77 -657 244 -52 56 -104 145 -129 221 -22 65 -22 77 -22
+675 0 478 3 610 13 614 15 6 1425 5 1450 -1z"/>
+<path d="M1547 2729 c-10 -15 -25 -53 -33 -85 -25 -94 -23 -89 -39 -68 -13 18
+-15 17 -29 -18 -20 -46 -20 -69 -2 -113 16 -37 52 -63 68 -47 6 6 6 12 -1 16
+-17 11 -13 64 6 97 19 32 51 42 37 12 -14 -33 -16 -93 -4 -108 18 -22 30 -18
+30 8 1 28 26 64 32 45 3 -7 1 -25 -3 -40 -6 -23 -4 -28 10 -28 53 0 75 89 41
+168 -25 57 -36 64 -50 30 -8 -22 -9 -22 -9 4 -1 15 -6 39 -12 55 -7 15 -15 44
+-18 63 l-7 35 -17 -26z"/>
+<path d="M1450 2348 c0 -15 5 -30 10 -33 6 -4 8 -11 4 -16 -3 -5 1 -21 10 -34
+9 -13 16 -34 16 -46 0 -19 -3 -21 -37 -13 -49 10 -77 9 -138 -4 -51 -11 -124
+-44 -134 -61 -3 -5 -24 -17 -46 -27 l-39 -19 -62 -265 c-34 -146 -60 -269 -57
+-274 3 -4 111 -5 243 -1 l237 7 26 -26 c36 -36 92 -36 131 0 l28 26 238 -7
+c131 -4 240 -3 243 1 5 9 -15 100 -86 399 l-34 140 -37 18 c-21 10 -40 27 -43
+38 -5 16 -23 28 -23 14 0 -12 81 -404 90 -435 18 -62 16 -62 -113 -19 -114 38
+-187 40 -252 9 -25 -12 -49 -19 -52 -16 -4 3 -1 48 6 99 6 50 16 155 21 232 6
+76 14 143 18 147 18 18 127 20 172 3 25 -9 59 -19 75 -22 27 -4 26 -2 -10 14
+-66 31 -148 47 -173 34 -50 -27 -87 -2 -63 43 7 12 13 29 15 38 1 9 8 23 15
+32 7 8 11 23 9 32 -3 15 -18 17 -106 18 l-102 1 0 -27z m35 -169 c6 -5 13 -49
+16 -97 4 -48 12 -154 19 -235 6 -82 9 -151 6 -154 -3 -3 -26 7 -52 22 -64 37
+-131 36 -254 -4 -96 -32 -120 -37 -120 -23 0 4 7 33 15 64 8 31 31 132 50 225
+20 92 38 169 40 171 1 2 34 14 71 28 57 21 80 24 134 19 36 -3 70 -11 75 -16z
+m472 -136 c-3 -10 -5 -2 -5 17 0 19 2 27 5 18 2 -10 2 -26 0 -35z m-827 -80
+c-11 -17 -11 -17 -6 0 3 10 7 31 7 45 l2 27 4 -27 c2 -15 -1 -35 -7 -45z m869
+-97 c1 -42 -5 -29 -12 24 -4 30 -3 38 3 25 5 -11 9 -33 9 -49z m-899 -56 l-11
+-25 6 25 c2 14 6 39 6 55 l2 30 4 -30 c2 -17 -1 -42 -7 -55z m-24 -105 c-6
+-30 -14 -55 -19 -55 -5 0 -6 8 -3 18 3 9 8 34 12 55 3 20 9 37 13 37 4 0 2
+-25 -3 -55z m962 -35 c0 -22 -1 -22 -8 5 -4 17 -8 41 -8 55 0 22 1 22 8 -5 4
+-16 8 -41 8 -55z"/>
+<path d="M1343 2123 c15 -2 39 -2 55 0 15 2 2 4 -28 4 -30 0 -43 -2 -27 -4z"/>
+<path d="M1280 1940 c-14 -4 16 -5 65 -2 50 2 92 6 94 8 8 7 -134 2 -159 -6z"/>
+<path d="M1698 2123 c18 -2 45 -2 60 0 15 2 0 4 -33 4 -33 0 -45 -2 -27 -4z"/>
+<path d="M1703 2073 c15 -2 37 -2 50 0 12 2 0 4 -28 4 -27 0 -38 -2 -22 -4z"/>
+<path d="M1698 1943 c18 -2 45 -2 60 0 15 2 0 4 -33 4 -33 0 -45 -2 -27 -4z"/>
+<path d="M530 2840 l0 -51 68 3 67 3 3 48 c2 37 0 47 -12 47 -11 0 -16 -10
+-16 -30 0 -20 -5 -30 -15 -30 -9 0 -15 10 -15 26 0 31 -23 28 -28 -4 -5 -33
+-22 -26 -22 8 0 20 -5 30 -15 30 -11 0 -15 -12 -15 -50z"/>
+<path d="M543 2764 c-8 -4 -13 -25 -13 -55 l0 -49 71 0 c61 0 70 2 67 17 -2 9
+-14 20 -28 24 l-25 6 28 13 c34 17 39 55 5 44 -24 -8 -29 -8 -68 0 -14 3 -31
+3 -37 0z m47 -49 c0 -8 -7 -15 -15 -15 -8 0 -15 7 -15 15 0 8 7 15 15 15 8 0
+15 -7 15 -15z"/>
+<path d="M2441 2691 c-16 -28 -13 -67 4 -81 22 -19 64 -4 71 25 9 36 27 31 19
+-5 -7 -31 2 -39 23 -18 13 13 16 57 4 75 -7 11 -26 17 -49 14 -6 0 -16 -14
+-22 -31 -13 -39 -35 -40 -26 -1 7 35 -10 50 -24 22z"/>
+<path d="M595 2624 c-49 -18 -60 -26 -60 -44 0 -19 10 -26 55 -41 30 -10 61
+-19 68 -19 17 0 15 27 -3 34 -8 3 -15 15 -15 26 0 11 7 23 15 26 16 6 21 30 8
+37 -5 2 -35 -6 -68 -19z"/>
+<path d="M2445 2564 c-23 -23 -17 -88 8 -92 16 -3 18 1 12 26 -5 25 -2 33 14
+42 34 18 64 -4 56 -41 -5 -22 -3 -29 8 -29 29 0 37 68 11 94 -20 21 -88 21
+-109 0z"/>
+<path d="M542 2488 c-17 -17 -15 -59 4 -86 18 -26 69 -30 102 -6 25 17 31 71
+10 92 -21 21 -29 13 -26 -25 3 -37 2 -38 -32 -38 -34 0 -35 1 -33 38 2 38 -5
+45 -25 25z"/>
+<path d="M2437 2443 c-15 -15 -5 -32 21 -35 19 -2 27 -9 27 -23 0 -14 -8 -21
+-27 -23 -20 -2 -28 -9 -28 -23 0 -17 7 -19 70 -19 62 0 70 2 70 19 0 13 -8 21
+-22 23 -15 2 -24 11 -26 26 -3 18 1 22 22 22 19 0 26 5 26 20 0 18 -7 20 -63
+20 -35 0 -67 -3 -70 -7z"/>
+<path d="M541 2306 c-13 -15 -11 -103 2 -98 4 1 34 2 68 2 52 0 60 2 57 17 -2
+9 -14 20 -28 24 l-25 6 28 13 c15 7 27 21 27 32 0 21 -12 23 -40 6 -15 -10
+-22 -10 -32 0 -16 16 -43 15 -57 -2z m41 -41 c0 -5 -5 -11 -11 -13 -6 -2 -11
+4 -11 13 0 9 5 15 11 13 6 -2 11 -8 11 -13z"/>
+<path d="M2470 2303 c-46 -17 -54 -81 -14 -112 l27 -21 -27 -21 c-32 -25 -36
+-73 -6 -91 11 -7 20 -16 20 -19 0 -4 -9 -9 -20 -12 -11 -3 -20 -12 -20 -20 0
+-12 16 -16 70 -19 67 -3 70 -2 70 20 0 15 -6 22 -20 22 -11 0 -20 5 -20 10 0
+6 6 10 14 10 28 0 36 69 10 94 -8 9 -27 16 -42 16 -26 1 -26 1 8 16 19 8 38
+20 42 27 12 19 9 61 -4 80 -14 18 -64 30 -88 20z m67 -49 c8 -22 -21 -44 -48
+-37 -26 7 -36 32 -18 44 23 14 59 10 66 -7z m-11 -139 c19 -15 19 -15 0 -30
+-24 -18 -27 -18 -51 -1 -16 12 -17 16 -6 30 17 20 32 20 57 1z"/>
+<path d="M530 2140 l0 -50 70 0 70 0 0 50 c0 37 -4 50 -14 50 -9 0 -16 -12
+-18 -27 -4 -34 -22 -37 -26 -5 -4 28 -26 24 -30 -6 -5 -33 -22 -26 -22 8 0 20
+-5 30 -15 30 -11 0 -15 -12 -15 -50z"/>
+<path d="M552 2057 c-18 -19 -23 -34 -20 -63 l3 -39 65 1 65 2 2 38 c4 48 -15
+73 -58 80 -27 5 -39 1 -57 -19z m78 -32 c17 -20 4 -35 -30 -35 -16 0 -32 5
+-35 10 -9 15 13 40 35 40 10 0 23 -7 30 -15z"/>
+<path d="M2437 1964 c-4 -4 -7 -22 -7 -40 0 -39 29 -64 77 -64 43 0 65 24 61
+69 -4 46 -33 51 -33 6 0 -28 -3 -30 -35 -30 -32 0 -35 3 -35 29 0 28 -14 43
+-28 30z"/>
+<path d="M553 1933 c-35 -7 -29 -33 7 -33 38 0 38 -10 0 -32 -18 -10 -30 -25
+-30 -38 0 -19 5 -21 68 -18 52 2 67 6 67 18 0 9 -11 16 -27 18 -36 4 -35 13 3
+34 46 27 36 53 -21 54 -25 1 -55 0 -67 -3z"/>
+<path d="M2508 1838 c-9 -7 -18 -22 -20 -32 -1 -11 -9 -21 -17 -24 -10 -3 -11
+3 -6 28 6 27 4 31 -12 28 -12 -2 -19 -14 -21 -36 -7 -66 50 -84 78 -25 19 41
+34 42 25 2 -6 -26 -4 -30 12 -27 24 4 30 60 8 82 -20 19 -26 20 -47 4z"/>
+<path d="M638 1768 c-4 -40 -22 -44 -26 -5 -4 32 -25 31 -30 -1 -5 -30 -22
+-28 -22 3 0 16 -6 25 -15 25 -11 0 -15 -12 -15 -45 l0 -45 71 0 70 0 -3 47
+c-4 55 -25 70 -30 21z"/>
+<path d="M530 1620 c0 -63 13 -78 30 -35 8 22 15 25 60 25 44 0 51 3 48 18 -3
+13 -14 17 -51 17 -36 0 -51 5 -58 18 -19 32 -29 17 -29 -43z"/>
+<path d="M765 1270 c-54 -20 -74 -50 -32 -50 27 0 52 -23 42 -39 -3 -6 -2 -18
+3 -27 7 -12 17 -2 51 50 24 36 40 70 36 76 -9 14 -42 11 -100 -10z"/>
+<path d="M2218 1264 c-55 -29 -54 -48 3 -104 37 -36 55 -48 63 -40 7 7 7 16
+-2 30 -18 29 -15 32 22 25 45 -9 58 19 15 34 -19 6 -29 17 -29 30 0 11 -9 25
+-19 31 -24 12 -20 13 -53 -6z m36 -32 c2 -4 1 -14 -4 -22 -7 -11 -12 -12 -21
+-3 -6 6 -8 16 -5 22 8 13 23 14 30 3z"/>
+<path d="M907 1164 c-30 -36 -57 -45 -57 -19 0 8 -7 15 -15 15 -18 0 -20 -41
+-3 -58 22 -22 57 -13 95 26 36 36 46 73 20 71 -7 0 -25 -16 -40 -35z"/>
+<path d="M2118 1174 c-46 -24 -49 -89 -5 -126 67 -59 148 42 90 110 -25 28
+-53 34 -85 16z m58 -49 c9 -14 13 -32 10 -41 -9 -23 -48 -13 -63 16 -11 21
+-10 27 4 38 24 17 30 15 49 -13z"/>
+<path d="M960 1138 c-5 -13 -21 -37 -34 -53 -28 -33 -26 -40 21 -72 25 -18 33
+-20 42 -9 9 10 5 17 -15 31 -31 20 -19 44 14 26 27 -14 32 -14 32 4 0 7 -7 18
+-16 23 -9 5 -14 15 -10 21 5 8 13 7 29 -4 27 -19 37 -19 37 -1 0 17 -51 56
+-74 56 -9 0 -21 -10 -26 -22z"/>
+<path d="M1983 1090 l-32 -19 29 -63 c17 -35 34 -64 39 -66 5 -2 26 7 45 20
+42 27 50 70 16 88 -11 6 -20 19 -20 29 0 17 -18 31 -38 31 -4 0 -22 -9 -39
+-20z m45 -31 c-2 -6 -8 -10 -13 -10 -5 0 -11 4 -13 10 -2 6 4 11 13 11 9 0 15
+-5 13 -11z m32 -54 c0 -8 -7 -15 -15 -15 -8 0 -15 7 -15 15 0 8 7 15 15 15 8
+0 15 -7 15 -15z"/>
+<path d="M1054 1065 c-19 -20 -24 -34 -22 -62 6 -71 96 -98 119 -36 7 19 3 25
+-23 39 l-31 16 5 -26 c4 -20 1 -26 -12 -26 -24 0 -31 34 -13 59 17 24 48 28
+57 6 7 -18 36 -20 36 -2 0 18 -12 32 -37 46 -33 17 -51 14 -79 -14z"/>
+<path d="M1872 1038 c-7 -7 -12 -42 -12 -85 0 -59 3 -73 15 -73 9 0 20 12 25
+26 9 24 14 25 50 19 51 -9 51 1 -2 70 -45 57 -56 63 -76 43z m46 -67 c3 -8 -1
+-12 -9 -9 -7 2 -15 10 -17 17 -3 8 1 12 9 9 7 -2 15 -10 17 -17z"/>
+<path d="M1189 1013 c-6 -16 -13 -44 -16 -63 -6 -44 21 -73 64 -68 29 3 54 39
+68 101 6 22 4 27 -12 27 -14 0 -22 -12 -32 -45 -15 -51 -26 -62 -46 -45 -12
+10 -12 19 4 60 10 27 16 51 13 54 -13 14 -33 4 -43 -21z"/>
+<path d="M1735 1001 c-6 -11 13 -131 24 -143 3 -4 25 -2 49 4 52 13 57 38 8
+38 -32 0 -34 2 -40 44 -7 46 -29 76 -41 57z"/>
+<path d="M1326 988 c-5 -17 -17 -87 -19 -113 -3 -34 26 -22 36 15 l9 35 19
+-43 c28 -64 51 -55 66 28 11 63 6 89 -16 76 -6 -4 -11 -16 -11 -26 0 -33 -16
+-30 -33 5 -17 35 -44 47 -51 23z"/>
+<path d="M1603 983 l-33 -4 0 -69 c0 -38 5 -72 10 -75 6 -3 30 -3 55 1 52 7
+56 27 6 32 -36 4 -37 23 -2 32 30 7 28 24 -4 28 -33 4 -32 20 2 24 17 2 29 10
+31 21 4 18 1 18 -65 10z"/>
+<path d="M1460 904 l0 -75 47 3 c55 4 70 25 24 34 -30 6 -31 8 -31 60 0 47 -2
+54 -20 54 -18 0 -20 -7 -20 -76z"/>
+<path d="M606 598 c-25 -94 -32 -148 -18 -148 14 0 32 23 32 42 0 10 5 18 10
+18 6 0 10 -9 10 -19 0 -29 17 -35 32 -11 18 28 30 25 26 -7 -2 -19 2 -29 14
+-31 13 -2 18 11 28 67 6 39 9 75 5 81 -13 20 -35 9 -54 -27 -20 -39 -27 -36
+-33 17 -3 27 -45 42 -52 18z"/>
+<path d="M2335 588 c-22 -5 -56 -9 -77 -9 -74 2 -91 -60 -25 -92 45 -23 48
+-40 5 -35 -36 3 -49 -15 -21 -30 27 -15 73 -2 85 23 14 31 -5 64 -43 72 -16 3
+-29 12 -29 20 0 9 6 12 18 9 9 -3 32 -2 50 3 38 11 52 -6 52 -61 0 -33 14 -58
+33 -58 5 0 6 27 3 64 -6 52 -5 64 8 69 22 9 20 37 -1 36 -10 -1 -36 -6 -58
+-11z"/>
+<path d="M780 558 c-31 -34 -25 -107 11 -127 57 -32 120 28 104 100 -11 51
+-78 67 -115 27z m74 -24 c11 -28 6 -50 -13 -68 -17 -16 -20 -16 -35 -1 -19 20
+-20 38 -4 65 15 24 43 26 52 4z"/>
+<path d="M909 564 c-7 -9 -4 -16 10 -24 18 -9 20 -17 14 -70 -5 -50 -3 -60 10
+-60 10 0 17 14 22 43 12 76 13 78 53 75 40 -3 39 -2 29 -80 -6 -43 -5 -48 13
+-48 16 0 20 10 26 59 5 50 10 60 27 63 34 5 31 26 -5 32 -122 18 -190 21 -199
+10z"/>
+<path d="M2060 511 c0 -27 3 -63 6 -80 8 -40 34 -41 34 -1 0 22 4 28 15 24 8
+-3 17 -14 20 -25 4 -10 15 -19 27 -19 16 0 18 4 12 18 -4 9 -7 37 -6 61 3 56
+-10 71 -64 71 l-44 0 0 -49z m70 -1 c0 -21 -24 -28 -35 -10 -8 14 3 30 21 30
+8 0 14 -9 14 -20z"/>
+<path d="M1155 525 c-34 -33 -34 -87 0 -120 13 -14 33 -25 43 -25 25 0 72 47
+72 72 0 15 5 17 25 12 21 -5 25 -3 25 15 0 23 -19 28 -38 9 -9 -9 -12 -9 -12
+3 0 24 -39 59 -66 59 -14 0 -36 -11 -49 -25z m73 -64 c-3 -31 -7 -36 -28 -36
+-21 0 -25 5 -28 35 -3 24 2 38 14 47 26 19 46 -2 42 -46z"/>
+<path d="M1903 543 c-20 -4 -23 -11 -23 -52 0 -68 10 -111 26 -111 8 0 14 6
+15 13 1 6 2 21 3 32 0 13 9 21 24 23 31 5 29 32 -3 32 -36 0 -31 26 6 34 18 3
+29 11 27 18 -5 14 -38 19 -75 11z"/>
+<path d="M2002 473 c2 -50 7 -78 15 -81 20 -6 26 23 18 93 -5 47 -11 65 -21
+65 -12 0 -14 -15 -12 -77z"/>
+<path d="M1428 528 c-18 -6 -31 -21 -38 -43 -23 -69 18 -123 84 -111 35 7 46
+21 46 62 0 20 -5 24 -30 24 -20 0 -30 -5 -30 -15 0 -8 5 -15 10 -15 6 0 10 -4
+10 -10 0 -5 -11 -10 -25 -10 -18 0 -26 7 -31 27 -10 39 7 59 50 55 26 -2 36 1
+36 12 0 20 -49 35 -82 24z"/>
+<path d="M1718 532 c-28 -3 -28 -4 -28 -78 0 -86 8 -94 71 -75 46 14 63 45 53
+97 -9 48 -36 63 -96 56z m50 -44 c25 -25 8 -78 -25 -78 -9 0 -13 15 -13 45 0
+46 13 58 38 33z"/>
+<path d="M1551 504 c-59 -74 25 -174 96 -115 21 18 26 34 24 83 -2 60 -81 81
+-120 32z m79 -25 c7 -11 9 -32 6 -46 -5 -19 -12 -24 -34 -21 -23 2 -28 8 -30
+37 -5 50 37 71 58 30z"/>
+<path d="M1287 414 c-14 -14 -7 -35 11 -32 9 2 17 10 17 17 0 16 -18 25 -28
+15z"/>
+<path d="M2758 3270 c-4 -14 -8 -378 -8 -810 -1 -440 -6 -816 -11 -855 -10
+-72 -45 -216 -59 -244 -4 -9 -18 -41 -31 -71 -25 -58 -113 -194 -158 -245 -54
+-61 -56 -70 -9 -36 118 84 239 246 262 352 8 35 20 87 26 114 7 32 14 266 20
+655 4 333 11 711 16 841 7 245 4 292 -20 283 -9 -4 -16 3 -18 18 l-4 23 -6
+-25z"/>
+<path d="M288 2230 c-1 -28 0 -50 5 -50 4 0 7 23 7 50 0 65 -7 65 -12 0z"/>
+<path d="M2870 1206 c0 -29 3 -67 6 -84 5 -27 9 -30 25 -21 15 8 18 17 14 51
+-5 38 -32 108 -41 108 -2 0 -4 -24 -4 -54z"/>
+<path d="M591 1035 c29 -30 57 -55 62 -55 15 0 -86 108 -101 109 -8 1 10 -24
+39 -54z"/>
+<path d="M3061 989 c-18 -24 -58 -80 -90 -124 -33 -44 -86 -109 -119 -144
+l-61 -64 20 -38 c30 -60 25 -91 -20 -132 -21 -19 -48 -38 -60 -42 -18 -5 -20
+-12 -14 -50 8 -65 -10 -88 -89 -108 -179 -45 -380 -74 -718 -102 -240 -20
+-445 -19 -705 1 -246 19 -714 83 -798 110 -15 5 -18 2 -13 -13 3 -10 8 -29 11
+-43 14 -58 185 -101 565 -141 293 -31 728 -43 905 -25 214 22 343 37 360 40
+11 2 54 7 95 11 85 7 203 28 302 52 87 21 116 50 125 121 5 45 10 54 42 75 54
+36 66 65 53 129 -10 54 -6 75 24 108 8 8 37 41 65 73 29 31 74 94 102 140 28
+45 53 84 56 87 4 3 12 18 19 34 11 24 10 32 -6 58 l-20 30 -31 -43z"/>
+<path d="M0 992 c0 -4 9 -13 20 -20 11 -7 20 -9 20 -4 0 4 -9 13 -20 20 -11 7
+-20 9 -20 4z"/>
+<path d="M40 947 c0 -5 9 -20 20 -34 11 -14 20 -22 20 -17 -1 12 -39 61 -40
+51z"/>
+<path d="M768 835 c4 -54 4 -55 35 -55 18 0 57 -3 87 -6 l55 -7 -87 62 c-49
+33 -89 61 -90 61 -2 0 -1 -25 0 -55z"/>
+<path d="M2297 870 c-14 -11 -58 -41 -99 -66 l-73 -46 50 7 c28 3 73 11 100
+17 l50 11 0 49 c0 26 -1 48 -1 48 -1 0 -13 -9 -27 -20z"/>
+<path d="M91 868 c23 -20 39 -64 27 -76 -6 -6 -6 -12 1 -16 6 -4 11 -1 11 6 1
+17 30 -21 30 -39 0 -12 23 -43 58 -79 7 -8 20 -14 28 -14 8 0 14 -7 14 -15 0
+-23 27 -18 33 7 5 18 -10 39 -78 108 -47 47 -92 95 -100 108 -9 12 -21 22 -27
+22 -7 0 -5 -5 3 -12z"/>
+<path d="M280 481 c0 -16 61 -111 71 -111 5 0 9 9 9 19 0 11 3 26 6 35 4 10
+-1 18 -12 23 -11 3 -31 15 -46 25 -16 11 -28 15 -28 9z"/>
+</g></symbol>
+</svg>
+
+<div class="gate-wrap" id="gate-wrap">
+    <svg class="gate-crest"><use href="#crest-symbol"/></svg>
+    <h1>EXAMPLE STUDENT (JSS2A) — DEMO DATA, NOT A REAL RECORD</h1>
+    <div class="gate-sub">Tendercare Comprehensive College &middot; TCH-0000-002</div>
+    <div class="gate-note">Temporary access code for all students: <strong>12345678</strong></div>
+    <input type="password" class="gate-input" id="gate-input" placeholder="Enter access code" autocomplete="off">
+    <button type="button" class="gate-btn" id="gate-btn">Unlock Record</button>
+    <div class="gate-error" id="gate-error"></div>
+</div>
+
+<div id="site-content">
+<div class="page-wrap">
+    <header class="archive-header">
+        <div class="ah-left">
+            <svg class="ah-crest"><use href="#crest-symbol"/></svg>
+            <div>
+                <h1>EXAMPLE STUDENT (JSS2A) — DEMO DATA, NOT A REAL RECORD &middot; Academic Record</h1>
+                <div class="ah-sub">Tendercare Comprehensive College &nbsp;&middot;&nbsp; Student ID TCH-0000-002 &nbsp;&middot;&nbsp; JSS2A</div>
+            </div>
+        </div>
+    </header>
+
+    <nav class="nav-shell" aria-label="Academic sessions">
+        <div class="nav-hint">Academic record</div>
+        
+        <div class="year-section" data-year="2024/2025">
+            <button type="button" class="year-header" data-year-toggle="2024/2025">
+                <span class="year-header-left">
+                    <span class="year-chevron">&#9656;</span>
+                    <span class="year-label">2024/2025</span>
+                    <span class="year-class-tag">(prior year, class not tracked in this demo)</span>
+                </span>
+                <span class="year-term-count">3 terms</span>
+            </button>
+            <div class="year-body" id="year_2024/2025" hidden>
+                <div class="term-pills">
+                    
+                    <button type="button" class="term-pill is-placeholder" data-term-target="y0t1_2024-2025">First</button>
+                    
+                    <button type="button" class="term-pill is-placeholder" data-term-target="y1t2_2024-2025">Second</button>
+                    
+                    <button type="button" class="term-pill is-placeholder" data-term-target="y2t3_2024-2025">Third</button>
+                    
+                </div>
+            </div>
+        </div>
+        
+        <div class="year-section is-current" data-year="2025/2026">
+            <button type="button" class="year-header" data-year-toggle="2025/2026">
+                <span class="year-header-left">
+                    <span class="year-chevron">&#9656;</span>
+                    <span class="year-label">2025/2026</span>
+                    <span class="year-class-tag">JSS2A</span>
+                </span>
+                <span class="year-term-count">3 terms</span>
+            </button>
+            <div class="year-body" id="year_2025/2026" hidden>
+                <div class="term-pills">
+                    
+                    <button type="button" class="term-pill is-placeholder" data-term-target="y0t1_2025-2026">First</button>
+                    
+                    <button type="button" class="term-pill is-placeholder" data-term-target="y1t2_2025-2026">Second</button>
+                    
+                    <button type="button" class="term-pill" data-term-target="y2t3_2025-2026">Third</button>
+                    
+                </div>
+            </div>
+        </div>
+        
+    </nav>
+
+    <div class="panel-viewport" id="panel-viewport">
+        
+        
+        
+        <div class="term-panel is-placeholder" id="panel_y0t1_2024-2025" data-term-id="y0t1_2024-2025" hidden>
+            <div class="card-inner">
+                <svg class="watermark-crest"><use href="#crest-symbol"/></svg>
+                <svg class="corner-logo"><use href="#crest-symbol"/></svg>
+                <div class="school-header">
+                    <svg class="header-logo"><use href="#crest-symbol"/></svg>
+                    <div class="school-name">TENDER CARE COMPREHENSIVE COLLEGE</div>
+                    <div class="school-address">Kamalo Labori Sagamu Road, Gbaga, Ogun State.</div>
+                    <div class="school-phone">Tel: 08149135960; 08085042982</div>
+                </div>
+                <div class="term-badge">
+                    <div class="term-badge-inner">
+                        <span class="tb-label">Session</span>
+                        <span class="tb-value">FIRST TERM &middot; 2024/2025</span>
+                    </div>
+                </div>
+
+                
+                <div class="placeholder-notice">
+                    <div class="placeholder-icon">&#128196;</div>
+                    <div class="placeholder-text">
+                        <strong>Record not yet digitized</strong>
+                        <span>This term's broadsheet has not been entered into the system. Once CSV data is provided for this term, this panel will populate with the full subject table, summary band, and teacher/principal remarks.</span>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="term-panel is-placeholder" id="panel_y1t2_2024-2025" data-term-id="y1t2_2024-2025" hidden>
+            <div class="card-inner">
+                <svg class="watermark-crest"><use href="#crest-symbol"/></svg>
+                <svg class="corner-logo"><use href="#crest-symbol"/></svg>
+                <div class="school-header">
+                    <svg class="header-logo"><use href="#crest-symbol"/></svg>
+                    <div class="school-name">TENDER CARE COMPREHENSIVE COLLEGE</div>
+                    <div class="school-address">Kamalo Labori Sagamu Road, Gbaga, Ogun State.</div>
+                    <div class="school-phone">Tel: 08149135960; 08085042982</div>
+                </div>
+                <div class="term-badge">
+                    <div class="term-badge-inner">
+                        <span class="tb-label">Session</span>
+                        <span class="tb-value">SECOND TERM &middot; 2024/2025</span>
+                    </div>
+                </div>
+
+                
+                <div class="placeholder-notice">
+                    <div class="placeholder-icon">&#128196;</div>
+                    <div class="placeholder-text">
+                        <strong>Record not yet digitized</strong>
+                        <span>This term's broadsheet has not been entered into the system. Once CSV data is provided for this term, this panel will populate with the full subject table, summary band, and teacher/principal remarks.</span>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="term-panel is-placeholder" id="panel_y2t3_2024-2025" data-term-id="y2t3_2024-2025" hidden>
+            <div class="card-inner">
+                <svg class="watermark-crest"><use href="#crest-symbol"/></svg>
+                <svg class="corner-logo"><use href="#crest-symbol"/></svg>
+                <div class="school-header">
+                    <svg class="header-logo"><use href="#crest-symbol"/></svg>
+                    <div class="school-name">TENDER CARE COMPREHENSIVE COLLEGE</div>
+                    <div class="school-address">Kamalo Labori Sagamu Road, Gbaga, Ogun State.</div>
+                    <div class="school-phone">Tel: 08149135960; 08085042982</div>
+                </div>
+                <div class="term-badge">
+                    <div class="term-badge-inner">
+                        <span class="tb-label">Session</span>
+                        <span class="tb-value">THIRD TERM &middot; 2024/2025</span>
+                    </div>
+                </div>
+
+                
+                <div class="placeholder-notice">
+                    <div class="placeholder-icon">&#128196;</div>
+                    <div class="placeholder-text">
+                        <strong>Record not yet digitized</strong>
+                        <span>This term's broadsheet has not been entered into the system. Once CSV data is provided for this term, this panel will populate with the full subject table, summary band, and teacher/principal remarks.</span>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        
+        
+        <div class="term-panel is-placeholder" id="panel_y0t1_2025-2026" data-term-id="y0t1_2025-2026" hidden>
+            <div class="card-inner">
+                <svg class="watermark-crest"><use href="#crest-symbol"/></svg>
+                <svg class="corner-logo"><use href="#crest-symbol"/></svg>
+                <div class="school-header">
+                    <svg class="header-logo"><use href="#crest-symbol"/></svg>
+                    <div class="school-name">TENDER CARE COMPREHENSIVE COLLEGE</div>
+                    <div class="school-address">Kamalo Labori Sagamu Road, Gbaga, Ogun State.</div>
+                    <div class="school-phone">Tel: 08149135960; 08085042982</div>
+                </div>
+                <div class="term-badge">
+                    <div class="term-badge-inner">
+                        <span class="tb-label">Session</span>
+                        <span class="tb-value">FIRST TERM &middot; 2025/2026</span>
+                    </div>
+                </div>
+
+                
+                <div class="placeholder-notice">
+                    <div class="placeholder-icon">&#128196;</div>
+                    <div class="placeholder-text">
+                        <strong>Record not yet digitized</strong>
+                        <span>This term's broadsheet has not been entered into the system. Once CSV data is provided for this term, this panel will populate with the full subject table, summary band, and teacher/principal remarks.</span>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="term-panel is-placeholder" id="panel_y1t2_2025-2026" data-term-id="y1t2_2025-2026" hidden>
+            <div class="card-inner">
+                <svg class="watermark-crest"><use href="#crest-symbol"/></svg>
+                <svg class="corner-logo"><use href="#crest-symbol"/></svg>
+                <div class="school-header">
+                    <svg class="header-logo"><use href="#crest-symbol"/></svg>
+                    <div class="school-name">TENDER CARE COMPREHENSIVE COLLEGE</div>
+                    <div class="school-address">Kamalo Labori Sagamu Road, Gbaga, Ogun State.</div>
+                    <div class="school-phone">Tel: 08149135960; 08085042982</div>
+                </div>
+                <div class="term-badge">
+                    <div class="term-badge-inner">
+                        <span class="tb-label">Session</span>
+                        <span class="tb-value">SECOND TERM &middot; 2025/2026</span>
+                    </div>
+                </div>
+
+                
+                <div class="placeholder-notice">
+                    <div class="placeholder-icon">&#128196;</div>
+                    <div class="placeholder-text">
+                        <strong>Record not yet digitized</strong>
+                        <span>This term's broadsheet has not been entered into the system. Once CSV data is provided for this term, this panel will populate with the full subject table, summary band, and teacher/principal remarks.</span>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="term-panel" id="panel_y2t3_2025-2026" data-term-id="y2t3_2025-2026" hidden>
+            <div class="card-inner">
+                <svg class="watermark-crest"><use href="#crest-symbol"/></svg>
+                <svg class="corner-logo"><use href="#crest-symbol"/></svg>
+                <div class="school-header">
+                    <svg class="header-logo"><use href="#crest-symbol"/></svg>
+                    <div class="school-name">TENDER CARE COMPREHENSIVE COLLEGE</div>
+                    <div class="school-address">Kamalo Labori Sagamu Road, Gbaga, Ogun State.</div>
+                    <div class="school-phone">Tel: 08149135960; 08085042982</div>
+                </div>
+                <div class="term-badge">
+                    <div class="term-badge-inner">
+                        <span class="tb-label">Session</span>
+                        <span class="tb-value">THIRD TERM &middot; 2025/2026</span>
+                    </div>
+                </div>
+
+                
+                <div class="student-info">
+                    <div><span class="label">Student</span><span class="value">EXAMPLE STUDENT (JSS2A) — DEMO DATA, NOT A REAL RECORD</span></div>
+                    <div><span class="label">Student ID</span><span class="value">TCH-0000-002</span></div>
+                    <div><span class="label">Class</span><span class="value">JSS2A</span></div>
+                    <div><span class="label">Term</span><span class="value">Third</span></div>
+                </div>
+                <table class="report-table">
+                    <thead><tr>
+                        <th style="width:38%;">Subject</th><th style="width:18%;">CA</th>
+                        <th style="width:18%;">Exam</th><th style="width:16%;">Total (100)</th><th style="width:10%;">Grade</th>
+                    </tr></thead>
+                    <tbody>
+                        
+                        <tr>
+                            <td class="subject-name">Mathematics</td>
+                            <td class="score-cell">25</td>
+                            <td class="score-cell">40</td>
+                            
+                            <td class="score-cell total-score">65</td>
+                            <td><span class="gdot gb3">B3</span></td>
+                            
+                        </tr>
+                        
+                        <tr>
+                            <td class="subject-name">English Language</td>
+                            <td class="score-cell">28</td>
+                            <td class="score-cell">45</td>
+                            
+                            <td class="score-cell total-score">73</td>
+                            <td><span class="gdot gb2">B2</span></td>
+                            
+                        </tr>
+                        
+                        <tr>
+                            <td class="subject-name">Basic Science</td>
+                            <td class="score-cell">31</td>
+                            <td class="score-cell">50</td>
+                            
+                            <td class="score-cell total-score">81</td>
+                            <td><span class="gdot ga1">A1</span></td>
+                            
+                        </tr>
+                        
+                        <tr>
+                            <td class="subject-name">Basic Technology</td>
+                            <td class="score-cell">34</td>
+                            <td class="score-cell">55</td>
+                            
+                            <td class="score-cell total-score">89</td>
+                            <td><span class="gdot ga1">A1</span></td>
+                            
+                        </tr>
+                        
+                        <tr>
+                            <td class="subject-name">Yoruba</td>
+                            <td class="score-cell">37</td>
+                            <td class="score-cell">60</td>
+                            
+                            <td class="score-cell total-score">97</td>
+                            <td><span class="gdot ga1">A1</span></td>
+                            
+                        </tr>
+                        
+                        <tr class="total-row" style="font-weight:700; background:#e6edf5;">
+                            <td style="text-align:right; padding-right:15px; font-size:14px;">TOTALS</td>
+                            <td>&mdash;</td><td>&mdash;</td>
+                            <td style="font-family:var(--fd); font-size:1.4rem; color:var(--pd);">405</td>
+                            <td style="font-size:10px; color:var(--ash);">/500</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="summary-band">
+                    <div class="sb-item"><span class="sb-label">Total Score</span><span class="sb-value">405<span class="sb-unit">/500</span></span></div>
+                    <div class="sb-item"><span class="sb-label">Average</span><span class="sb-value">81.0<span class="sb-unit">/100</span></span></div>
+                    <div class="sb-item"><span class="sb-label">Subjects</span><span class="sb-value">5</span></div>
+                </div>
+                <div class="grade-note">&#8505;&#65039; The <strong>Average</strong> above is computed as the sum of subject totals &divide; number of subjects taken this term.</div>
+                <div class="remarks">
+                    <div class="remark-box teacher">
+                        <div class="remark-label">Class Teacher's Comment</div>
+                        <div class="remark-content">&mdash; comment pending &mdash;</div>
+                        <div class="remark-line"></div>
+                        <div class="remark-signature">Signature: ___________________________<br>
+                        <span style="font-size:9px;opacity:0.7;">Class Teacher &middot; JSS2A</span></div>
+                    </div>
+                    <div class="remark-box principal">
+                        <div class="remark-label">Principal's Comment</div>
+                        <div class="remark-content">&mdash; comment pending &mdash;</div>
+                        <div class="remark-line"></div>
+                        <div class="remark-signature">Signature &amp; Stamp: ________________<br>
+                        <span style="font-size:9px;opacity:0.7;">Principal &middot; Tendercare Comprehensive College</span></div>
+                    </div>
+                </div>
+                <div class="footer-note">
+                    <div class="grade-key">
+                        <span>A1 &ge;75</span><span>B2 70&ndash;74</span><span>B3 65&ndash;69</span>
+                        <span>C4 60&ndash;64</span><span>C5 55&ndash;59</span><span>C6 50&ndash;54</span>
+                        <span>D7 45&ndash;49</span><span>E8 40&ndash;44</span><span>F9 &lt;40</span>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+        
+        
+    </div>
+</div>
+</div>
+
+<script>
+const PLAINTEXT_PASSWORD = "12345678";
+function attemptUnlock() {
+    const input = document.getElementById("gate-input");
+    const errorEl = document.getElementById("gate-error");
+    const value = input.value.trim();
+    if (!value) return;
+    if (value === PLAINTEXT_PASSWORD) {
+        document.getElementById("gate-wrap").style.display = "none";
+        document.getElementById("site-content").style.display = "block";
+        initArchive();
+    } else {
+        errorEl.textContent = "Incorrect access code. Please try again.";
+        input.value = "";
+        input.focus();
+    }
+}
+document.getElementById("gate-btn").addEventListener("click", attemptUnlock);
+document.getElementById("gate-input").addEventListener("keydown", (e) => { if (e.key === "Enter") attemptUnlock(); });
+
+function initArchive() {
+    document.querySelectorAll(".year-header").forEach(btn => {
+        btn.addEventListener("click", () => {
+            const targetYear = btn.getAttribute("data-year-toggle");
+            const body = document.getElementById("year_" + targetYear);
+            const isOpen = body.hidden === false;
+            body.hidden = isOpen;
+            btn.setAttribute("aria-expanded", String(!isOpen));
+        });
+    });
+    document.querySelectorAll(".term-pill").forEach(pill => {
+        pill.addEventListener("click", () => {
+            const termId = pill.getAttribute("data-term-target");
+            document.querySelectorAll(".term-panel").forEach(p => p.hidden = true);
+            document.querySelectorAll(".term-pill").forEach(p => p.classList.remove("is-active"));
+            const panel = document.getElementById("panel_" + termId);
+            if (panel) panel.hidden = false;
+            pill.classList.add("is-active");
+        });
+    });
+    const currentTermId = "y1t3_2025-2026";
+    const currentPanel = document.getElementById("panel_" + currentTermId);
+    if (currentPanel) currentPanel.hidden = false;
+    const currentPill = document.querySelector('[data-term-target="' + currentTermId + '"]');
+    if (currentPill) {
+        currentPill.classList.add("is-active");
+        const yearSection = currentPill.closest(".year-section");
+        if (yearSection) {
+            const yearBody = yearSection.querySelector(".year-body");
+            if (yearBody) yearBody.hidden = false;
+        }
+    }
+}
+</script>
+</body>
+</html>

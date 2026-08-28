@@ -1,0 +1,133 @@
+{
+  "student_id": "TCH-0000-007",
+  "full_name": "EXAMPLE STUDENT (SS2 Science) \u2014 DEMO DATA, NOT A REAL RECORD",
+  "class_arm": "SS2 Science",
+  "entry_year": "2021/2022",
+  "access_code_hint": "12345678",
+  "years": [
+    {
+      "academic_year": "2021/2022",
+      "class_at_time": "(prior year, class not tracked in this demo)",
+      "is_current": false,
+      "terms": [
+        {
+          "term_name": "First",
+          "digitized": false
+        },
+        {
+          "term_name": "Second",
+          "digitized": false
+        },
+        {
+          "term_name": "Third",
+          "digitized": false
+        }
+      ]
+    },
+    {
+      "academic_year": "2022/2023",
+      "class_at_time": "(prior year, class not tracked in this demo)",
+      "is_current": false,
+      "terms": [
+        {
+          "term_name": "First",
+          "digitized": false
+        },
+        {
+          "term_name": "Second",
+          "digitized": false
+        },
+        {
+          "term_name": "Third",
+          "digitized": false
+        }
+      ]
+    },
+    {
+      "academic_year": "2023/2024",
+      "class_at_time": "(prior year, class not tracked in this demo)",
+      "is_current": false,
+      "terms": [
+        {
+          "term_name": "First",
+          "digitized": false
+        },
+        {
+          "term_name": "Second",
+          "digitized": false
+        },
+        {
+          "term_name": "Third",
+          "digitized": false
+        }
+      ]
+    },
+    {
+      "academic_year": "2024/2025",
+      "class_at_time": "(prior year, class not tracked in this demo)",
+      "is_current": false,
+      "terms": [
+        {
+          "term_name": "First",
+          "digitized": false
+        },
+        {
+          "term_name": "Second",
+          "digitized": false
+        },
+        {
+          "term_name": "Third",
+          "digitized": false
+        }
+      ]
+    },
+    {
+      "academic_year": "2025/2026",
+      "class_at_time": "SS2 Science",
+      "is_current": true,
+      "terms": [
+        {
+          "term_name": "First",
+          "digitized": false
+        },
+        {
+          "term_name": "Second",
+          "digitized": false
+        },
+        {
+          "term_name": "Third",
+          "digitized": true,
+          "subjects": [
+            {
+              "name": "Mathematics",
+              "ca": 25,
+              "exam": 40
+            },
+            {
+              "name": "English Language",
+              "ca": 28,
+              "exam": 45
+            },
+            {
+              "name": "Physics",
+              "ca": 31,
+              "exam": 50
+            },
+            {
+              "name": "Chemistry",
+              "ca": 34,
+              "exam": 55
+            },
+            {
+              "name": "Biology",
+              "ca": 37,
+              "exam": 60
+            }
+          ],
+          "teacher_remark": null,
+          "principal_remark": null
+        }
+      ]
+    }
+  ]
+}

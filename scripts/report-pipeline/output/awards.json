@@ -1,0 +1,131 @@
+{
+  "generated_at": "2026-08-28T19:14:59.527795+00:00",
+  "categories": {
+    "overall_average": {
+      "label": "Overall Academic Average",
+      "classes": {
+        "JSS1A": {
+          "academic_year": "2025/2026",
+          "term_name": "Third",
+          "top3": [
+            {
+              "student_id": "TCH-0000-001",
+              "name": "EXAMPLE STUDENT (JSS1A) \u2014 DEMO DATA, NOT A REAL RECORD",
+              "remark": "Excellent"
+            }
+          ]
+        },
+        "JSS1B": {
+          "academic_year": "2025/2026",
+          "term_name": "Third",
+          "top3": [
+            {
+              "student_id": "TCH-2025-032",
+              "name": "Adeyemi Modesire",
+              "remark": "Credit"
+            }
+          ]
+        },
+        "JSS2A": {
+          "academic_year": "2025/2026",
+          "term_name": "Third",
+          "top3": [
+            {
+              "student_id": "TCH-0000-002",
+              "name": "EXAMPLE STUDENT (JSS2A) \u2014 DEMO DATA, NOT A REAL RECORD",
+              "remark": "Excellent"
+            }
+          ]
+        },
+        "JSS2B": {
+          "academic_year": "2025/2026",
+          "term_name": "Third",
+          "top3": [
+            {
+              "student_id": "TCH-0000-003",
+              "name": "EXAMPLE STUDENT (JSS2B) \u2014 DEMO DATA, NOT A REAL RECORD",
+              "remark": "Excellent"
+            }
+          ]
+        },
+        "JSS3A": {
+          "academic_year": "2025/2026",
+          "term_name": "Third",
+          "top3": [
+            {
+              "student_id": "TCH-0000-004",
+              "name": "EXAMPLE STUDENT (JSS3A) \u2014 DEMO DATA, NOT A REAL RECORD",
+              "remark": "Excellent"
+            }
+          ]
+        },
+        "JSS3B": {
+          "academic_year": "2025/2026",
+          "term_name": "Third",
+          "top3": [
+            {
+              "student_id": "TCH-0000-005",
+              "name": "EXAMPLE STUDENT (JSS3B) \u2014 DEMO DATA, NOT A REAL RECORD",
+              "remark": "Excellent"
+            }
+          ]
+        },
+        "SS1 Actuarial": {
+          "academic_year": "2025/2026",
+          "term_name": "Third",
+          "top3": [
+            {
+              "student_id": "TCH-0000-006",
+              "name": "EXAMPLE STUDENT (SS1 Actuarial) \u2014 DEMO DATA, NOT A REAL RECORD",
+              "remark": "Excellent"
+            }
+          ]
+        },
+        "SS2 Actuarial": {
+          "academic_year": "2025/2026",
+          "term_name": "Third",
+          "top3": [
+            {
+              "student_id": "TCH-0000-008",
+              "name": "EXAMPLE STUDENT (SS2 Actuarial) \u2014 DEMO DATA, NOT A REAL RECORD",
+              "remark": "Excellent"
+            }
+          ]
+        },
+        "SS2 Science": {
+          "academic_year": "2025/2026",
+          "term_name": "Third",
+          "top3": [
+            {
+              "student_id": "TCH-0000-007",
+              "name": "EXAMPLE STUDENT (SS2 Science) \u2014 DEMO DATA, NOT A REAL RECORD",
+              "remark": "Excellent"
+            }
+          ]
+        },
+        "SS3 Actuarial": {
+          "academic_year": "2025/2026",
+          "term_name": "Third",
+          "top3": [
+            {
+              "student_id": "TCH-0000-010",
+              "name": "EXAMPLE STUDENT (SS3 Actuarial) \u2014 DEMO DATA, NOT A REAL RECORD",
+              "remark": "Excellent"
+            }
+          ]
+        },
+        "SS3 Science": {
+          "academic_year": "2025/2026",
+          "term_name": "Third",
+          "top3": [
+            {
+              "student_id": "TCH-0000-009",
+              "name": "EXAMPLE STUDENT (SS3 Science) \u2014 DEMO DATA, NOT A REAL RECORD",
+              "remark": "Excellent"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

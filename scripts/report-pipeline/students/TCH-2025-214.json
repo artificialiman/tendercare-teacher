@@ -1,0 +1,57 @@
+{
+  "student_id": "TCH-2025-214",
+  "full_name": "Musa Nimotallahi",
+  "class_arm": "SS1 Science",
+  "entry_year": "2025/2026",
+  "access_code_hint": "12345678",
+  "years": [
+    {
+      "academic_year": "2025/2026",
+      "class_at_time": "SS1 Science",
+      "is_current": true,
+      "terms": [
+        {
+          "term_name": "First",
+          "digitized": false
+        },
+        {
+          "term_name": "Second",
+          "digitized": false
+        },
+        {
+          "term_name": "Third",
+          "digitized": true,
+          "subjects": [
+            {
+              "name": "Mathematics",
+              "ca": 27,
+              "exam": 61
+            },
+            {
+              "name": "Civic Education",
+              "ca": 24,
+              "exam": 41
+            },
+            {
+              "name": "Biology",
+              "ca": 20,
+              "exam": 47
+            },
+            {
+              "name": "Physics",
+              "ca": 27,
+              "exam": 56
+            },
+            {
+              "name": "Agriculture",
+              "ca": 30,
+              "exam": null
+            }
+          ],
+          "teacher_remark": null,
+          "principal_remark": null
+        }
+      ]
+    }
+  ]
+}

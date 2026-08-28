@@ -1,0 +1,67 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Tendercare student transcript data",
+  "description": "One JSON file per student. The generator script renders this + the shared template into that student's static, hardcoded HTML report page -- no database read happens at page-view time.",
+  "type": "object",
+  "required": ["student_id", "full_name", "class_arm", "entry_year", "years"],
+  "properties": {
+    "student_id": { "type": "string", "pattern": "^TCH-2025-[0-9]{3}$" },
+    "full_name": { "type": "string" },
+    "class_arm": {
+      "type": "string",
+      "enum": ["JSS1A","JSS1B","JSS2A","JSS2B","JSS3A","JSS3B",
+               "SS1 Science","SS1 Actuarial","SS2 Science","SS2 Actuarial",
+               "SS3 Science","SS3 Actuarial"]
+    },
+    "entry_year": {
+      "type": "string",
+      "description": "Academic year the student's record starts, e.g. '2025/2026'. Combined with class_arm's seniority, this determines how many year-sections the template renders (a JSS1 student gets 1 year block, an SS3 student gets up to 6)."
+    },
+    "access_code_hint": {
+      "type": "string",
+      "description": "Not a secret -- matches the interim shared-password gate already in the report sheets. Kept here only so the generator can render the gate-note text; the actual check is client-side plaintext comparison, same as the existing files."
+    },
+    "years": {
+      "type": "array",
+      "description": "One entry per academic year this student has been enrolled, oldest first. A senior student (e.g. SS3) should have as many entries as years of seniority; a junior student (JSS1) has one.",
+      "items": {
+        "type": "object",
+        "required": ["academic_year", "class_at_time", "is_current", "terms"],
+        "properties": {
+          "academic_year": { "type": "string" },
+          "class_at_time": { "type": "string" },
+          "is_current": { "type": "boolean" },
+          "terms": {
+            "type": "array",
+            "minItems": 3,
+            "maxItems": 3,
+            "description": "Always exactly 3 entries (First/Second/Third) -- a term with no data yet is digitized: false, which the template renders as the existing 'Record not yet digitized' placeholder panel, not an empty or missing term.",
+            "items": {
+              "type": "object",
+              "required": ["term_name", "digitized"],
+              "properties": {
+                "term_name": { "enum": ["First", "Second", "Third"] },
+                "digitized": { "type": "boolean" },
+                "subjects": {
+                  "type": "array",
+                  "description": "Required only when digitized is true.",
+                  "items": {
+                    "type": "object",
+                    "required": ["name", "ca", "exam"],
+                    "properties": {
+                      "name": { "type": "string" },
+                      "ca": { "type": ["number", "null"] },
+                      "exam": { "type": ["number", "null"] }
+                    }
+                  }
+                },
+                "teacher_remark": { "type": ["string", "null"] },
+                "principal_remark": { "type": ["string", "null"] }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

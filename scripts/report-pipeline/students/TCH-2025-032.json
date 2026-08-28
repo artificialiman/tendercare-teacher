@@ -1,0 +1,97 @@
+{
+  "student_id": "TCH-2025-032",
+  "full_name": "Adeyemi Modesire",
+  "class_arm": "JSS1B",
+  "entry_year": "2025/2026",
+  "access_code_hint": "12345678",
+  "years": [
+    {
+      "academic_year": "2025/2026",
+      "class_at_time": "JS1",
+      "is_current": true,
+      "terms": [
+        {
+          "term_name": "First",
+          "digitized": false
+        },
+        {
+          "term_name": "Second",
+          "digitized": false
+        },
+        {
+          "term_name": "Third",
+          "digitized": true,
+          "subjects": [
+            {
+              "name": "Mathematics",
+              "ca": 30,
+              "exam": 31
+            },
+            {
+              "name": "English Language",
+              "ca": 32,
+              "exam": 43
+            },
+            {
+              "name": "Basic Science",
+              "ca": 32,
+              "exam": 43
+            },
+            {
+              "name": "P.V.S",
+              "ca": 13,
+              "exam": 35
+            },
+            {
+              "name": "History",
+              "ca": 26,
+              "exam": 27
+            },
+            {
+              "name": "Cultural & Creative Arts",
+              "ca": 30,
+              "exam": 20
+            },
+            {
+              "name": "CRS/IRS",
+              "ca": 27,
+              "exam": 9
+            },
+            {
+              "name": "Yoruba",
+              "ca": 38,
+              "exam": 36
+            },
+            {
+              "name": "French",
+              "ca": 25,
+              "exam": 30
+            },
+            {
+              "name": "National Values Education",
+              "ca": 11,
+              "exam": 33
+            },
+            {
+              "name": "Physical & Health Education",
+              "ca": 38,
+              "exam": 44
+            },
+            {
+              "name": "Digital Technology",
+              "ca": 37,
+              "exam": 46
+            },
+            {
+              "name": "Basic Technology",
+              "ca": 34,
+              "exam": 58
+            }
+          ],
+          "teacher_remark": null,
+          "principal_remark": null
+        }
+      ]
+    }
+  ]
+}

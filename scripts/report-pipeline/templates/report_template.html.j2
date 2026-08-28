@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Academic Record &ndash; {{ full_name }} &ndash; Tendercare Comprehensive College</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&family=Bebas+Neue&display=swap" rel="stylesheet">
+<style>
+:root {
+    --pd: #1a3e60; --p: #2a5a8a; --pl: #dce8f5; --pg: #f0f5fc;
+    --lemon: #f0c040; --lemon-s: #f5d780;
+    --ink: #1A1A2E; --ink-s: #3D3D5C; --ash: #6a6a88;
+    --cream: #F8F5EF; --cream-d: #EDE8DF; --white: #FFFFFF;
+    --pass-bg: #E8F8E8; --pass-fg: #1A6640;
+    --fail-bg: #FFE8E8; --fail-fg: #C0392B;
+    --warn-bg: #FFF3C4; --warn-fg: #8A5C00;
+    --fs: 'Cormorant Garamond', Georgia, serif;
+    --fn: 'DM Sans', system-ui, sans-serif;
+    --fd: 'Bebas Neue', sans-serif;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { font-family: var(--fn); background: #e8ebee; min-height: 100vh; padding: 24px 16px 60px 16px; -webkit-font-smoothing: antialiased; color: var(--ink); }
+svg.crest-defs { position: absolute; width: 0; height: 0; overflow: hidden; }
+.gate-wrap { max-width: 420px; margin: 12vh auto 0 auto; background: white; border-radius: 14px; box-shadow: 0 10px 34px rgba(20,40,70,0.16); padding: 40px 34px; text-align: center; border: 1px solid #eef1f5; }
+.gate-crest { width: 58px; height: auto; color: var(--pd); margin: 0 auto 16px auto; display: block; }
+.gate-wrap h1 { font-family: var(--fs); font-size: 22px; color: var(--pd); margin-bottom: 4px; font-weight: 600; }
+.gate-sub { font-size: 12.5px; color: var(--ash); margin-bottom: 24px; letter-spacing: 0.02em; }
+.gate-note { font-size: 11px; color: var(--p); background: var(--pg); border: 1px solid var(--pl); border-radius: 6px; padding: 8px 10px; margin-bottom: 16px; line-height: 1.5; }
+.gate-input { width: 100%; padding: 13px 14px; font-family: var(--fn); font-size: 15px; border: 1.5px solid var(--pl); border-radius: 7px; margin-bottom: 12px; letter-spacing: 0.08em; text-align: center; }
+.gate-input:focus { outline: none; border-color: var(--pd); box-shadow: 0 0 0 3px rgba(26,62,96,0.08); }
+.gate-btn { width: 100%; background: var(--pd); color: white; border: none; font-family: var(--fn); font-weight: 600; font-size: 14px; padding: 13px; border-radius: 7px; cursor: pointer; }
+.gate-btn:hover { background: #14324e; }
+.gate-error { color: var(--fail-fg); font-size: 12.5px; margin-top: 10px; min-height: 16px; }
+#site-content { display: none; }
+.page-wrap { max-width: 1000px; margin: 0 auto; }
+.archive-header { background: linear-gradient(135deg, var(--pd) 0%, #123049 100%); border-radius: 12px 12px 0 0; padding: 24px 28px; color: white; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+.archive-header .ah-left { display: flex; align-items: center; gap: 14px; }
+.archive-header .ah-crest { width: 44px; height: auto; color: var(--lemon); flex-shrink: 0; }
+.archive-header h1 { font-family: var(--fs); font-size: 23px; font-weight: 600; letter-spacing: 0.3px; }
+.archive-header .ah-sub { font-size: 12px; color: rgba(255,255,255,0.68); margin-top: 3px; letter-spacing: 0.02em; }
+.nav-shell { background: white; border-left: 1px solid #d8dde3; border-right: 1px solid #d8dde3; padding: 16px 18px; }
+.nav-hint { font-size: 11px; color: var(--ash); text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 10px; font-weight: 700; }
+.year-section { border: 1px solid #e2e6ea; border-radius: 9px; margin-bottom: 8px; overflow: hidden; }
+.year-section.is-current { border-color: var(--pd); box-shadow: 0 2px 10px rgba(26,62,96,0.08); }
+.year-header { width: 100%; display: flex; align-items: center; justify-content: space-between; background: var(--pg); border: none; padding: 13px 16px; cursor: pointer; font-family: var(--fn); text-align: left; }
+.year-header:hover { background: #e6eef9; }
+.year-section.is-current .year-header { background: var(--pd); }
+.year-section.is-current .year-header:hover { background: #163a58; }
+.year-chevron { font-size: 11px; color: var(--p); transition: transform 0.18s ease; display: inline-block; }
+.year-section.is-current .year-chevron { color: var(--lemon); }
+.year-header[aria-expanded="true"] .year-chevron { transform: rotate(90deg); }
+.year-header-left { display: flex; align-items: center; gap: 10px; }
+.year-label { font-weight: 600; font-size: 14.5px; color: var(--pd); }
+.year-section.is-current .year-label { color: white; }
+.year-class-tag { font-size: 10px; font-weight: 700; letter-spacing: 0.06em; background: var(--pl); color: var(--p); padding: 3px 9px; border-radius: 20px; }
+.year-section.is-current .year-class-tag { background: var(--lemon); color: var(--pd); }
+.year-term-count { font-size: 11px; color: var(--ash); }
+.year-section.is-current .year-term-count { color: rgba(255,255,255,0.65); }
+.year-body { padding: 13px 16px 15px 16px; }
+.term-pills { display: flex; gap: 8px; flex-wrap: wrap; }
+.term-pill { font-family: var(--fn); font-size: 12.5px; font-weight: 600; padding: 8px 17px; border-radius: 20px; border: 1px solid var(--pl); background: white; color: var(--p); cursor: pointer; }
+.term-pill:hover { background: var(--pg); }
+.term-pill.is-placeholder { color: var(--ash); border-style: dashed; }
+.term-pill.is-active { background: var(--pd); color: white; border-color: var(--pd); box-shadow: 0 2px 8px rgba(26,62,96,0.25); }
+.term-pill.is-placeholder.is-active { background: var(--ash); border-color: var(--ash); }
+.panel-viewport { background: #e8ebee; padding: 22px 0 8px 0; }
+.term-panel { display: flex; justify-content: center; }
+.term-panel[hidden] { display: none; }
+.card-inner { max-width: 1000px; width: 100%; background: white; box-shadow: 0 10px 32px rgba(20,40,70,0.14); border-radius: 8px; position: relative; overflow: hidden; padding: 42px 38px 32px 38px; }
+.watermark-crest { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 640px; height: auto; max-height: 94%; color: var(--pd); opacity: 0.045; pointer-events: none; z-index: 0; }
+.corner-logo { position: absolute; top: 24px; right: 28px; width: 54px; height: auto; color: var(--pd); opacity: 0.9; z-index: 2; }
+.school-header { position: relative; z-index: 1; text-align: center; border-bottom: 3px double var(--pd); padding-bottom: 14px; margin-bottom: 20px; }
+.header-logo { width: 66px; height: auto; color: var(--pd); margin: 0 auto 10px auto; display: block; }
+.school-name { font-family: var(--fs); font-size: 27px; font-weight: 700; letter-spacing: 1.5px; color: var(--pd); text-transform: uppercase; }
+.school-address { font-size: 14px; color: #333; margin-top: 5px; font-weight: 500; }
+.school-phone { font-size: 13px; color: #555; margin-top: 2px; }
+.term-badge { text-align: center; margin: 8px 0 18px 0; position: relative; z-index: 1; }
+.term-badge-inner { display: inline-block; background: var(--pd); color: var(--white); padding: 6px 20px; border-radius: 5px; }
+.term-badge .tb-label { font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; opacity: 0.6; display: block; }
+.term-badge .tb-value { font-family: var(--fd); font-size: 1.15rem; letter-spacing: 0.06em; color: var(--lemon); display: block; line-height: 1.25; }
+.student-info { position: relative; z-index: 1; display: flex; justify-content: space-between; font-size: 15px; margin-bottom: 20px; padding: 12px 16px; background: var(--pg); border-radius: 6px; border: 1px solid var(--pl); flex-wrap: wrap; gap: 10px; }
+.student-info .label { font-weight: 600; color: var(--pd); font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; }
+.student-info .value { font-family: var(--fs); font-size: 1.12rem; font-weight: 500; color: var(--ink); display: block; margin-top: 2px; }
+.report-table { position: relative; z-index: 1; width: 100%; border-collapse: collapse; font-size: 13.5px; background: white; }
+.report-table th { background: var(--pd); color: white; padding: 10px 6px; text-align: center; border: 1px solid var(--pd); font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; }
+.report-table td { border: 1px solid #ccc; padding: 8px 6px; text-align: center; vertical-align: middle; }
+.report-table tbody tr:nth-child(even) { background: #f8faff; }
+.subject-name { text-align: left; padding-left: 12px; font-weight: 500; color: var(--ink); }
+.score-cell { font-family: var(--fd); font-size: 1.08rem; color: var(--ink-s); }
+.total-score { font-family: var(--fd); font-size: 1.22rem; color: var(--pd); font-weight: 700; }
+.gdot { display: inline-flex; align-items: center; justify-content: center; width: 27px; height: 27px; border-radius: 50%; font-weight: 700; font-size: 10px; font-family: var(--fn); }
+.ga1 { background: #E8F8E8; color: #1A6640; } .gb2, .gb3 { background: var(--pg); color: var(--p); }
+.gc4, .gc5, .gc6 { background: var(--warn-bg); color: var(--warn-fg); } .gd7 { background: #FFE8D0; color: #A04000; }
+.ge8 { background: #FFE0E0; color: #7A2020; } .gf9 { background: var(--fail-bg); color: var(--fail-fg); }
+.summary-band { position: relative; z-index: 1; margin-top: 18px; background: linear-gradient(135deg, var(--pd) 0%, #123049 100%); border-radius: 9px; padding: 14px 18px; display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.summary-band .sb-item { text-align: center; }
+.summary-band .sb-label { font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.5); display: block; }
+.summary-band .sb-value { font-family: var(--fd); font-size: 1.45rem; color: var(--lemon); line-height: 1; display: block; }
+.summary-band .sb-unit { font-size: 9px; color: rgba(255,255,255,0.35); }
+.remarks { position: relative; z-index: 1; margin-top: 18px; display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.remark-box { background: var(--cream); border: 1px solid var(--cream-d); border-radius: 9px; padding: 15px 17px; position: relative; min-height: 100px; }
+.remark-box .remark-label { font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ash); margin-bottom: 7px; font-weight: 700; }
+.remark-box .remark-content { font-family: var(--fs); font-style: italic; font-size: 13.5px; color: var(--ash); line-height: 1.55; min-height: 40px; }
+.remark-box .remark-line { height: 1px; background: var(--cream-d); margin: 9px 0; }
+.remark-box .remark-signature { font-family: var(--fs); font-style: italic; font-size: 10px; color: var(--ash); margin-top: 4px; }
+.remark-box::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 3px; border-radius: 9px 9px 0 0; }
+.remark-box.teacher::before { background: var(--pd); } .remark-box.principal::before { background: var(--lemon); }
+.footer-note { position: relative; z-index: 1; margin-top: 20px; font-size: 11px; text-align: right; border-top: 1px solid #ccc; padding-top: 11px; color: #555; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; }
+.grade-key { display: flex; gap: 7px; flex-wrap: wrap; font-size: 9px; color: var(--ash); }
+.grade-key span { white-space: nowrap; }
+.placeholder-notice { position: relative; z-index: 1; display: flex; gap: 16px; align-items: flex-start; background: var(--pg); border: 1px dashed var(--pl); border-radius: 9px; padding: 30px 28px; margin-top: 8px; }
+.placeholder-icon { font-size: 30px; line-height: 1; opacity: 0.5; flex-shrink: 0; }
+.placeholder-text { display: flex; flex-direction: column; gap: 6px; }
+.placeholder-text strong { font-family: var(--fs); font-size: 17px; color: var(--pd); }
+.placeholder-text span { font-size: 13px; color: var(--ash); line-height: 1.55; max-width: 520px; }
+.grade-note { position: relative; z-index: 1; margin-top: 10px; font-size: 11px; border: 1px solid var(--pl); background: var(--pg); color: var(--p); border-radius: 6px; padding: 8px 12px; line-height: 1.5; }
+@media print {
+    body { background: white; padding: 0; }
+    .gate-wrap { display: none !important; }
+    .archive-header, .nav-shell { display: none !important; }
+    .card-inner { box-shadow: none; border-radius: 0; padding: 20px; }
+    .watermark-crest { opacity: 0.07; }
+    .term-panel[hidden] { display: none !important; }
+}
+@media screen and (max-width: 700px) {
+    .archive-header { padding: 18px 18px; } .archive-header h1 { font-size: 18px; }
+    .nav-shell { padding: 12px 12px; } .card-inner { padding: 18px 12px; }
+    .school-name { font-size: 20px; } .report-table { font-size: 11px; }
+    .student-info { flex-direction: column; gap: 6px; } .remarks { grid-template-columns: 1fr; }
+    .corner-logo { width: 40px; top: 14px; right: 14px; } .watermark-crest { width: 420px; }
+}
+</style>
+</head>
+<body>
+{% include "crest_symbol.svg.j2" %}
+
+<div class="gate-wrap" id="gate-wrap">
+    <svg class="gate-crest"><use href="#crest-symbol"/></svg>
+    <h1>{{ full_name }}</h1>
+    <div class="gate-sub">Tendercare Comprehensive College &middot; {{ student_id }}</div>
+    <div class="gate-note">Temporary access code for all students: <strong>{{ access_code_hint }}</strong></div>
+    <input type="password" class="gate-input" id="gate-input" placeholder="Enter access code" autocomplete="off">
+    <button type="button" class="gate-btn" id="gate-btn">Unlock Record</button>
+    <div class="gate-error" id="gate-error"></div>
+</div>
+
+<div id="site-content">
+<div class="page-wrap">
+    <header class="archive-header">
+        <div class="ah-left">
+            <svg class="ah-crest"><use href="#crest-symbol"/></svg>
+            <div>
+                <h1>{{ full_name }} &middot; Academic Record</h1>
+                <div class="ah-sub">Tendercare Comprehensive College &nbsp;&middot;&nbsp; Student ID {{ student_id }} &nbsp;&middot;&nbsp; {{ class_arm }}</div>
+            </div>
+        </div>
+    </header>
+
+    <nav class="nav-shell" aria-label="Academic sessions">
+        <div class="nav-hint">Academic record</div>
+        {% for year in years %}
+        <div class="year-section{{ ' is-current' if year.is_current else '' }}" data-year="{{ year.academic_year }}">
+            <button type="button" class="year-header" data-year-toggle="{{ year.academic_year }}">
+                <span class="year-header-left">
+                    <span class="year-chevron">&#9656;</span>
+                    <span class="year-label">{{ year.academic_year }}</span>
+                    <span class="year-class-tag">{{ year.class_at_time }}</span>
+                </span>
+                <span class="year-term-count">3 terms</span>
+            </button>
+            <div class="year-body" id="year_{{ year.academic_year }}" hidden>
+                <div class="term-pills">
+                    {% for term in year.terms %}
+                    <button type="button" class="term-pill{{ ' is-placeholder' if not term.digitized else '' }}" data-term-target="y{{ loop.index0 }}t{{ loop.index }}_{{ year.academic_year|replace('/', '-') }}">{{ term.term_name }}</button>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </nav>
+
+    <div class="panel-viewport" id="panel-viewport">
+        {% for year in years %}
+        {% for term in year.terms %}
+        {% set term_id = 'y' ~ loop.index0 ~ 't' ~ loop.index ~ '_' ~ year.academic_year|replace('/', '-') %}
+        <div class="term-panel{{ ' is-placeholder' if not term.digitized else '' }}" id="panel_{{ term_id }}" data-term-id="{{ term_id }}" hidden>
+            <div class="card-inner">
+                <svg class="watermark-crest"><use href="#crest-symbol"/></svg>
+                <svg class="corner-logo"><use href="#crest-symbol"/></svg>
+                <div class="school-header">
+                    <svg class="header-logo"><use href="#crest-symbol"/></svg>
+                    <div class="school-name">TENDER CARE COMPREHENSIVE COLLEGE</div>
+                    <div class="school-address">Kamalo Labori Sagamu Road, Gbaga, Ogun State.</div>
+                    <div class="school-phone">Tel: 08149135960; 08085042982</div>
+                </div>
+                <div class="term-badge">
+                    <div class="term-badge-inner">
+                        <span class="tb-label">Session</span>
+                        <span class="tb-value">{{ term.term_name|upper }} TERM &middot; {{ year.academic_year }}</span>
+                    </div>
+                </div>
+
+                {% if not term.digitized %}
+                <div class="placeholder-notice">
+                    <div class="placeholder-icon">&#128196;</div>
+                    <div class="placeholder-text">
+                        <strong>Record not yet digitized</strong>
+                        <span>This term's broadsheet has not been entered into the system. Once CSV data is provided for this term, this panel will populate with the full subject table, summary band, and teacher/principal remarks.</span>
+                    </div>
+                </div>
+                {% else %}
+                <div class="student-info">
+                    <div><span class="label">Student</span><span class="value">{{ full_name }}</span></div>
+                    <div><span class="label">Student ID</span><span class="value">{{ student_id }}</span></div>
+                    <div><span class="label">Class</span><span class="value">{{ year.class_at_time }}</span></div>
+                    <div><span class="label">Term</span><span class="value">{{ term.term_name }}</span></div>
+                </div>
+                <table class="report-table">
+                    <thead><tr>
+                        <th style="width:38%;">Subject</th><th style="width:18%;">CA</th>
+                        <th style="width:18%;">Exam</th><th style="width:16%;">Total (100)</th><th style="width:10%;">Grade</th>
+                    </tr></thead>
+                    <tbody>
+                        {% for s in term.subjects %}
+                        <tr>
+                            <td class="subject-name">{{ s.name }}</td>
+                            <td class="score-cell">{{ s.ca if s.ca is not none else '&mdash;'|safe }}</td>
+                            <td class="score-cell">{{ s.exam if s.exam is not none else '&mdash;'|safe }}</td>
+                            {% if s.total is not none %}
+                            <td class="score-cell total-score">{{ s.total }}</td>
+                            <td><span class="gdot {{ s.grade_class }}">{{ s.grade }}</span></td>
+                            {% else %}
+                            <td class="score-cell total-score">&mdash;</td>
+                            <td><span style="font-size:9px; color:var(--ash);">pending</span></td>
+                            {% endif %}
+                        </tr>
+                        {% endfor %}
+                        <tr class="total-row" style="font-weight:700; background:#e6edf5;">
+                            <td style="text-align:right; padding-right:15px; font-size:14px;">TOTALS</td>
+                            <td>&mdash;</td><td>&mdash;</td>
+                            <td style="font-family:var(--fd); font-size:1.4rem; color:var(--pd);">{{ term.total_score }}</td>
+                            <td style="font-size:10px; color:var(--ash);">/{{ term.max_score }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="summary-band">
+                    <div class="sb-item"><span class="sb-label">Total Score</span><span class="sb-value">{{ term.total_score }}<span class="sb-unit">/{{ term.max_score }}</span></span></div>
+                    <div class="sb-item"><span class="sb-label">Average</span><span class="sb-value">{{ term.average }}<span class="sb-unit">/100</span></span></div>
+                    <div class="sb-item"><span class="sb-label">Subjects</span><span class="sb-value">{{ term.subject_count }}</span></div>
+                </div>
+                <div class="grade-note">&#8505;&#65039; The <strong>Average</strong> above is computed as the sum of subject totals &divide; number of subjects taken this term.</div>
+                <div class="remarks">
+                    <div class="remark-box teacher">
+                        <div class="remark-label">Class Teacher's Comment</div>
+                        <div class="remark-content">{{ term.teacher_remark or '&mdash; comment pending &mdash;'|safe }}</div>
+                        <div class="remark-line"></div>
+                        <div class="remark-signature">Signature: ___________________________<br>
+                        <span style="font-size:9px;opacity:0.7;">Class Teacher &middot; {{ year.class_at_time }}</span></div>
+                    </div>
+                    <div class="remark-box principal">
+                        <div class="remark-label">Principal's Comment</div>
+                        <div class="remark-content">{{ term.principal_remark or '&mdash; comment pending &mdash;'|safe }}</div>
+                        <div class="remark-line"></div>
+                        <div class="remark-signature">Signature &amp; Stamp: ________________<br>
+                        <span style="font-size:9px;opacity:0.7;">Principal &middot; Tendercare Comprehensive College</span></div>
+                    </div>
+                </div>
+                <div class="footer-note">
+                    <div class="grade-key">
+                        <span>A1 &ge;75</span><span>B2 70&ndash;74</span><span>B3 65&ndash;69</span>
+                        <span>C4 60&ndash;64</span><span>C5 55&ndash;59</span><span>C6 50&ndash;54</span>
+                        <span>D7 45&ndash;49</span><span>E8 40&ndash;44</span><span>F9 &lt;40</span>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+        {% endfor %}
+    </div>
+</div>
+</div>
+
+<script>
+const PLAINTEXT_PASSWORD = "{{ access_code_hint }}";
+function attemptUnlock() {
+    const input = document.getElementById("gate-input");
+    const errorEl = document.getElementById("gate-error");
+    const value = input.value.trim();
+    if (!value) return;
+    if (value === PLAINTEXT_PASSWORD) {
+        document.getElementById("gate-wrap").style.display = "none";
+        document.getElementById("site-content").style.display = "block";
+        initArchive();
+    } else {
+        errorEl.textContent = "Incorrect access code. Please try again.";
+        input.value = "";
+        input.focus();
+    }
+}
+document.getElementById("gate-btn").addEventListener("click", attemptUnlock);
+document.getElementById("gate-input").addEventListener("keydown", (e) => { if (e.key === "Enter") attemptUnlock(); });
+
+function initArchive() {
+    document.querySelectorAll(".year-header").forEach(btn => {
+        btn.addEventListener("click", () => {
+            const targetYear = btn.getAttribute("data-year-toggle");
+            const body = document.getElementById("year_" + targetYear);
+            const isOpen = body.hidden === false;
+            body.hidden = isOpen;
+            btn.setAttribute("aria-expanded", String(!isOpen));
+        });
+    });
+    document.querySelectorAll(".term-pill").forEach(pill => {
+        pill.addEventListener("click", () => {
+            const termId = pill.getAttribute("data-term-target");
+            document.querySelectorAll(".term-panel").forEach(p => p.hidden = true);
+            document.querySelectorAll(".term-pill").forEach(p => p.classList.remove("is-active"));
+            const panel = document.getElementById("panel_" + termId);
+            if (panel) panel.hidden = false;
+            pill.classList.add("is-active");
+        });
+    });
+    const currentTermId = "{{ current_term_id }}";
+    const currentPanel = document.getElementById("panel_" + currentTermId);
+    if (currentPanel) currentPanel.hidden = false;
+    const currentPill = document.querySelector('[data-term-target="' + currentTermId + '"]');
+    if (currentPill) {
+        currentPill.classList.add("is-active");
+        const yearSection = currentPill.closest(".year-section");
+        if (yearSection) {
+            const yearBody = yearSection.querySelector(".year-body");
+            if (yearBody) yearBody.hidden = false;
+        }
+    }
+}
+</script>
+</body>
+</html>
