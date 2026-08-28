@@ -9,7 +9,9 @@
 		permanentlyEraseStudent,
 		getCurrentTermId,
 		listRemarksForTerm,
-		upsertRemark,
+		assignRepeat,
+		pardonRepeat,
+		setPortraitUrl,
 		type Student,
 		type Remark
 	} from '$lib/roster';
@@ -33,10 +35,9 @@
 	// real gate; this page's session check above is just the UI shell.
 	let currentTermId = $state<string | null>(null);
 	let remarksByStudent = $state<Map<string, Remark>>(new Map());
-	let editingRemarkId = $state<string | null>(null);
-	let editTeacherRemark = $state('');
-	let editPrincipalRemark = $state('');
-	let savingRemark = $state(false);
+	let editingPortraitId = $state<string | null>(null);
+	let editPortraitUrl = $state('');
+	let savingPortrait = $state(false);
 
 	async function load() {
 		loading = true;
@@ -129,32 +130,41 @@
 		}
 	}
 
-	function openRemarkEditor(studentId: string) {
-		const existing = remarksByStudent.get(studentId);
-		editTeacherRemark = existing?.teacher_remark ?? '';
-		editPrincipalRemark = existing?.principal_remark ?? '';
-		editingRemarkId = studentId;
-	}
-
-	function closeRemarkEditor() {
-		editingRemarkId = null;
-	}
-
-	async function handleSaveRemark() {
-		if (!editingRemarkId || !currentTermId) return;
-		savingRemark = true;
+	async function handleToggleRepeat(s: Student) {
 		error = '';
 		try {
-			await upsertRemark(editingRemarkId, currentTermId, editTeacherRemark, editPrincipalRemark);
-			remarksByStudent = await listRemarksForTerm(
-				students.map((s) => s.id),
-				currentTermId
-			);
-			editingRemarkId = null;
+			if (s.repeating) {
+				await pardonRepeat(s.id);
+			} else {
+				await assignRepeat(s.id);
+			}
+			await load();
 		} catch (e) {
-			error = e instanceof Error ? e.message : 'Failed to save remark';
+			error = e instanceof Error ? e.message : 'Failed to update repeat status';
+		}
+	}
+
+	function openPortraitEditor(s: Student) {
+		editPortraitUrl = s.portrait_url ?? '';
+		editingPortraitId = s.id;
+	}
+
+	function closePortraitEditor() {
+		editingPortraitId = null;
+	}
+
+	async function handleSavePortrait() {
+		if (!editingPortraitId) return;
+		savingPortrait = true;
+		error = '';
+		try {
+			await setPortraitUrl(editingPortraitId, editPortraitUrl);
+			await load();
+			editingPortraitId = null;
+		} catch (e) {
+			error = e instanceof Error ? e.message : 'Failed to save portrait link';
 		} finally {
-			savingRemark = false;
+			savingPortrait = false;
 		}
 	}
 
@@ -220,6 +230,7 @@
 						<th>Name</th>
 						<th>Class</th>
 						<th>Status</th>
+						<th>Remark</th>
 						<th></th>
 					</tr>
 				</thead>
@@ -227,18 +238,33 @@
 					{#each visibleStudents as s (s.id)}
 						<tr class:inactive-row={!s.active}>
 							<td>{s.id}</td>
-							<td>{s.full_name}</td>
+							<td class="name-cell">
+								{#if s.portrait_url}
+									<img class="portrait-thumb" src={s.portrait_url} alt="" loading="lazy" />
+								{/if}
+								{s.full_name}
+								{#if s.repeating}
+									<span class="repeat-badge" title="Assigned to repeat this class">Repeating</span>
+								{/if}
+							</td>
 							<td>{s.class_id}</td>
 							<td>{s.active ? 'Active' : 'Removed'}</td>
+							<td>
+								{#if remarksByStudent.has(s.id)}
+									<span class="remark-badge" title="Auto-assigned from this student's average once CA/Exam/Total are complete">
+										{remarksByStudent.get(s.id)?.teacher_remark}
+									</span>
+								{:else}
+									<span class="remark-pending" title="No remark yet -- scores aren't all complete for this term">—</span>
+								{/if}
+							</td>
 							<td class="actions-cell">
 								{#if s.active}
-									<button
-										class="btn-remark"
-										onclick={() => openRemarkEditor(s.id)}
-										disabled={!currentTermId}
-										title={currentTermId ? '' : 'No current term set (terms.is_current)'}
-									>
-										{remarksByStudent.has(s.id) ? 'Edit remark' : 'Add remark'}
+									<button class="btn-portrait" onclick={() => openPortraitEditor(s)}>
+										{s.portrait_url ? 'Edit portrait' : 'Add portrait'}
+									</button>
+									<button class="btn-repeat" onclick={() => handleToggleRepeat(s)}>
+										{s.repeating ? 'Pardon repeat' : 'Assign repeat'}
 									</button>
 									<button class="btn-remove" onclick={() => handleRemove(s.id)}>Remove</button>
 								{:else}
@@ -267,39 +293,6 @@
 			</table>
 		{/if}
 	</section>
-
-	{#if editingRemarkId}
-		{@const s = students.find((x) => x.id === editingRemarkId)}
-		<div class="remark-modal-backdrop" onclick={closeRemarkEditor}>
-			<div class="remark-modal" onclick={(e) => e.stopPropagation()}>
-				<h2>Remark — {s?.full_name ?? editingRemarkId}</h2>
-				<p class="remark-modal-sub">Current term ({currentTermId}) only. Past terms belong to their already-generated report.</p>
-
-				<label for="teacher-remark">Class Teacher's Comment</label>
-				<textarea
-					id="teacher-remark"
-					rows="3"
-					bind:value={editTeacherRemark}
-					placeholder="e.g. A diligent and attentive student this term…"
-				></textarea>
-
-				<label for="principal-remark">Principal's Comment</label>
-				<textarea
-					id="principal-remark"
-					rows="3"
-					bind:value={editPrincipalRemark}
-					placeholder="e.g. Commendable progress. Keep up the good work."
-				></textarea>
-
-				<div class="remark-modal-actions">
-					<button class="btn-cancel" onclick={closeRemarkEditor} disabled={savingRemark}>Cancel</button>
-					<button class="btn-save-remark" onclick={handleSaveRemark} disabled={savingRemark}>
-						{savingRemark ? 'Saving…' : 'Save remark'}
-					</button>
-				</div>
-			</div>
-		</div>
-	{/if}
 </div>
 {/if}
 
@@ -397,72 +390,18 @@
 		flex-direction: column;
 		gap: 0.4rem;
 	}
-	.btn-remark {
+	.remark-badge {
+		display: inline-block;
+		font-size: 0.78rem;
+		font-weight: 600;
+		padding: 0.2rem 0.55rem;
+		border-radius: 20px;
+		background: #eef3fb;
 		color: var(--color-purple-deep, #3a1a5c);
-		font-weight: 600;
+		white-space: nowrap;
 	}
-	.btn-remark:disabled {
-		opacity: 0.4;
-		cursor: not-allowed;
-	}
-	.remark-modal-backdrop {
-		position: fixed;
-		inset: 0;
-		background: rgba(20, 20, 30, 0.45);
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		z-index: 40;
-		padding: 1rem;
-	}
-	.remark-modal {
-		background: white;
-		border-radius: 10px;
-		padding: 1.5rem;
-		max-width: 480px;
-		width: 100%;
-		display: flex;
-		flex-direction: column;
-		gap: 0.6rem;
-		box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
-	}
-	.remark-modal h2 {
-		font-size: 1.1rem;
-	}
-	.remark-modal-sub {
-		font-size: 0.8rem;
-		opacity: 0.6;
-		margin-bottom: 0.3rem;
-	}
-	.remark-modal label {
-		font-size: 0.8rem;
-		font-weight: 600;
-		margin-top: 0.3rem;
-	}
-	.remark-modal textarea {
-		width: 100%;
-		font-family: inherit;
-		font-size: 0.9rem;
-		padding: 0.5rem;
-		border: 1px solid #ddd;
-		border-radius: 6px;
-		resize: vertical;
-	}
-	.remark-modal-actions {
-		display: flex;
-		justify-content: flex-end;
-		gap: 0.6rem;
-		margin-top: 0.6rem;
-	}
-	.btn-save-remark {
-		background: var(--color-purple-deep, #3a1a5c);
-		color: white;
-		padding: 0.5rem 1rem;
-		border-radius: 6px;
-		font-weight: 600;
-	}
-	.btn-save-remark:disabled {
-		opacity: 0.5;
-		cursor: not-allowed;
+	.remark-pending {
+		color: #999;
+		font-size: 0.85rem;
 	}
 </style>

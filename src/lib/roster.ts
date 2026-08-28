@@ -7,6 +7,10 @@ export interface Student {
 	active: boolean;
 	created_at: string;
 	deleted_at: string | null;
+	repeating: boolean;
+	repeat_assigned_at: string | null;
+	repeat_pardoned_at: string | null;
+	portrait_url: string | null;
 }
 
 export interface NewStudentInput {
@@ -85,6 +89,47 @@ export async function listRoster(classId?: string): Promise<Student[]> {
 	return data as Student[];
 }
 
+/**
+ * Assign a student to repeat their current class. The September 1st
+ * promotion job checks `repeating` and skips advancing this student --
+ * see the promotion function's own comment for how it consults this.
+ * repeat_assigned_at is set once and never cleared by a pardon, so the
+ * history survives even after the flag is turned back off.
+ */
+export async function assignRepeat(id: string): Promise<void> {
+	const { error } = await supabase
+		.from('students')
+		.update({ repeating: true, repeat_assigned_at: new Date().toISOString() })
+		.eq('id', id);
+	if (error) throw error;
+}
+
+/**
+ * Reverse a repeat assignment. Deliberately does NOT clear
+ * repeat_assigned_at -- "was this student ever held back" should stay
+ * answerable after a pardon, only "are they currently held back" flips.
+ */
+export async function pardonRepeat(id: string): Promise<void> {
+	const { error } = await supabase
+		.from('students')
+		.update({ repeating: false, repeat_pardoned_at: new Date().toISOString() })
+		.eq('id', id);
+	if (error) throw error;
+}
+
+/**
+ * Set or clear a student's portrait link. A link, not an upload -- see
+ * the column comment in 0005_repeat_pardon_portrait.sql. Passing null
+ * or an empty string clears it back to "no portrait set".
+ */
+export async function setPortraitUrl(id: string, url: string | null): Promise<void> {
+	const { error } = await supabase
+		.from('students')
+		.update({ portrait_url: url?.trim() || null })
+		.eq('id', id);
+	if (error) throw error;
+}
+
 export interface Remark {
 	student_id: string;
 	term_id: string;
@@ -94,10 +139,12 @@ export interface Remark {
 }
 
 /**
- * The current term_id (terms.is_current = true). Remarks are entered
- * against a specific term, and the roster UI only ever edits the
- * current one -- past terms' remarks are part of that term's already-
- * generated static report, not something to retroactively change here.
+ * The current term_id (terms.is_current = true). Used only to know
+ * which term's remark to display -- there's no write path here
+ * anymore. Remarks are auto-assigned by a trigger on the scores table
+ * (0006_auto_remarks.sql) the moment a student's CA/Exam/Total are
+ * complete for a term, computed from their average -- never typed by
+ * staff. This file only reads what the trigger already wrote.
  */
 export async function getCurrentTermId(): Promise<string | null> {
 	const { data, error } = await supabase.from('terms').select('id').eq('is_current', true).maybeSingle();
@@ -108,7 +155,10 @@ export async function getCurrentTermId(): Promise<string | null> {
 /**
  * Fetch remarks for every student in a class for the current term, in
  * one query rather than one per student -- keyed by student_id so the
- * roster UI can look each one up as it renders rows.
+ * roster UI can look each one up as it renders rows. A student with no
+ * row here simply hasn't had their term completed yet (see the
+ * migration's clear-on-incomplete behavior) -- that's a real, expected
+ * state, not a loading gap.
  */
 export async function listRemarksForTerm(
 	studentIds: string[],
@@ -124,34 +174,4 @@ export async function listRemarksForTerm(
 	const map = new Map<string, Remark>();
 	for (const r of (data ?? []) as Remark[]) map.set(r.student_id, r);
 	return map;
-}
-
-/**
- * Write (or update) a student's remarks for a term. RLS on the remarks
- * table (0002_rls_policies.sql) already restricts writes to the
- * `staff` role and read-only self-access for students -- this function
- * doesn't duplicate that check, it relies on it: an unauthorized caller
- * gets rejected by Postgres, not by client-side logic that could be
- * bypassed. student_id + term_id is the table's primary key, so this is
- * a genuine upsert -- no separate "does a row exist yet" read needed.
- */
-export async function upsertRemark(
-	studentId: string,
-	termId: string,
-	teacherRemark: string,
-	principalRemark: string
-): Promise<void> {
-	const { error } = await supabase
-		.from('remarks')
-		.upsert(
-			{
-				student_id: studentId,
-				term_id: termId,
-				teacher_remark: teacherRemark.trim() || null,
-				principal_remark: principalRemark.trim() || null,
-				updated_at: new Date().toISOString()
-			},
-			{ onConflict: 'student_id,term_id' }
-		);
-	if (error) throw error;
 }
