@@ -88,12 +88,11 @@
 			<p>Add, remove, and manage students — remarks, repeats, and portraits included.</p>
 		</a>
 
-		<div class="feature-card feature-card--soon" aria-disabled="true">
+		<a href="/score" class="feature-card feature-card--live">
 			<span class="feature-icon">📝</span>
 			<h3>Score Entry</h3>
-			<p>Enter CA and Exam scores per subject, per class. Coming soon — not built yet.</p>
-			<span class="soon-badge">Coming soon</span>
-		</div>
+			<p>Enter CA and Exam scores per subject, per class.</p>
+		</a>
 
 		<div class="feature-card feature-card--soon" aria-disabled="true">
 			<span class="feature-icon">📚</span>
