@@ -16,6 +16,7 @@
 		type Remark
 	} from '$lib/roster';
 	import { supabase } from '$lib/supabase';
+	import Crest from '$lib/components/Crest.svelte';
 
 	let students = $state<Student[]>([]);
 	let classes = $state<{ id: string; label: string }[]>([]);
@@ -180,6 +181,7 @@
 	<p class="session-check">Checking session…</p>
 {:else}
 <div class="roster-page">
+	<Crest class="roster-watermark" aria-hidden="true" />
 	<header class="roster-header">
 		<h1>Student Roster</h1>
 		<p class="roster-subtitle">
@@ -301,13 +303,46 @@
 		text-align: center;
 		padding: 4rem 1rem;
 		opacity: 0.6;
-		font-family: var(--font-sans, system-ui);
+		font-family: var(--font-sans);
 	}
 	.roster-page {
+		position: relative;
+		overflow: hidden;
 		max-width: 900px;
 		margin: 0 auto;
-		padding: var(--space-8, 2rem) var(--space-5, 1.25rem);
-		font-family: var(--font-sans, system-ui);
+		padding: var(--space-8) var(--space-5);
+		font-family: var(--font-sans);
+		background: var(--color-white);
+		min-height: 100dvh;
+	}
+	/* Same treatment as the result sheets, the portal/web directory
+	   pages, and this app's own homepage and login screen -- large,
+	   faint, centered letterhead crest. Roster was the one page in the
+	   suite missing it. */
+	:global(.roster-watermark) {
+		position: fixed;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		width: min(60vw, 560px);
+		height: auto;
+		color: var(--color-purple-deep);
+		opacity: 0.035;
+		pointer-events: none;
+		z-index: 0;
+	}
+	.roster-header,
+	.controls,
+	.add-student,
+	table,
+	.remark-modal-backdrop {
+		position: relative;
+		z-index: 1;
+	}
+	.roster-header h1 {
+		font-family: var(--font-serif);
+		color: var(--color-purple-deep);
+		font-weight: 600;
 	}
 	.roster-subtitle {
 		opacity: 0.7;
@@ -315,16 +350,18 @@
 	}
 	.roster-error {
 		background: #fee;
-		color: #900;
-		padding: var(--space-3, 0.75rem);
-		border-radius: 8px;
-		margin-bottom: var(--space-5, 1.25rem);
+		color: var(--color-wine);
+		padding: var(--space-3);
+		border-radius: var(--radius-md);
+		margin-bottom: var(--space-5);
+		position: relative;
+		z-index: 1;
 	}
 	.add-student form {
 		display: flex;
-		gap: var(--space-3, 0.75rem);
+		gap: var(--space-3);
 		flex-wrap: wrap;
-		margin-bottom: var(--space-8, 2rem);
+		margin-bottom: var(--space-8);
 	}
 	.add-student input[type='text'] {
 		flex: 1;
@@ -396,8 +433,8 @@
 		font-weight: 600;
 		padding: 0.2rem 0.55rem;
 		border-radius: 20px;
-		background: #eef3fb;
-		color: var(--color-purple-deep, #3a1a5c);
+		background: var(--color-purple-ghost);
+		color: var(--color-purple-deep);
 		white-space: nowrap;
 	}
 	.remark-pending {

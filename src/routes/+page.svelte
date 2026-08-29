@@ -26,7 +26,7 @@
 		text-align: center;
 		gap: 0.5rem;
 		padding: 2rem 1.5rem;
-		font-family: var(--font-sans, system-ui);
+		font-family: var(--font-sans);
 	}
 	/* Letterhead-style background watermark, matching the pattern already
 	   used on the portal's directory/result pages -- large, faint,
@@ -38,7 +38,7 @@
 		transform: translate(-50%, -50%);
 		width: min(70vw, 640px);
 		height: auto;
-		color: var(--color-purple-deep, #3a1a5c);
+		color: var(--color-purple-deep);
 		opacity: 0.045;
 		pointer-events: none;
 		z-index: 0;
@@ -46,7 +46,7 @@
 	:global(.landing-crest) {
 		position: relative;
 		z-index: 1;
-		color: var(--color-purple-deep, #3a1a5c);
+		color: var(--color-purple-deep);
 		margin-bottom: 0.5rem;
 	}
 	.landing > :global(h1),
@@ -56,7 +56,7 @@
 		z-index: 1;
 	}
 	h1 {
-		font-family: var(--font-serif, serif);
+		font-family: var(--font-serif);
 		font-size: 1.5rem;
 		margin: 0;
 	}
@@ -70,7 +70,7 @@
 		margin-top: 0.75rem;
 		padding: 0.7rem 1.4rem;
 		border-radius: 999px;
-		background: var(--color-purple, #6b46c1);
+		background: var(--color-purple);
 		color: white;
 		text-decoration: none;
 		font-weight: 600;

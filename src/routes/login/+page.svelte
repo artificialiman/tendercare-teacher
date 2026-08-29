@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import { supabase } from '$lib/supabase';
+	import Crest from '$lib/components/Crest.svelte';
 
 	/**
 	 * Interim login — two fixed accounts (staff@tendercare.local,
@@ -48,7 +49,9 @@
 </svelte:head>
 
 <div class="login-page">
+	<Crest class="login-watermark" aria-hidden="true" />
 	<div class="login-card">
+		<Crest class="login-crest" size="3rem" />
 		<h1>Tendercare Staff Sign-in</h1>
 		<form onsubmit={handleLogin}>
 			<label>
@@ -72,59 +75,102 @@
 
 <style>
 	.login-page {
+		position: relative;
+		overflow: hidden;
 		min-height: 100dvh;
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		padding: 1.5rem;
-		font-family: var(--font-sans, system-ui);
+		padding: var(--space-6);
+		font-family: var(--font-sans);
+		background: var(--color-cream);
+	}
+	/* Same large, faint, centered letterhead-style watermark used across
+	   the result sheets and the portal/web directory pages -- this app
+	   was the one place in the suite missing it. */
+	:global(.login-watermark) {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		width: min(70vw, 640px);
+		height: auto;
+		color: var(--color-purple-deep);
+		opacity: 0.045;
+		pointer-events: none;
+		z-index: 0;
 	}
 	.login-card {
+		position: relative;
+		z-index: 1;
 		width: 100%;
 		max-width: 360px;
-		padding: 2rem;
-		border: 1px solid #eee;
-		border-radius: 12px;
+		padding: var(--space-8);
+		background: var(--color-white);
+		border: 1px solid var(--color-cream-deep);
+		border-radius: var(--radius-lg);
+		box-shadow: 0 12px 40px rgba(58, 26, 92, 0.1);
+		text-align: center;
+	}
+	:global(.login-crest) {
+		color: var(--color-purple-deep);
+		margin: 0 auto var(--space-4);
 	}
 	h1 {
-		font-size: 1.15rem;
-		margin: 0 0 1.25rem;
-		font-family: var(--font-serif, serif);
+		font-size: var(--text-lg);
+		margin: 0 0 var(--space-5);
+		font-family: var(--font-serif);
+		font-weight: 600;
+		color: var(--color-purple-deep);
 	}
 	form {
 		display: flex;
 		flex-direction: column;
-		gap: 1rem;
+		gap: var(--space-4);
+		text-align: left;
 	}
 	label {
 		display: flex;
 		flex-direction: column;
-		gap: 0.35rem;
-		font-size: 0.85rem;
+		gap: var(--space-2);
+		font-size: var(--text-xs);
+		font-family: var(--font-sans);
+		color: var(--color-ink-soft);
 	}
 	select,
 	input {
-		padding: 0.6rem 0.7rem;
-		border: 1px solid #ccc;
-		border-radius: 8px;
-		font-size: 0.95rem;
+		padding: var(--space-3);
+		border: 1px solid var(--color-ash-light);
+		border-radius: var(--radius-md);
+		font-size: var(--text-base);
+		font-family: var(--font-sans);
+	}
+	select:focus,
+	input:focus {
+		outline: none;
+		border-color: var(--color-purple);
+		box-shadow: 0 0 0 3px var(--color-purple-ghost);
 	}
 	button {
-		padding: 0.65rem;
-		border-radius: 8px;
+		padding: var(--space-3);
+		border-radius: var(--radius-md);
 		border: none;
-		background: var(--color-purple, #6b46c1);
-		color: white;
+		background: var(--color-purple-deep);
+		color: var(--color-white);
 		font-weight: 600;
+		font-family: var(--font-sans);
 		cursor: pointer;
+	}
+	button:hover:not(:disabled) {
+		background: var(--color-purple);
 	}
 	button:disabled {
 		opacity: 0.6;
 		cursor: default;
 	}
 	.login-error {
-		color: #900;
-		font-size: 0.85rem;
+		color: var(--color-wine);
+		font-size: var(--text-xs);
 		margin: 0;
 	}
 </style>
