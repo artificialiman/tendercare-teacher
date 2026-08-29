@@ -40,7 +40,7 @@
 			error = 'Incorrect password.';
 			return;
 		}
-		goto('/roster');
+		goto('/');
 	}
 </script>
 
