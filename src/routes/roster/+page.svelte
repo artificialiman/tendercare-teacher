@@ -200,7 +200,7 @@
 	</div>
 {:else}
 <div class="roster-page">
-	<Crest class="roster-watermark" aria-hidden="true" />
+	<Crest class="roster-watermark" />
 
 	<header class="page-header">
 		<div>

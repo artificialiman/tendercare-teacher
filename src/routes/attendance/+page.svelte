@@ -38,7 +38,7 @@
 	<p class="session-check">Checking session…</p>
 {:else}
 <div class="attendance-page">
-	<Crest class="attendance-watermark" aria-hidden="true" />
+	<Crest class="attendance-watermark" />
 
 	<header class="page-header">
 		<div>

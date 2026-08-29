@@ -52,7 +52,7 @@
 	<p class="session-check">Checking session…</p>
 {:else}
 <div class="dashboard">
-	<Crest class="dashboard-watermark" aria-hidden="true" />
+	<Crest class="dashboard-watermark" />
 
 	<header class="dashboard-header">
 		<Crest class="dashboard-crest" size="2.75rem" />
@@ -92,6 +92,12 @@
 			<span class="feature-icon">📝</span>
 			<h3>Score Entry</h3>
 			<p>Enter CA and Exam scores per subject, per class.</p>
+		</a>
+
+		<a href="/admin" class="feature-card feature-card--live">
+			<span class="feature-icon">📊</span>
+			<h3>Admin</h3>
+			<p>Staff, roles, and analytics — enrollment, averages, feed activity, alumni tracking.</p>
 		</a>
 
 		<div class="feature-card feature-card--soon" aria-disabled="true">

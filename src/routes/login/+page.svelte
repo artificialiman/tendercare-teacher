@@ -49,7 +49,7 @@
 </svelte:head>
 
 <div class="login-page">
-	<Crest class="login-watermark" aria-hidden="true" />
+	<Crest class="login-watermark" />
 	<div class="login-card">
 		<Crest class="login-crest" size="3rem" />
 		<h1>Tendercare Staff Sign-in</h1>

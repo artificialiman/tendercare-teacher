@@ -169,7 +169,7 @@
 	<p class="session-check">Checking session…</p>
 {:else}
 <div class="sheet-page">
-	<Crest class="sheet-watermark" aria-hidden="true" />
+	<Crest class="sheet-watermark" />
 
 	<header class="page-header">
 		<div>

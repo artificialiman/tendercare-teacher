@@ -66,7 +66,7 @@
 	<p class="session-check">Checking session…</p>
 {:else}
 <div class="score-picker-page">
-	<Crest class="picker-watermark" aria-hidden="true" />
+	<Crest class="picker-watermark" />
 
 	<header class="page-header">
 		<div>
