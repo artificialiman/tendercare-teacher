@@ -82,10 +82,10 @@
 	</div>
 
 	<div class="feature-grid">
-		<a href="/roster" class="feature-card feature-card--live">
+		<a href="/attendance" class="feature-card feature-card--live">
 			<span class="feature-icon">👥</span>
-			<h3>Roster</h3>
-			<p>Add, remove, and manage students — remarks, repeats, and portraits included.</p>
+			<h3>Attendance & Bio Edit</h3>
+			<p>Add or remove students by class, link a portrait, review repeat status and remarks.</p>
 		</a>
 
 		<a href="/score" class="feature-card feature-card--live">

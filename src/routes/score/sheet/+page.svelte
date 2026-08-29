@@ -10,8 +10,15 @@
 	const subjectId = page.url.searchParams.get('subject') ?? '';
 	const classId = page.url.searchParams.get('class') ?? '';
 
-	const CA_MAX = 40;
-	const EXAM_MAX = 60;
+	/**
+	 * Max marks are editable per sheet, not stored anywhere -- there's no
+	 * column for it in `scores` or `subjects`. Defaults match the
+	 * manual-shell reference (30 CA / 70 Exam), not an invented 40/60.
+	 * Changing them here only affects how this session grades/displays;
+	 * it doesn't rewrite any already-saved CA/Exam numbers.
+	 */
+	let maxCA = $state(30);
+	let maxExam = $state(70);
 
 	let checkingSession = $state(true);
 	let loading = $state(true);
@@ -104,7 +111,7 @@
 		if (!v) return;
 		const raw = v[field];
 		if (raw === '') return;
-		const max = field === 'ca' ? CA_MAX : EXAM_MAX;
+		const max = field === 'ca' ? maxCA : maxExam;
 		let num = Number(raw);
 		if (Number.isNaN(num)) return;
 		if (num < 0) num = 0;
@@ -133,6 +140,25 @@
 		editValues.set(studentId, { ...v });
 		editValues = new Map(editValues);
 	}
+
+	async function handleClearAll() {
+		if (!termId) return;
+		if (!confirm(`Clear every CA and Exam score on this sheet for ${classLabel}? This can't be undone.`)) return;
+		error = '';
+		try {
+			await Promise.all(
+				students.flatMap((s) => [saveScore(s.id, subjectId, termId!, 'ca', 0), saveScore(s.id, subjectId, termId!, 'exam', 0)])
+			);
+			await load();
+		} catch (e) {
+			error = e instanceof Error ? e.message : 'Failed to clear scores';
+		}
+	}
+
+	const totals = $derived(students.map((s) => totalFor(s.id)).filter((t): t is number => t !== null));
+	const average = $derived(totals.length ? totals.reduce((a, b) => a + b, 0) / totals.length : 0);
+	const highest = $derived(totals.length ? Math.max(...totals) : 0);
+	const lowest = $derived(totals.length ? Math.min(...totals) : 0);
 </script>
 
 <svelte:head>
@@ -145,13 +171,13 @@
 <div class="sheet-page">
 	<Crest class="sheet-watermark" aria-hidden="true" />
 
-	<header class="sheet-header">
+	<header class="page-header">
 		<div>
 			<span class="subject-pill">{loading ? '—' : subjectName}</span>
 			<h1>{loading ? 'Loading…' : classLabel}</h1>
 			<p class="term-note">{termLabel || 'No current term set'}</p>
 		</div>
-		<a class="back-button" href="/score">&larr; Change subject/class</a>
+		<a class="back-button" href="/score">&larr; Change assignment</a>
 	</header>
 
 	{#if error}
@@ -166,22 +192,35 @@
 		<p class="empty-note">No active students in {classLabel}.</p>
 	{:else}
 	<div class="sheet-card">
-		<table class="score-sheet" class:has-active-row={activeRow !== null}>
-			<colgroup>
-				<col class="col-id" />
-				<col class="col-name" />
-				<col class="col-num col-ca" />
-				<col class="col-num col-exam" />
-				<col class="col-num col-total" />
-				<col class="col-grade" />
-			</colgroup>
+		<div class="sheet-toolbar">
+			<div>
+				<div class="sheet-toolbar-title">{classLabel} Broadsheet</div>
+				<div class="sheet-toolbar-meta">
+					Max CA
+					<input type="number" min="0" class="max-input" bind:value={maxCA} />
+					· Max Exam
+					<input type="number" min="0" class="max-input" bind:value={maxExam} />
+				</div>
+			</div>
+			<button class="btn-secondary" onclick={handleClearAll}>Clear all</button>
+		</div>
+
+		<div class="sheet-stats">
+			<div class="sheet-stat"><span class="stat-label">Students</span><span class="stat-value">{students.length}</span></div>
+			<div class="sheet-stat"><span class="stat-label">Average</span><span class="stat-value">{average.toFixed(1)}</span></div>
+			<div class="sheet-stat"><span class="stat-label">Highest</span><span class="stat-value">{highest}</span></div>
+			<div class="sheet-stat"><span class="stat-label">Lowest</span><span class="stat-value">{lowest}</span></div>
+		</div>
+
+		<div class="sheet-table-wrap">
+		<table class="score-sheet">
 			<thead>
 				<tr>
 					<th>ID</th>
 					<th>Name</th>
-					<th>CA <span class="max-note">/{CA_MAX}</span></th>
-					<th>Exam <span class="max-note">/{EXAM_MAX}</span></th>
-					<th>Total <span class="max-note">/{CA_MAX + EXAM_MAX}</span></th>
+					<th class:col-active={activeField === 'ca'}>CA <span class="max-note">({maxCA})</span></th>
+					<th class:col-active={activeField === 'exam'}>Exam <span class="max-note">({maxExam})</span></th>
+					<th>Total</th>
 					<th>Grade</th>
 				</tr>
 			</thead>
@@ -198,12 +237,12 @@
 					>
 						<td class="id-cell">{s.id}</td>
 						<td class="name-cell">{s.full_name}</td>
-						<td class="num-cell" class:col-active={activeField === 'ca' && activeRow !== i}>
+						<td class="num-cell" class:cell-active={activeRow === i && activeField === 'ca'} class:col-active={activeField === 'ca' && activeRow !== i}>
 							<input
 								type="number"
 								inputmode="decimal"
 								min="0"
-								max={CA_MAX}
+								max={maxCA}
 								class="score-input"
 								class:saving={savingCell === `${s.id}:ca`}
 								value={editValues.get(s.id)?.ca ?? ''}
@@ -212,12 +251,12 @@
 								onblur={() => handleBlur(s.id, 'ca')}
 							/>
 						</td>
-						<td class="num-cell" class:col-active={activeField === 'exam' && activeRow !== i}>
+						<td class="num-cell" class:cell-active={activeRow === i && activeField === 'exam'} class:col-active={activeField === 'exam' && activeRow !== i}>
 							<input
 								type="number"
 								inputmode="decimal"
 								min="0"
-								max={EXAM_MAX}
+								max={maxExam}
 								class="score-input"
 								class:saving={savingCell === `${s.id}:exam`}
 								value={editValues.get(s.id)?.exam ?? ''}
@@ -229,7 +268,7 @@
 						<td class="num-cell total-cell">{total ?? '—'}</td>
 						<td class="grade-cell">
 							{#if total !== null}
-								<span class="grade-badge">{nigerianGrade(total, CA_MAX, EXAM_MAX)}</span>
+								<span class="grade-badge grade-{nigerianGrade(total, maxCA, maxExam).toLowerCase()}">{nigerianGrade(total, maxCA, maxExam)}</span>
 							{:else}
 								<span class="grade-pending">—</span>
 							{/if}
@@ -238,6 +277,7 @@
 				{/each}
 			</tbody>
 		</table>
+		</div>
 	</div>
 	<p class="autosave-note">Each field saves automatically when you move to the next one.</p>
 	{/if}
@@ -273,7 +313,7 @@
 		pointer-events: none;
 		z-index: 0;
 	}
-	.sheet-header,
+	.page-header,
 	.page-error,
 	.sheet-card,
 	.loading-note,
@@ -282,7 +322,7 @@
 		position: relative;
 		z-index: 1;
 	}
-	.sheet-header {
+	.page-header {
 		display: flex;
 		align-items: flex-start;
 		justify-content: space-between;
@@ -302,7 +342,7 @@
 		border-radius: var(--radius-full);
 		margin-bottom: var(--space-2);
 	}
-	.sheet-header h1 {
+	.page-header h1 {
 		font-family: var(--font-serif);
 		font-weight: 400;
 		font-size: var(--text-2xl);
@@ -343,41 +383,110 @@
 		font-size: var(--text-sm);
 	}
 
-	/* Paper-like sheet, matching the printed report cards and letterhead
-	   treatment used across the suite -- white surface, deep-purple rules,
-	   no chrome besides the crest watermark. */
 	.sheet-card {
 		background: var(--color-white);
 		border: 1px solid var(--color-cream-deep);
 		border-radius: var(--radius-lg);
 		box-shadow: var(--shadow-sm);
+		overflow: hidden;
+	}
+	.sheet-toolbar {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		flex-wrap: wrap;
+		gap: var(--space-3);
+		padding: var(--space-4) var(--space-5);
+		border-bottom: 1px solid var(--color-cream-deep);
+		background: var(--color-cream);
+	}
+	.sheet-toolbar-title {
+		font-family: var(--font-serif);
+		font-weight: 600;
+		font-size: var(--text-lg);
+		color: var(--color-purple-deep);
+	}
+	.sheet-toolbar-meta {
+		font-size: var(--text-xs);
+		color: var(--color-ash-dark);
+		margin-top: 0.2rem;
+	}
+	.max-input {
+		width: 3.4rem;
+		text-align: center;
+		padding: 0.2rem 0.3rem;
+		margin: 0 0.3rem;
+		font-size: var(--text-xs);
+		border: 1px solid var(--color-cream-deep);
+		border-radius: var(--radius-sm);
+		background: var(--color-white);
+	}
+	.btn-secondary {
+		font-size: var(--text-sm);
+		font-weight: 600;
+		background: var(--color-white);
+		color: var(--color-ink);
+		padding: 0.6rem 1.1rem;
+		border-radius: var(--radius-md);
+		border: 1px solid var(--color-cream-deep);
+		cursor: pointer;
+	}
+	.btn-secondary:hover {
+		background: var(--color-cream-warm);
+	}
+	.sheet-stats {
+		display: grid;
+		grid-template-columns: repeat(4, 1fr);
+		gap: 1px;
+		background: var(--color-cream-deep);
+		border-bottom: 1px solid var(--color-cream-deep);
+	}
+	.sheet-stat {
+		background: var(--color-white);
+		padding: var(--space-3) var(--space-4);
+		text-align: center;
+	}
+	.stat-label {
+		display: block;
+		font-size: 0.68rem;
+		text-transform: uppercase;
+		letter-spacing: 0.06em;
+		color: var(--color-ash-dark);
+		margin-bottom: 0.2rem;
+	}
+	.stat-value {
+		display: block;
+		font-size: 1.35rem;
+		font-weight: 700;
+		color: var(--color-purple-deep);
+		font-family: var(--font-serif);
+	}
+	.sheet-table-wrap {
 		overflow-x: auto;
 	}
 	table.score-sheet {
 		width: 100%;
 		border-collapse: collapse;
 		font-size: var(--text-sm);
-	}
-	.col-id {
-		width: 110px;
-	}
-	.col-num {
-		width: 90px;
-	}
-	.col-grade {
-		width: 80px;
+		min-width: 620px;
 	}
 	thead th {
 		text-align: left;
-		padding: var(--space-3) var(--space-4);
-		font-size: var(--text-xs);
+		padding: 0.9rem 1rem;
+		font-size: 0.72rem;
+		font-weight: 700;
 		text-transform: uppercase;
-		letter-spacing: 0.04em;
-		color: var(--color-purple-deep);
-		background: var(--color-cream);
-		border-bottom: 2px solid var(--color-purple-light);
+		letter-spacing: 0.05em;
+		color: var(--color-ash-dark);
+		border-bottom: 2px solid var(--color-cream-deep);
+		white-space: nowrap;
+		background: var(--color-white);
 		position: sticky;
 		top: 0;
+	}
+	thead th.col-active {
+		background: var(--color-lemon-ghost);
+		color: var(--color-purple-deep);
 	}
 	.max-note {
 		opacity: 0.5;
@@ -392,11 +501,11 @@
 	.name-cell,
 	.total-cell,
 	.grade-cell {
-		padding: var(--space-3) var(--space-4);
+		padding: 0.7rem 1rem;
 	}
 	.id-cell {
 		font-family: var(--font-sans);
-		font-size: var(--text-xs);
+		font-size: 0.8rem;
 		color: var(--color-ash-dark);
 	}
 	.name-cell {
@@ -405,33 +514,42 @@
 	}
 	.total-cell {
 		font-weight: 700;
+		font-family: var(--font-serif);
+		font-size: 1.05rem;
 		color: var(--color-purple-deep);
 		text-align: center;
 	}
 	.grade-badge {
 		display: inline-block;
-		font-size: var(--text-xs);
-		font-weight: 700;
-		padding: 0.2rem 0.55rem;
+		padding: 0.3rem 0.7rem;
 		border-radius: var(--radius-full);
-		background: var(--color-purple-ghost);
-		color: var(--color-purple-deep);
+		font-weight: 700;
+		font-size: 0.72rem;
+		text-transform: uppercase;
+		letter-spacing: 0.04em;
+		min-width: 2.4rem;
+		text-align: center;
 	}
+	.grade-a1 { background: rgba(34, 197, 94, 0.15); color: #15803d; }
+	.grade-b2 { background: rgba(52, 211, 153, 0.15); color: #0f766e; }
+	.grade-b3 { background: rgba(59, 130, 246, 0.15); color: #1d4ed8; }
+	.grade-c4 { background: rgba(96, 165, 250, 0.15); color: #1e40af; }
+	.grade-c5 { background: rgba(234, 179, 8, 0.18); color: #92400e; }
+	.grade-c6 { background: rgba(250, 204, 21, 0.2); color: #92400e; }
+	.grade-d7 { background: rgba(249, 115, 22, 0.18); color: #9a3412; }
+	.grade-e8 { background: rgba(239, 68, 68, 0.15); color: #b91c1c; }
+	.grade-f9 { background: rgba(220, 38, 38, 0.18); color: #991b1b; }
 	.grade-pending {
 		color: var(--color-ash);
 	}
 
-	/* Full row + column crosshair highlight on the cell being edited.
-	   Row: a plain background swap on the active <tr>, driven by
-	   focus events (works for keyboard tabbing, not just mouse clicks).
-	   Column: box-shadow ridges on every cell in that column via
-	   nth-child, scoped by which input has focus. */
-	tr.row-active {
+	tr.row-active td {
 		background: var(--color-lemon-ghost);
 	}
-	tr.row-active .id-cell,
-	tr.row-active .name-cell,
-	tr.row-active .total-cell {
+	tr.row-active td.cell-active {
+		background: #e8dfa0;
+	}
+	td.col-active {
 		background: var(--color-lemon-ghost);
 	}
 	.num-cell {
@@ -442,7 +560,7 @@
 		width: 100%;
 		height: 100%;
 		box-sizing: border-box;
-		padding: var(--space-3) var(--space-2);
+		padding: 0.7rem 0.6rem;
 		border: none;
 		background: transparent;
 		text-align: center;
@@ -452,18 +570,11 @@
 	}
 	.score-input:focus {
 		outline: none;
-		background: var(--color-lemon-soft);
-		box-shadow: inset 0 0 0 2px var(--color-purple);
+		background: var(--color-white);
+		box-shadow: inset 0 0 0 2px var(--color-purple-mid);
 	}
 	.score-input.saving {
 		background: var(--color-purple-ghost);
-	}
-	/* Column crosshair: every other cell in the active field's column
-	   (across all rows) gets the same wash, via a class toggled in
-	   script rather than a <col>-targeted selector -- background on
-	   <col>/<colgroup> doesn't render reliably across browsers. */
-	td.col-active {
-		background: var(--color-lemon-ghost);
 	}
 	.autosave-note {
 		margin-top: var(--space-4);

@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
+	import { page } from '$app/state';
 	import {
 		listRoster,
 		addStudent,
@@ -18,40 +19,49 @@
 	import { supabase } from '$lib/supabase';
 	import Crest from '$lib/components/Crest.svelte';
 
-	let students = $state<Student[]>([]);
-	let classes = $state<{ id: string; label: string }[]>([]);
+	const classId = page.url.searchParams.get('class') ?? '';
+
+	let checkingSession = $state(true);
 	let loading = $state(true);
 	let error = $state('');
-	let checkingSession = $state(true);
+
+	let classLabel = $state('');
+	let allClasses = $state<{ id: string; label: string }[]>([]);
+	let students = $state<Student[]>([]);
 
 	let newName = $state('');
-	let newClassId = $state('');
 	let adding = $state(false);
 
 	let showInactive = $state(false);
 	let confirmingEraseId = $state<string | null>(null);
 
-	// Remarks -- editing a student's teacher/principal comment for the
-	// current term. RLS on the remarks table (staff role only) is the
-	// real gate; this page's session check above is just the UI shell.
+	// Remarks -- read-only here. Auto-assigned by a DB trigger from each
+	// student's average once CA/Exam/Total are complete for the term
+	// (see 0006_auto_remarks.sql) -- there's no write path for staff to
+	// type one, on purpose.
 	let currentTermId = $state<string | null>(null);
 	let remarksByStudent = $state<Map<string, Remark>>(new Map());
+
 	let editingPortraitId = $state<string | null>(null);
 	let editPortraitUrl = $state('');
 	let savingPortrait = $state(false);
 
 	async function load() {
+		if (!classId) {
+			loading = false;
+			return;
+		}
 		loading = true;
 		error = '';
 		try {
 			const [{ data: classData, error: classErr }, studentData] = await Promise.all([
 				supabase.from('classes').select('id, label').order('sort_order'),
-				listRoster()
+				listRoster(classId)
 			]);
 			if (classErr) throw classErr;
-			classes = classData ?? [];
+			allClasses = classData ?? [];
+			classLabel = allClasses.find((c) => c.id === classId)?.label ?? classId;
 			students = studentData;
-			if (!newClassId && classes.length) newClassId = classes[0].id;
 
 			currentTermId = await getCurrentTermId();
 			if (currentTermId) {
@@ -68,12 +78,6 @@
 	}
 
 	onMount(async () => {
-		// This only guards the UI shell — the real gate is RLS (see
-		// 0002_rls_policies.sql), which rejects writes without a valid
-		// 'staff' JWT claim regardless of what this page does. Someone
-		// bypassing this check client-side still can't write to
-		// `students`; they'd just see error toasts instead of a login
-		// screen, which is why this redirect exists at all.
 		const {
 			data: { session }
 		} = await supabase.auth.getSession();
@@ -86,11 +90,11 @@
 	});
 
 	async function handleAdd() {
-		if (!newName.trim() || !newClassId) return;
+		if (!newName.trim() || !classId) return;
 		adding = true;
 		error = '';
 		try {
-			await addStudent({ full_name: newName.trim(), class_id: newClassId });
+			await addStudent({ full_name: newName.trim(), class_id: classId });
 			newName = '';
 			await load();
 		} catch (e) {
@@ -169,34 +173,57 @@
 		}
 	}
 
+	function initials(name: string): string {
+		return name
+			.split(' ')
+			.map((w) => w[0])
+			.filter(Boolean)
+			.slice(0, 2)
+			.join('')
+			.toUpperCase();
+	}
+
 	const visibleStudents = $derived(students.filter((s) => showInactive || s.active));
 	const activeCount = $derived(students.filter((s) => s.active).length);
 </script>
 
 <svelte:head>
-	<title>Roster — Tendercare Teacher Dashboard</title>
+	<title>{classLabel || 'Attendance & Bio Edit'} — Tendercare Teacher Dashboard</title>
 </svelte:head>
 
 {#if checkingSession}
 	<p class="session-check">Checking session…</p>
+{:else if !classId}
+	<div class="roster-page">
+		<div class="page-error" role="alert">Pick a class first.</div>
+		<a class="back-button" href="/attendance">&larr; Choose a class</a>
+	</div>
 {:else}
 <div class="roster-page">
 	<Crest class="roster-watermark" aria-hidden="true" />
-	<header class="roster-header">
-		<h1>Student Roster</h1>
-		<p class="roster-subtitle">
-			{activeCount} active students. Changes here take effect immediately across the
-			result/transcript portal, student directory, and public site — there's nothing else to
-			update.
-		</p>
+
+	<header class="page-header">
+		<div>
+			<h1>{loading ? 'Loading…' : classLabel}</h1>
+			<p>{activeCount} active students in this class.</p>
+		</div>
+		<a class="back-button" href="/attendance">&larr; Change class</a>
 	</header>
 
 	{#if error}
-		<div class="roster-error" role="alert">{error}</div>
+		<div class="page-error" role="alert">{error}</div>
 	{/if}
 
-	<section class="add-student">
-		<h2>Add a student</h2>
+	{#if !loading}
+	<div class="class-tabs">
+		{#each allClasses as c (c.id)}
+			<a class="class-tab" class:is-active={c.id === classId} href="/roster?class={encodeURIComponent(c.id)}">{c.label}</a>
+		{/each}
+	</div>
+	{/if}
+
+	<section class="add-card">
+		<h2 class="section-label">Add a student to {classLabel}</h2>
 		<form
 			onsubmit={(e) => {
 				e.preventDefault();
@@ -204,34 +231,20 @@
 			}}
 		>
 			<input type="text" placeholder="Full name" bind:value={newName} required />
-			<select bind:value={newClassId} required>
-				{#each classes as c (c.id)}
-					<option value={c.id}>{c.label}</option>
-				{/each}
-			</select>
-			<button type="submit" disabled={adding}>{adding ? 'Adding…' : 'Add student'}</button>
+			<button type="submit" class="btn-primary" disabled={adding}>{adding ? 'Adding…' : 'Add student'}</button>
 		</form>
 	</section>
 
-	<section class="roster-list">
-		<div class="roster-list-header">
-			<h2>Roster</h2>
-			<label class="show-inactive-toggle">
-				<input type="checkbox" bind:checked={showInactive} />
-				Show removed students
-			</label>
-		</div>
-
-		{#if loading}
-			<p>Loading…</p>
-		{:else}
-			<table>
+	{#if loading}
+		<p class="loading-note">Loading…</p>
+	{:else}
+		<div class="roster-card-wrap">
+			<table class="roster-table">
 				<thead>
 					<tr>
+						<th></th>
 						<th>ID</th>
 						<th>Name</th>
-						<th>Class</th>
-						<th>Status</th>
 						<th>Remark</th>
 						<th></th>
 					</tr>
@@ -239,32 +252,36 @@
 				<tbody>
 					{#each visibleStudents as s (s.id)}
 						<tr class:inactive-row={!s.active}>
-							<td>{s.id}</td>
+							<td>
+								<button class="portrait-dot" onclick={() => openPortraitEditor(s)} title={s.portrait_url ? 'Edit portrait link' : 'Add portrait link'}>
+									{#if s.portrait_url}
+										<img src={s.portrait_url} alt="" loading="lazy" />
+									{:else}
+										{initials(s.full_name)}
+									{/if}
+								</button>
+							</td>
+							<td class="sheet-id">{s.id}</td>
 							<td class="name-cell">
-								{#if s.portrait_url}
-									<img class="portrait-thumb" src={s.portrait_url} alt="" loading="lazy" />
-								{/if}
 								{s.full_name}
 								{#if s.repeating}
 									<span class="repeat-badge" title="Assigned to repeat this class">Repeating</span>
 								{/if}
 							</td>
-							<td>{s.class_id}</td>
-							<td>{s.active ? 'Active' : 'Removed'}</td>
 							<td>
 								{#if remarksByStudent.has(s.id)}
-									<span class="remark-badge" title="Auto-assigned from this student's average once CA/Exam/Total are complete">
+									<span
+										class="remark-badge"
+										title="Auto-assigned from this student's average once CA/Exam/Total are complete"
+									>
 										{remarksByStudent.get(s.id)?.teacher_remark}
 									</span>
 								{:else}
-									<span class="remark-pending" title="No remark yet -- scores aren't all complete for this term">—</span>
+									<span class="remark-pending" title="No remark yet — scores aren't all complete for this term">—</span>
 								{/if}
 							</td>
 							<td class="actions-cell">
 								{#if s.active}
-									<button class="btn-portrait" onclick={() => openPortraitEditor(s)}>
-										{s.portrait_url ? 'Edit portrait' : 'Add portrait'}
-									</button>
 									<button class="btn-repeat" onclick={() => handleToggleRepeat(s)}>
 										{s.repeating ? 'Pardon repeat' : 'Assign repeat'}
 									</button>
@@ -273,19 +290,13 @@
 									<button class="btn-restore" onclick={() => handleRestore(s.id)}>Restore</button>
 									{#if confirmingEraseId === s.id}
 										<span class="erase-confirm">
-											Permanently erase — this also deletes their scores, remarks, and portal
-											access. Cannot be undone.
-											<button class="btn-erase-confirm" onclick={() => handlePermanentErase(s.id)}
-												>Confirm erase</button
-											>
-											<button class="btn-cancel" onclick={() => (confirmingEraseId = null)}
-												>Cancel</button
-											>
+											Permanently erase — deletes their scores, remarks, and portal access too. Cannot be
+											undone.
+											<button class="btn-erase-confirm" onclick={() => handlePermanentErase(s.id)}>Confirm erase</button>
+											<button class="btn-cancel" onclick={() => (confirmingEraseId = null)}>Cancel</button>
 										</span>
 									{:else}
-										<button class="btn-erase" onclick={() => (confirmingEraseId = s.id)}
-											>Permanently erase…</button
-										>
+										<button class="btn-erase" onclick={() => (confirmingEraseId = s.id)}>Permanently erase…</button>
 									{/if}
 								{/if}
 							</td>
@@ -293,8 +304,40 @@
 					{/each}
 				</tbody>
 			</table>
-		{/if}
-	</section>
+		</div>
+
+		<p class="show-inactive-row">
+			<label class="show-inactive-toggle">
+				<input type="checkbox" bind:checked={showInactive} />
+				Show removed students
+			</label>
+		</p>
+	{/if}
+
+	{#if editingPortraitId}
+		<div
+			class="portrait-modal-backdrop"
+			role="button"
+			tabindex="0"
+			onclick={closePortraitEditor}
+			onkeydown={(e) => e.key === 'Escape' && closePortraitEditor()}
+		>
+			<div class="portrait-modal" role="dialog" aria-modal="true" tabindex="-1" onclick={(e) => e.stopPropagation()}>
+				<h2>Portrait link</h2>
+				<p class="portrait-modal-note">
+					A link, not an upload — paste a URL to an already-hosted image. Keeps the roster out of
+					the 10KB-into-the-database rule.
+				</p>
+				<input type="url" placeholder="https://…" bind:value={editPortraitUrl} />
+				<div class="portrait-modal-actions">
+					<button class="btn-secondary" onclick={closePortraitEditor}>Cancel</button>
+					<button class="btn-primary" onclick={handleSavePortrait} disabled={savingPortrait}>
+						{savingPortrait ? 'Saving…' : 'Save'}
+					</button>
+				</div>
+			</div>
+		</div>
+	{/if}
 </div>
 {/if}
 
@@ -315,10 +358,6 @@
 		background: var(--color-white);
 		min-height: 100dvh;
 	}
-	/* Same treatment as the result sheets, the portal/web directory
-	   pages, and this app's own homepage and login screen -- large,
-	   faint, centered letterhead crest. Roster was the one page in the
-	   suite missing it. */
 	:global(.roster-watermark) {
 		position: fixed;
 		top: 50%;
@@ -331,74 +370,211 @@
 		pointer-events: none;
 		z-index: 0;
 	}
-	.roster-header,
-	.controls,
-	.add-student,
-	table,
-	.remark-modal-backdrop {
+	.page-header,
+	.class-tabs,
+	.add-card,
+	.roster-card-wrap,
+	.show-inactive-row,
+	.page-error {
 		position: relative;
 		z-index: 1;
 	}
-	.roster-header h1 {
+	.page-header {
+		display: flex;
+		align-items: flex-start;
+		justify-content: space-between;
+		gap: var(--space-4);
+		margin-bottom: var(--space-5);
+		flex-wrap: wrap;
+	}
+	.page-header h1 {
 		font-family: var(--font-serif);
+		font-weight: 400;
+		font-size: var(--text-2xl);
 		color: var(--color-purple-deep);
+		margin: 0 0 var(--space-1);
+	}
+	.page-header p {
+		font-size: var(--text-sm);
+		color: var(--color-ash-dark);
+		margin: 0;
+	}
+	.back-button {
+		padding: 0.6rem 1.1rem;
+		background: var(--color-white);
+		border: 1px solid var(--color-cream-deep);
+		border-radius: var(--radius-sm);
+		color: var(--color-ink);
 		font-weight: 600;
+		font-size: 0.85rem;
+		text-decoration: none;
+		flex-shrink: 0;
 	}
-	.roster-subtitle {
-		opacity: 0.7;
-		max-width: 60ch;
+	.back-button:hover {
+		background: var(--color-cream);
 	}
-	.roster-error {
-		background: #fee;
+	.page-error {
+		background: #fdecea;
+		border: 1px solid #f5c6c0;
 		color: var(--color-wine);
-		padding: var(--space-3);
+		padding: var(--space-3) var(--space-4);
 		border-radius: var(--radius-md);
 		margin-bottom: var(--space-5);
-		position: relative;
-		z-index: 1;
+		font-size: var(--text-sm);
 	}
-	.add-student form {
+	.class-tabs {
+		display: flex;
+		gap: var(--space-2);
+		flex-wrap: wrap;
+		margin-bottom: var(--space-5);
+	}
+	.class-tab {
+		font-size: var(--text-sm);
+		font-weight: 600;
+		padding: 0.55rem 1rem;
+		border-radius: var(--radius-md);
+		background: var(--color-white);
+		border: 1px solid var(--color-cream-deep);
+		color: var(--color-ash-dark);
+		text-decoration: none;
+	}
+	.class-tab.is-active {
+		background: var(--color-purple);
+		border-color: var(--color-purple);
+		color: var(--color-white);
+	}
+	.class-tab:hover:not(.is-active) {
+		border-color: var(--color-purple-light);
+	}
+	.add-card {
+		background: var(--color-white);
+		border: 1px solid var(--color-cream-deep);
+		border-radius: var(--radius-lg);
+		padding: var(--space-5);
+		margin-bottom: var(--space-6);
+		box-shadow: var(--shadow-sm);
+	}
+	.section-label {
+		font-size: var(--text-xs);
+		text-transform: uppercase;
+		letter-spacing: var(--tracking-wide);
+		color: var(--color-purple);
+		margin: 0 0 var(--space-3);
+		font-weight: 600;
+	}
+	.add-card form {
 		display: flex;
 		gap: var(--space-3);
 		flex-wrap: wrap;
-		margin-bottom: var(--space-8);
+		align-items: center;
 	}
-	.add-student input[type='text'] {
+	.add-card input[type='text'] {
 		flex: 1;
-		min-width: 220px;
-		padding: 0.6rem 0.8rem;
-		border: 1px solid #ccc;
-		border-radius: 8px;
+		min-width: 200px;
+		padding: 0.7rem 0.9rem;
+		border: 1.5px solid var(--color-cream-deep);
+		border-radius: var(--radius-md);
+		font-size: var(--text-sm);
+		background: var(--color-cream);
 	}
-	.add-student select,
-	.add-student button {
-		padding: 0.6rem 0.8rem;
-		border-radius: 8px;
+	.add-card input:focus {
+		outline: none;
+		border-color: var(--color-purple-light);
+		background: var(--color-white);
 	}
-	.roster-list-header {
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
+	.btn-primary {
+		font-size: var(--text-sm);
+		font-weight: 600;
+		letter-spacing: var(--tracking-wide);
+		background: var(--color-purple);
+		color: var(--color-cream);
+		padding: 0.7rem 1.3rem;
+		border-radius: var(--radius-md);
+		white-space: nowrap;
+		border: none;
+		cursor: pointer;
 	}
-	.show-inactive-toggle {
-		font-size: 0.9rem;
-		display: flex;
-		align-items: center;
-		gap: 0.4rem;
+	.btn-primary:hover:not(:disabled) {
+		background: var(--color-purple-deep);
 	}
-	table {
+	.btn-primary:disabled {
+		opacity: 0.5;
+		cursor: default;
+	}
+	.btn-secondary {
+		font-size: var(--text-sm);
+		font-weight: 600;
+		background: var(--color-cream);
+		color: var(--color-ink);
+		padding: 0.7rem 1.2rem;
+		border-radius: var(--radius-md);
+		border: 1px solid var(--color-cream-deep);
+		cursor: pointer;
+	}
+	.btn-secondary:hover {
+		background: var(--color-cream-warm);
+	}
+	.loading-note {
+		opacity: 0.6;
+		font-size: var(--text-sm);
+	}
+	.roster-card-wrap {
+		background: var(--color-white);
+		border: 1px solid var(--color-cream-deep);
+		border-radius: var(--radius-lg);
+		overflow: hidden;
+	}
+	.roster-table {
 		width: 100%;
 		border-collapse: collapse;
-		margin-top: var(--space-4, 1rem);
 	}
-	th,
-	td {
+	.roster-table th,
+	.roster-table td {
 		text-align: left;
-		padding: 0.6rem 0.8rem;
-		border-bottom: 1px solid #eee;
+		padding: 0.7rem 0.9rem;
+		border-bottom: 1px solid var(--color-cream-deep);
+		font-size: var(--text-sm);
+	}
+	.roster-table th {
+		font-size: 0.72rem;
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+		color: var(--color-ash-dark);
+		background: var(--color-cream);
 	}
 	.inactive-row {
 		opacity: 0.5;
+	}
+	.sheet-id {
+		font-family: var(--font-sans);
+		font-size: 0.8rem;
+		color: var(--color-ash-dark);
+	}
+	.name-cell {
+		font-weight: 600;
+		color: var(--color-ink);
+	}
+	.portrait-dot {
+		width: 2.1rem;
+		height: 2.1rem;
+		border-radius: 50%;
+		background: var(--color-purple-ghost);
+		color: var(--color-purple-deep);
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		font-size: 0.7rem;
+		font-weight: 700;
+		flex-shrink: 0;
+		overflow: hidden;
+		border: none;
+		padding: 0;
+		cursor: pointer;
+	}
+	.portrait-dot img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
 	}
 	.actions-cell {
 		display: flex;
@@ -406,39 +582,124 @@
 		align-items: center;
 		flex-wrap: wrap;
 	}
+	.btn-repeat {
+		color: var(--color-purple-deep);
+		font-size: var(--text-xs);
+		font-weight: 600;
+		background: var(--color-purple-ghost);
+		padding: 0.3rem 0.6rem;
+		border-radius: var(--radius-sm);
+	}
 	.btn-remove {
-		color: #900;
+		color: var(--color-wine);
+		font-weight: 600;
+		font-size: var(--text-xs);
 	}
 	.btn-restore {
-		color: #060;
+		color: #15803d;
+		font-weight: 600;
+		font-size: var(--text-xs);
 	}
 	.btn-erase,
 	.btn-erase-confirm {
-		color: #900;
+		color: var(--color-wine);
 		font-weight: 600;
+		font-size: var(--text-xs);
+	}
+	.btn-cancel {
+		color: var(--color-ash-dark);
+		font-size: var(--text-xs);
 	}
 	.erase-confirm {
-		font-size: 0.85rem;
+		font-size: 0.8rem;
 		max-width: 40ch;
-		background: #fff3f3;
+		background: #fdecea;
 		padding: 0.5rem;
-		border-radius: 6px;
+		border-radius: var(--radius-sm);
 		display: flex;
 		flex-direction: column;
 		gap: 0.4rem;
+	}
+	.repeat-badge {
+		display: inline-block;
+		font-size: 0.7rem;
+		font-weight: 700;
+		padding: 0.15rem 0.5rem;
+		border-radius: var(--radius-full);
+		background: #fef3c7;
+		color: #92400e;
+		margin-left: 0.4rem;
+		vertical-align: middle;
 	}
 	.remark-badge {
 		display: inline-block;
 		font-size: 0.78rem;
 		font-weight: 600;
 		padding: 0.2rem 0.55rem;
-		border-radius: 20px;
+		border-radius: var(--radius-full);
 		background: var(--color-purple-ghost);
 		color: var(--color-purple-deep);
 		white-space: nowrap;
 	}
 	.remark-pending {
-		color: #999;
+		color: var(--color-ash);
 		font-size: 0.85rem;
+	}
+	.show-inactive-row {
+		margin-top: var(--space-3);
+	}
+	.show-inactive-toggle {
+		font-size: var(--text-sm);
+		display: inline-flex;
+		align-items: center;
+		gap: 0.4rem;
+	}
+
+	.portrait-modal-backdrop {
+		position: fixed;
+		inset: 0;
+		background: rgba(26, 16, 32, 0.4);
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		z-index: 10;
+		padding: var(--space-5);
+	}
+	.portrait-modal {
+		background: var(--color-white);
+		border-radius: var(--radius-lg);
+		padding: var(--space-6);
+		max-width: 400px;
+		width: 100%;
+		box-shadow: var(--shadow-lg);
+	}
+	.portrait-modal h2 {
+		font-family: var(--font-serif);
+		color: var(--color-purple-deep);
+		font-size: var(--text-lg);
+		margin: 0 0 var(--space-2);
+	}
+	.portrait-modal-note {
+		font-size: var(--text-xs);
+		color: var(--color-ash-dark);
+		margin: 0 0 var(--space-4);
+	}
+	.portrait-modal input {
+		width: 100%;
+		box-sizing: border-box;
+		padding: 0.7rem 0.9rem;
+		border: 1.5px solid var(--color-cream-deep);
+		border-radius: var(--radius-md);
+		font-size: var(--text-sm);
+		margin-bottom: var(--space-4);
+	}
+	.portrait-modal input:focus {
+		outline: none;
+		border-color: var(--color-purple-light);
+	}
+	.portrait-modal-actions {
+		display: flex;
+		justify-content: flex-end;
+		gap: var(--space-2);
 	}
 </style>
