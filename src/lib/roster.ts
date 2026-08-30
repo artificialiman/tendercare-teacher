@@ -130,6 +130,46 @@ export async function setPortraitUrl(id: string, url: string | null): Promise<vo
 	if (error) throw error;
 }
 
+/**
+ * Every senior class is named "SS<level> <department>" (see the classes
+ * seed data) -- department isn't a separate column, it's baked into which
+ * class a student is in. These helpers work off that naming instead of
+ * adding a redundant department field that could drift out of sync with
+ * class_id.
+ */
+export function isJSS3(classId: string): boolean {
+	return classId === 'JSS3A' || classId === 'JSS3B';
+}
+
+export function isSeniorClass(classId: string): boolean {
+	return /^SS[123] (Science|Actuarial)$/.test(classId);
+}
+
+/**
+ * The sibling department at the same SS level -- "SS2 Science" <->
+ * "SS2 Actuarial". Returns null for anything that isn't a senior class.
+ */
+export function siblingDepartmentClassId(classId: string): string | null {
+	const match = classId.match(/^(SS[123]) (Science|Actuarial)$/);
+	if (!match) return null;
+	const [, level, dept] = match;
+	return `${level} ${dept === 'Science' ? 'Actuarial' : 'Science'}`;
+}
+
+/**
+ * Moves a student to a different class -- used for both the JSS3->SS1
+ * promotion (staff picks Science or Actuarial, since that's the one
+ * branch point in an otherwise straight-line promotion path) and for a
+ * senior student switching department after they've already been placed.
+ * A student's id never changes here -- promotion/department changes are
+ * always a class_id update, never an id event (id events are only ever
+ * graduation + the one-year-later recycling, see 0008).
+ */
+export async function moveStudentToClass(id: string, newClassId: string): Promise<void> {
+	const { error } = await supabase.from('students').update({ class_id: newClassId }).eq('id', id);
+	if (error) throw error;
+}
+
 export interface Remark {
 	student_id: string;
 	term_id: string;
