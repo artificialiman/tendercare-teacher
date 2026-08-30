@@ -13,12 +13,15 @@
 		assignRepeat,
 		pardonRepeat,
 		setPortraitUrl,
-		isJSS3,
-		isSeniorClass,
-		siblingDepartmentClassId,
+		listClasses,
+		addClass,
+		isGraduatingJuniorClass,
+		promotionTargets,
+		departmentSwitchTargets,
 		moveStudentToClass,
 		type Student,
-		type Remark
+		type Remark,
+		type ClassInfo
 	} from '$lib/roster';
 	import { supabase } from '$lib/supabase';
 	import Crest from '$lib/components/Crest.svelte';
@@ -30,8 +33,15 @@
 	let error = $state('');
 
 	let classLabel = $state('');
-	let allClasses = $state<{ id: string; label: string }[]>([]);
+	let allClasses = $state<ClassInfo[]>([]);
 	let students = $state<Student[]>([]);
+	const classesById = $derived(new Map(allClasses.map((c) => [c.id, c])));
+
+	let newArmStage = $state<'JSS' | 'SS'>('JSS');
+	let newArmLevel = $state<1 | 2 | 3>(1);
+	let newArmValue = $state('');
+	let addingClass = $state(false);
+	let showAddClass = $state(false);
 
 	let newName = $state('');
 	let adding = $state(false);
@@ -58,12 +68,8 @@
 		loading = true;
 		error = '';
 		try {
-			const [{ data: classData, error: classErr }, studentData] = await Promise.all([
-				supabase.from('classes').select('id, label').order('sort_order'),
-				listRoster(classId)
-			]);
-			if (classErr) throw classErr;
-			allClasses = classData ?? [];
+			const [classData, studentData] = await Promise.all([listClasses(), listRoster(classId)]);
+			allClasses = classData;
 			classLabel = allClasses.find((c) => c.id === classId)?.label ?? classId;
 			students = studentData;
 
@@ -168,6 +174,22 @@
 		}
 	}
 
+	async function handleAddClass() {
+		if (!newArmValue.trim()) return;
+		addingClass = true;
+		error = '';
+		try {
+			await addClass(newArmStage, newArmLevel, newArmValue.trim());
+			newArmValue = '';
+			showAddClass = false;
+			await load();
+		} catch (e) {
+			error = e instanceof Error ? e.message : 'Failed to add class';
+		} finally {
+			addingClass = false;
+		}
+	}
+
 	function openPortraitEditor(s: Student) {
 		editPortraitUrl = s.portrait_url ?? '';
 		editingPortraitId = s.id;
@@ -238,7 +260,43 @@
 		{#each allClasses as c (c.id)}
 			<a class="class-tab" class:is-active={c.id === classId} href="/roster?class={encodeURIComponent(c.id)}">{c.label}</a>
 		{/each}
+		<button class="class-tab class-tab--add" onclick={() => (showAddClass = !showAddClass)}>
+			{showAddClass ? '×' : '+ Add arm/department'}
+		</button>
 	</div>
+	{#if showAddClass}
+		<form
+			class="add-class-form"
+			onsubmit={(e) => {
+				e.preventDefault();
+				handleAddClass();
+			}}
+		>
+			<select bind:value={newArmStage}>
+				<option value="JSS">Junior (JSS)</option>
+				<option value="SS">Senior (SS)</option>
+			</select>
+			<select bind:value={newArmLevel}>
+				<option value={1}>Level 1</option>
+				<option value={2}>Level 2</option>
+				<option value={3}>Level 3</option>
+			</select>
+			<input
+				type="text"
+				placeholder={newArmStage === 'JSS' ? 'Arm letter, e.g. C' : 'Department name, e.g. Commercial'}
+				bind:value={newArmValue}
+				required
+			/>
+			<button type="submit" class="btn-primary" disabled={addingClass}>
+				{addingClass ? 'Adding…' : 'Add'}
+			</button>
+			<span class="add-class-hint">
+				{newArmStage === 'JSS'
+					? `Creates JSS${newArmLevel}${newArmValue || '_'}`
+					: `Creates SS${newArmLevel} ${newArmValue || '…'}`}
+			</span>
+		</form>
+	{/if}
 	{/if}
 
 	<section class="add-card">
@@ -301,36 +359,31 @@
 							</td>
 							<td class="actions-cell">
 								{#if s.active}
-									{#if isJSS3(s.class_id)}
-										<span class="promote-group" title="Promote to SS1 — choose a path">
-											<button
-												class="btn-promote"
-												disabled={movingId === s.id}
-												onclick={() => handleMoveClass(s.id, 'SS1 Science')}
-											>
-												→ SS1 Science
-											</button>
-											<button
-												class="btn-promote"
-												disabled={movingId === s.id}
-												onclick={() => handleMoveClass(s.id, 'SS1 Actuarial')}
-											>
-												→ SS1 Actuarial
-											</button>
+									{@const cls = classesById.get(s.class_id)}
+									{#if cls && isGraduatingJuniorClass(cls)}
+										<span class="promote-group" title="Promote to SS1 — choose a department">
+											{#each promotionTargets(allClasses) as target (target.id)}
+												<button
+													class="btn-promote"
+													disabled={movingId === s.id}
+													onclick={() => handleMoveClass(s.id, target.id)}
+												>
+													→ {target.label}
+												</button>
+											{/each}
 										</span>
 									{/if}
-									{#if isSeniorClass(s.class_id)}
-										<button
-											class="btn-switch-dept"
-											disabled={movingId === s.id}
-											onclick={() => {
-												const sibling = siblingDepartmentClassId(s.class_id);
-												if (sibling) handleMoveClass(s.id, sibling);
-											}}
-											title="Students are allowed to change their mind after their first assignment"
-										>
-											Switch to {siblingDepartmentClassId(s.class_id)?.split(' ')[1]}
-										</button>
+									{#if cls && cls.stage === 'SS'}
+										{#each departmentSwitchTargets(cls, allClasses) as target (target.id)}
+											<button
+												class="btn-switch-dept"
+												disabled={movingId === s.id}
+												onclick={() => handleMoveClass(s.id, target.id)}
+												title="Students are allowed to change their mind after their first assignment"
+											>
+												Switch to {target.arm}
+											</button>
+										{/each}
 									{/if}
 									<button class="btn-repeat" onclick={() => handleToggleRepeat(s)}>
 										{s.repeating ? 'Pardon repeat' : 'Assign repeat'}
@@ -495,6 +548,36 @@
 	}
 	.class-tab:hover:not(.is-active) {
 		border-color: var(--color-purple-light);
+	}
+	.class-tab--add {
+		background: transparent;
+		border: 1px dashed var(--color-purple-light);
+		color: var(--color-purple-deep);
+		cursor: pointer;
+	}
+	.add-class-form {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: var(--space-2);
+		background: var(--color-cream);
+		border-radius: var(--radius-md);
+		padding: var(--space-3) var(--space-4);
+		margin-bottom: var(--space-5);
+	}
+	.add-class-form select,
+	.add-class-form input[type='text'] {
+		padding: var(--space-1) var(--space-2);
+		border: 1px solid var(--color-cream-deep);
+		border-radius: var(--radius-sm);
+		font-family: var(--font-sans);
+		font-size: var(--text-sm);
+		background: var(--color-white);
+	}
+	.add-class-hint {
+		font-size: var(--text-xs);
+		opacity: 0.55;
+		font-family: var(--font-sans);
 	}
 	.add-card {
 		background: var(--color-white);
