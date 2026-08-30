@@ -3,11 +3,17 @@
 	import { goto } from '$app/navigation';
 	import { supabase } from '$lib/supabase';
 	import Crest from '$lib/components/Crest.svelte';
+	import ConfirmButton from '$lib/components/ConfirmButton.svelte';
+	import { runPromotion, type PromotionResult } from '$lib/roster';
 
 	let checkingSession = $state(true);
 	let loading = $state(true);
 	let error = $state('');
 	let classes = $state<{ id: string; label: string }[]>([]);
+
+	let running = $state(false);
+	let result = $state<PromotionResult | null>(null);
+	let promotionError = $state('');
 
 	onMount(async () => {
 		const {
@@ -28,6 +34,21 @@
 			loading = false;
 		}
 	});
+
+	async function handleRunPromotion() {
+		running = true;
+		promotionError = '';
+		result = null;
+		try {
+			result = await runPromotion();
+			const { data } = await supabase.from('classes').select('id, label').order('sort_order');
+			classes = data ?? [];
+		} catch (e) {
+			promotionError = e instanceof Error ? e.message : 'Promotion failed';
+		} finally {
+			running = false;
+		}
+	}
 </script>
 
 <svelte:head>
@@ -54,6 +75,33 @@
 	{#if error}
 		<div class="page-error" role="alert">{error}</div>
 	{/if}
+
+	<div class="form-card promotion-card">
+		<h2>September 1st Promotion</h2>
+		<p class="promotion-note">
+			Advances every active, non-repeating student one level in their same arm/department,
+			graduates SS3, and moves JSS3 into an SS1 Unassigned holding class for department
+			assignment on the roster page. Whole roster, one shot — the three confirm steps below are
+			deliberate.
+		</p>
+		{#if promotionError}
+			<div class="page-error" role="alert">{promotionError}</div>
+		{/if}
+		{#if result}
+			<div class="promotion-result">
+				Promoted {result.promoted_count}, graduated {result.graduated_count}, {result.pending_assignment_count}
+				now pending department assignment.
+			</div>
+		{/if}
+		<ConfirmButton
+			label="Run September 1st Promotion"
+			confirmLabel="This moves the ENTIRE roster. Confirm?"
+			finalLabel="Yes — run it now"
+			variant="danger"
+			disabled={running}
+			onconfirm={handleRunPromotion}
+		/>
+	</div>
 
 	<div class="form-card">
 		<h2>Choose a class</h2>
@@ -162,6 +210,24 @@
 		letter-spacing: var(--tracking-wide);
 		color: var(--color-purple);
 		margin: 0 0 var(--space-4);
+	}
+	.promotion-card {
+		border-color: var(--color-wine);
+		margin-bottom: var(--space-6);
+	}
+	.promotion-note {
+		font-size: var(--text-sm);
+		opacity: 0.65;
+		max-width: 65ch;
+		margin: 0 0 var(--space-4);
+	}
+	.promotion-result {
+		font-size: var(--text-sm);
+		background: var(--color-purple-ghost);
+		color: var(--color-purple-deep);
+		padding: var(--space-3) var(--space-4);
+		border-radius: var(--radius-md);
+		margin-bottom: var(--space-4);
 	}
 	.loading-note {
 		opacity: 0.6;
