@@ -15,14 +15,16 @@
 		setPortraitUrl,
 		listClasses,
 		addClass,
-		isGraduatingJuniorClass,
-		promotionTargets,
-		departmentSwitchTargets,
+		isPendingAssignment,
+		classSwitchTargets,
+		assignDepartment,
+		sendPendingToRepeatJSS3,
 		moveStudentToClass,
 		type Student,
 		type Remark,
 		type ClassInfo
 	} from '$lib/roster';
+	import ConfirmButton from '$lib/components/ConfirmButton.svelte';
 	import { supabase } from '$lib/supabase';
 	import Crest from '$lib/components/Crest.svelte';
 
@@ -190,6 +192,34 @@
 		}
 	}
 
+	async function handleAssignDepartment(id: string, department: string) {
+		error = '';
+		movingId = id;
+		try {
+			await assignDepartment(id, department);
+			await load();
+		} catch (e) {
+			error = e instanceof Error ? e.message : 'Failed to assign department';
+		} finally {
+			movingId = null;
+		}
+	}
+
+	async function handlePendingRepeat(id: string) {
+		const target = repeatTargetByStudent.get(id) ?? jss3Classes[0]?.id;
+		if (!target) return;
+		error = '';
+		movingId = id;
+		try {
+			await sendPendingToRepeatJSS3(id, target);
+			await load();
+		} catch (e) {
+			error = e instanceof Error ? e.message : 'Failed to send back to repeat JSS3';
+		} finally {
+			movingId = null;
+		}
+	}
+
 	function openPortraitEditor(s: Student) {
 		editPortraitUrl = s.portrait_url ?? '';
 		editingPortraitId = s.id;
@@ -226,6 +256,8 @@
 
 	const visibleStudents = $derived(students.filter((s) => showInactive || s.active));
 	const activeCount = $derived(students.filter((s) => s.active).length);
+	const jss3Classes = $derived(allClasses.filter((c) => c.stage === 'JSS' && c.level === 3));
+	let repeatTargetByStudent = $state<Map<string, string>>(new Map());
 </script>
 
 <svelte:head>
@@ -360,35 +392,61 @@
 							<td class="actions-cell">
 								{#if s.active}
 									{@const cls = classesById.get(s.class_id)}
-									{#if cls && isGraduatingJuniorClass(cls)}
-										<span class="promote-group" title="Promote to SS1 — choose a department">
-											{#each promotionTargets(allClasses) as target (target.id)}
-												<button
-													class="btn-promote"
-													disabled={movingId === s.id}
-													onclick={() => handleMoveClass(s.id, target.id)}
-												>
-													→ {target.label}
-												</button>
-											{/each}
-										</span>
-									{/if}
-									{#if cls && cls.stage === 'SS'}
-										{#each departmentSwitchTargets(cls, allClasses) as target (target.id)}
-											<button
-												class="btn-switch-dept"
+									{#if cls && isPendingAssignment(cls)}
+										<span class="pending-flow" title="Promoted from JSS3 — awaiting department assignment">
+											<ConfirmButton
+												label="→ Science"
+												variant="primary"
 												disabled={movingId === s.id}
-												onclick={() => handleMoveClass(s.id, target.id)}
-												title="Students are allowed to change their mind after their first assignment"
-											>
-												Switch to {target.arm}
-											</button>
-										{/each}
+												onconfirm={() => handleAssignDepartment(s.id, 'Science')}
+											/>
+											<ConfirmButton
+												label="→ Actuarial"
+												variant="primary"
+												disabled={movingId === s.id}
+												onconfirm={() => handleAssignDepartment(s.id, 'Actuarial')}
+											/>
+											{#if jss3Classes.length > 0}
+												<select
+													class="repeat-target-select"
+													value={repeatTargetByStudent.get(s.id) ?? jss3Classes[0].id}
+													onchange={(e) =>
+														repeatTargetByStudent.set(s.id, (e.target as HTMLSelectElement).value)}
+												>
+													{#each jss3Classes as c (c.id)}
+														<option value={c.id}>{c.label}</option>
+													{/each}
+												</select>
+												<ConfirmButton
+													label="Repeat"
+													variant="neutral"
+													disabled={movingId === s.id}
+													onconfirm={() => handlePendingRepeat(s.id)}
+												/>
+											{/if}
+											<ConfirmButton
+												label="Remove"
+												variant="danger"
+												disabled={movingId === s.id}
+												onconfirm={() => handleRemove(s.id)}
+											/>
+										</span>
+									{:else}
+										{#if cls}
+											{#each classSwitchTargets(cls, allClasses) as target (target.id)}
+												<ConfirmButton
+													label={cls.stage === 'JSS' ? `Switch to ${target.label}` : `Switch to ${target.arm}`}
+													variant="neutral"
+													disabled={movingId === s.id}
+													onconfirm={() => handleMoveClass(s.id, target.id)}
+												/>
+											{/each}
+										{/if}
+										<button class="btn-repeat" onclick={() => handleToggleRepeat(s)}>
+											{s.repeating ? 'Pardon repeat' : 'Assign repeat'}
+										</button>
+										<ConfirmButton label="Remove" variant="danger" onconfirm={() => handleRemove(s.id)} />
 									{/if}
-									<button class="btn-repeat" onclick={() => handleToggleRepeat(s)}>
-										{s.repeating ? 'Pardon repeat' : 'Assign repeat'}
-									</button>
-									<button class="btn-remove" onclick={() => handleRemove(s.id)}>Remove</button>
 								{:else}
 									<button class="btn-restore" onclick={() => handleRestore(s.id)}>Restore</button>
 									{#if confirmingEraseId === s.id}
@@ -723,37 +781,18 @@
 		padding: 0.3rem 0.6rem;
 		border-radius: var(--radius-sm);
 	}
-	.promote-group {
+	.pending-flow {
 		display: inline-flex;
-		gap: 0.3rem;
+		align-items: center;
+		gap: 0.35rem;
+		flex-wrap: wrap;
 	}
-	.btn-promote {
-		color: white;
-		background: var(--color-purple-deep);
+	.repeat-target-select {
 		font-size: var(--text-xs);
-		font-weight: 600;
-		padding: 0.3rem 0.6rem;
-		border-radius: var(--radius-sm);
-	}
-	.btn-promote:disabled {
-		opacity: 0.5;
-	}
-	.btn-switch-dept {
-		color: var(--color-purple-deep);
-		background: transparent;
+		padding: 0.2rem 0.4rem;
 		border: 1px solid var(--color-cream-deep);
-		font-size: var(--text-xs);
-		font-weight: 600;
-		padding: 0.3rem 0.6rem;
 		border-radius: var(--radius-sm);
-	}
-	.btn-switch-dept:disabled {
-		opacity: 0.5;
-	}
-	.btn-remove {
-		color: var(--color-wine);
-		font-weight: 600;
-		font-size: var(--text-xs);
+		background: var(--color-white);
 	}
 	.btn-restore {
 		color: #15803d;
