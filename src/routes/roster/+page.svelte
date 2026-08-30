@@ -13,6 +13,10 @@
 		assignRepeat,
 		pardonRepeat,
 		setPortraitUrl,
+		isJSS3,
+		isSeniorClass,
+		siblingDepartmentClassId,
+		moveStudentToClass,
 		type Student,
 		type Remark
 	} from '$lib/roster';
@@ -149,6 +153,21 @@
 		}
 	}
 
+	let movingId = $state<string | null>(null);
+
+	async function handleMoveClass(id: string, newClassId: string) {
+		error = '';
+		movingId = id;
+		try {
+			await moveStudentToClass(id, newClassId);
+			await load();
+		} catch (e) {
+			error = e instanceof Error ? e.message : 'Failed to move student';
+		} finally {
+			movingId = null;
+		}
+	}
+
 	function openPortraitEditor(s: Student) {
 		editPortraitUrl = s.portrait_url ?? '';
 		editingPortraitId = s.id;
@@ -282,6 +301,37 @@
 							</td>
 							<td class="actions-cell">
 								{#if s.active}
+									{#if isJSS3(s.class_id)}
+										<span class="promote-group" title="Promote to SS1 — choose a path">
+											<button
+												class="btn-promote"
+												disabled={movingId === s.id}
+												onclick={() => handleMoveClass(s.id, 'SS1 Science')}
+											>
+												→ SS1 Science
+											</button>
+											<button
+												class="btn-promote"
+												disabled={movingId === s.id}
+												onclick={() => handleMoveClass(s.id, 'SS1 Actuarial')}
+											>
+												→ SS1 Actuarial
+											</button>
+										</span>
+									{/if}
+									{#if isSeniorClass(s.class_id)}
+										<button
+											class="btn-switch-dept"
+											disabled={movingId === s.id}
+											onclick={() => {
+												const sibling = siblingDepartmentClassId(s.class_id);
+												if (sibling) handleMoveClass(s.id, sibling);
+											}}
+											title="Students are allowed to change their mind after their first assignment"
+										>
+											Switch to {siblingDepartmentClassId(s.class_id)?.split(' ')[1]}
+										</button>
+									{/if}
 									<button class="btn-repeat" onclick={() => handleToggleRepeat(s)}>
 										{s.repeating ? 'Pardon repeat' : 'Assign repeat'}
 									</button>
@@ -589,6 +639,33 @@
 		background: var(--color-purple-ghost);
 		padding: 0.3rem 0.6rem;
 		border-radius: var(--radius-sm);
+	}
+	.promote-group {
+		display: inline-flex;
+		gap: 0.3rem;
+	}
+	.btn-promote {
+		color: white;
+		background: var(--color-purple-deep);
+		font-size: var(--text-xs);
+		font-weight: 600;
+		padding: 0.3rem 0.6rem;
+		border-radius: var(--radius-sm);
+	}
+	.btn-promote:disabled {
+		opacity: 0.5;
+	}
+	.btn-switch-dept {
+		color: var(--color-purple-deep);
+		background: transparent;
+		border: 1px solid var(--color-cream-deep);
+		font-size: var(--text-xs);
+		font-weight: 600;
+		padding: 0.3rem 0.6rem;
+		border-radius: var(--radius-sm);
+	}
+	.btn-switch-dept:disabled {
+		opacity: 0.5;
 	}
 	.btn-remove {
 		color: var(--color-wine);
