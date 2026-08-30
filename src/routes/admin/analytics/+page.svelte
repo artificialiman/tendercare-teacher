@@ -44,7 +44,7 @@
 			listSubjectAverages(term.id),
 			listClassAverages(term.id, term.academic_year),
 			listScoreEntryCompletion(term.id),
-			listNewStudents(60),
+			listNewStudents(),
 			supabase.from('staff').select('staff_type').eq('active', true)
 		]);
 
@@ -161,7 +161,7 @@
 			</a>
 			<div class="wrapped-card">
 				<span class="wrapped-card__value">{newStudents.length}</span>
-				<span class="wrapped-card__label">New (60d)</span>
+				<span class="wrapped-card__label">New (since Sept 1)</span>
 			</div>
 		</div>
 
@@ -186,7 +186,7 @@
 		<section class="panel">
 			<h2>Score-Entry Completion</h2>
 			<div class="completion-list">
-				{#each completion as c (c.classId)}
+				{#each completion.slice(0, 7) as c (c.classId)}
 					<div class="completion-row">
 						<span class="completion-label">{c.classLabel}</span>
 						<div class="completion-track">
@@ -196,21 +196,50 @@
 					</div>
 				{/each}
 			</div>
+			{#if completion.length > 7}
+				<details class="fold">
+					<summary>{completion.length - 7} more</summary>
+					<div class="completion-list completion-list--folded">
+						{#each completion.slice(7) as c (c.classId)}
+							<div class="completion-row">
+								<span class="completion-label">{c.classLabel}</span>
+								<div class="completion-track">
+									<div class="completion-fill" style="width:{c.percent}%;background:{statusColor(c.percent)};"></div>
+								</div>
+								<span class="completion-value" style="color:{statusColor(c.percent)};">{c.percent}%</span>
+							</div>
+						{/each}
+					</div>
+				</details>
+			{/if}
 		</section>
 
 		<section class="panel">
 			<h2>New Students</h2>
 			{#if newStudents.length === 0}
-				<p class="empty-note">None in the last 60 days.</p>
+				<p class="empty-note">None since September 1.</p>
 			{:else}
 				<div class="new-students-list">
-					{#each newStudents as s (s.id)}
+					{#each newStudents.slice(0, 7) as s (s.id)}
 						<div class="new-student-row">
 							<span>{s.full_name}</span>
 							<span class="new-student-class">{s.class_id}</span>
 						</div>
 					{/each}
 				</div>
+				{#if newStudents.length > 7}
+					<details class="fold">
+						<summary>{newStudents.length - 7} more</summary>
+						<div class="new-students-list new-students-list--folded">
+							{#each newStudents.slice(7) as s (s.id)}
+								<div class="new-student-row">
+									<span>{s.full_name}</span>
+									<span class="new-student-class">{s.class_id}</span>
+								</div>
+							{/each}
+						</div>
+					</details>
+				{/if}
 			{/if}
 		</section>
 	{/if}
@@ -392,6 +421,30 @@
 	.empty-note {
 		opacity: 0.5;
 		font-size: var(--text-sm);
+	}
+	.fold {
+		margin-top: var(--space-2);
+	}
+	.fold summary {
+		cursor: pointer;
+		font-size: var(--text-xs);
+		font-weight: 600;
+		color: var(--color-purple-deep);
+		list-style: none;
+		padding: var(--space-2) 0;
+	}
+	.fold summary::-webkit-details-marker {
+		display: none;
+	}
+	.fold summary::before {
+		content: '▸ ';
+	}
+	.fold[open] summary::before {
+		content: '▾ ';
+	}
+	.completion-list--folded,
+	.new-students-list--folded {
+		margin-top: var(--space-2);
 	}
 	.new-students-list {
 		display: flex;

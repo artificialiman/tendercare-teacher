@@ -26,6 +26,10 @@
 			<span class="admin-home__button-label">Analytics</span>
 			<span class="admin-home__button-sub">Enrollment, class averages, feed activity, and alumni tracking.</span>
 		</a>
+		<div class="admin-home__button admin-home__button--soon" aria-disabled="true">
+			<span class="admin-home__button-label">Result Codes</span>
+			<span class="admin-home__button-sub">One per student, per term. Built and managed separately.</span>
+		</div>
 	</div>
 </div>
 
@@ -102,6 +106,23 @@
 	}
 	.admin-home__button--analytics {
 		background: var(--color-ink);
+	}
+	.admin-home__button--soon {
+		background: var(--color-cream);
+		color: var(--color-ink);
+		opacity: 0.65;
+		cursor: default;
+	}
+	.admin-home__button--soon .admin-home__button-label {
+		color: var(--color-purple-deep);
+	}
+	.admin-home__button--soon .admin-home__button-sub {
+		color: var(--color-ink);
+		opacity: 0.6;
+	}
+	.admin-home__button--soon:hover {
+		transform: none;
+		box-shadow: none;
 	}
 	.admin-home__button-label {
 		font-family: var(--font-display);

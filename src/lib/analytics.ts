@@ -228,17 +228,28 @@ export interface NewStudent {
 }
 
 /**
- * Most recently created students -- new admissions and transfers-in.
- * `terms` has no start-date column (only academic_year/term_number/
- * is_current), so "since the current term started" genuinely can't be
- * computed from the schema as it stands -- this is a recent-window
- * proxy (default 60 days) instead, newest first. "New classes" can be
- * read off this same list: any class_id appearing here that isn't in
- * `classes` yet (a class add_class() just created) is new by
- * definition, not something this function has to infer separately.
+ * Students created since the current academic year's September 1 start
+ * -- "new" per direct instruction: names added after September 1, full
+ * stop, not a rolling window. Mirrors the exact boundary
+ * create_student() already uses for the TCH-<academic-year>- prefix
+ * (0007_fix_student_id_year.sql: month >= 9 -> this calendar year is the
+ * academic year's start, else last year's September). Before September
+ * 1 arrives, this returns nothing -- there's no such thing as "new"
+ * students yet in a session that hasn't started, which is exactly why
+ * every seeded/historical row was wrongly showing up under the old
+ * 60-day window.
+ *
+ * Caveat this can't fix from here: `created_at` is when the row was
+ * inserted into Supabase, not the student's real enrollment date. If a
+ * batch of genuinely old students gets bulk-migrated or re-seeded after
+ * this September 1 boundary, they'll still show as "new" -- that's a
+ * seed/migration data-hygiene question, not something a created_at
+ * filter can distinguish.
  */
-export async function listNewStudents(sinceDays = 60): Promise<NewStudent[]> {
-	const since = new Date(Date.now() - sinceDays * 24 * 60 * 60 * 1000).toISOString();
+export async function listNewStudents(): Promise<NewStudent[]> {
+	const now = new Date();
+	const septFirstYear = now.getUTCMonth() >= 8 ? now.getUTCFullYear() : now.getUTCFullYear() - 1; // month is 0-indexed; 8 = September
+	const since = new Date(Date.UTC(septFirstYear, 8, 1)).toISOString();
 	const { data, error } = await supabase
 		.from('students')
 		.select('id, full_name, class_id, created_at')
