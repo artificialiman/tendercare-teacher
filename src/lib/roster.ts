@@ -130,35 +130,78 @@ export async function setPortraitUrl(id: string, url: string | null): Promise<vo
 	if (error) throw error;
 }
 
-/**
- * Every senior class is named "SS<level> <department>" (see the classes
- * seed data) -- department isn't a separate column, it's baked into which
- * class a student is in. These helpers work off that naming instead of
- * adding a redundant department field that could drift out of sync with
- * class_id.
- */
-export function isJSS3(classId: string): boolean {
-	return classId === 'JSS3A' || classId === 'JSS3B';
-}
-
-export function isSeniorClass(classId: string): boolean {
-	return /^SS[123] (Science|Actuarial)$/.test(classId);
+export interface ClassInfo {
+	id: string;
+	label: string;
+	arm: string; // JSS arm letter ('A', 'B', ...) or SS department name ('Science', 'Actuarial', ...)
+	stage: 'JSS' | 'SS';
+	level: 1 | 2 | 3;
+	sort_order: number;
 }
 
 /**
- * The sibling department at the same SS level -- "SS2 Science" <->
- * "SS2 Actuarial". Returns null for anything that isn't a senior class.
+ * Every class the school currently has, in tab order. Not hardcoded to "2
+ * arms per junior level, 2 departments per senior level" -- that was seed
+ * data, never a ceiling. Any junior level can end up with any number of
+ * arms, any senior level with any number of departments; this always
+ * reflects whatever actually exists in `classes` right now.
  */
-export function siblingDepartmentClassId(classId: string): string | null {
-	const match = classId.match(/^(SS[123]) (Science|Actuarial)$/);
-	if (!match) return null;
-	const [, level, dept] = match;
-	return `${level} ${dept === 'Science' ? 'Actuarial' : 'Science'}`;
+export async function listClasses(): Promise<ClassInfo[]> {
+	const { data, error } = await supabase
+		.from('classes')
+		.select('id, label, arm, stage, level, sort_order')
+		.order('sort_order');
+	if (error) throw error;
+	return data as ClassInfo[];
+}
+
+/**
+ * Adds a new arm (JSS) or department (SS) at a given level -- calls the
+ * add_class() Postgres function (0011_extensible_classes.sql), which does
+ * the id/label naming and the sort-order bookkeeping atomically so the new
+ * class lands grouped with its siblings rather than always at the end.
+ */
+export async function addClass(
+	stage: 'JSS' | 'SS',
+	level: 1 | 2 | 3,
+	arm: string,
+	label?: string
+): Promise<ClassInfo> {
+	const { data, error } = await supabase.rpc('add_class', {
+		p_stage: stage,
+		p_level: level,
+		p_arm: arm.trim(),
+		p_label: label?.trim() || null
+	});
+	if (error) throw error;
+	return data as ClassInfo;
+}
+
+/** True for the one level every junior arm eventually leaves through -- JSS3. */
+export function isGraduatingJuniorClass(cls: ClassInfo): boolean {
+	return cls.stage === 'JSS' && cls.level === 3;
+}
+
+/**
+ * Every SS1 class a JSS3 student could promote into -- however many
+ * departments actually exist, not a fixed pair.
+ */
+export function promotionTargets(classes: ClassInfo[]): ClassInfo[] {
+	return classes.filter((c) => c.stage === 'SS' && c.level === 1);
+}
+
+/**
+ * Every OTHER department at the same senior level a student could switch
+ * into -- could be one alternative (today's Science/Actuarial split) or
+ * several, once a level has 3+ departments.
+ */
+export function departmentSwitchTargets(current: ClassInfo, classes: ClassInfo[]): ClassInfo[] {
+	return classes.filter((c) => c.stage === 'SS' && c.level === current.level && c.id !== current.id);
 }
 
 /**
  * Moves a student to a different class -- used for both the JSS3->SS1
- * promotion (staff picks Science or Actuarial, since that's the one
+ * promotion (staff picks which SS1 department, since that's the one
  * branch point in an otherwise straight-line promotion path) and for a
  * senior student switching department after they've already been placed.
  * A student's id never changes here -- promotion/department changes are
