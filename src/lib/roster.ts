@@ -183,20 +183,83 @@ export function isGraduatingJuniorClass(cls: ClassInfo): boolean {
 }
 
 /**
- * Every SS1 class a JSS3 student could promote into -- however many
- * departments actually exist, not a fixed pair.
+ * True for the holding class run_promotion() (0012_run_promotion.sql)
+ * drops former JSS3 students into -- 'SS1 Unassigned'. These students
+ * haven't been given a department yet; the roster UI shows the
+ * Science/Actuarial/Repeat/Remove assignment flow for them instead of the
+ * ordinary switch-class button.
  */
-export function promotionTargets(classes: ClassInfo[]): ClassInfo[] {
-	return classes.filter((c) => c.stage === 'SS' && c.level === 1);
+export function isPendingAssignment(cls: ClassInfo): boolean {
+	return cls.stage === 'SS' && cls.level === 1 && cls.arm === 'Unassigned';
 }
 
 /**
- * Every OTHER department at the same senior level a student could switch
- * into -- could be one alternative (today's Science/Actuarial split) or
- * several, once a level has 3+ departments.
+ * Every SS1 class a JSS3 student could promote into -- however many
+ * departments actually exist, not a fixed pair. Excludes the Unassigned
+ * holding class itself, since that's not a real destination.
  */
-export function departmentSwitchTargets(current: ClassInfo, classes: ClassInfo[]): ClassInfo[] {
-	return classes.filter((c) => c.stage === 'SS' && c.level === current.level && c.id !== current.id);
+export function promotionTargets(classes: ClassInfo[]): ClassInfo[] {
+	return classes.filter((c) => c.stage === 'SS' && c.level === 1 && c.arm !== 'Unassigned');
+}
+
+/**
+ * Every OTHER arm (JSS) or department (SS) at the same stage+level a
+ * student could switch into -- could be one alternative (today's A/B or
+ * Science/Actuarial split) or several, once a level has 3+ branches.
+ * Works for junior arms and senior departments alike -- switching arms is
+ * the same operation as switching departments, just one level down.
+ * Excludes any Unassigned holding class -- that's an internal promotion
+ * state, not somewhere a student gets manually switched into.
+ */
+export function classSwitchTargets(current: ClassInfo, classes: ClassInfo[]): ClassInfo[] {
+	return classes.filter(
+		(c) =>
+			c.stage === current.stage &&
+			c.level === current.level &&
+			c.id !== current.id &&
+			c.arm !== 'Unassigned'
+	);
+}
+
+/**
+ * Assigns a pending (post-promotion, Unassigned) student their department
+ * -- the one piece of the JSS3->SS1 move that's never automatic.
+ */
+export async function assignDepartment(id: string, department: string): Promise<void> {
+	await moveStudentToClass(id, `SS1 ${department}`);
+}
+
+/**
+ * A pending student whose department assignment turns out to actually be
+ * "repeat JSS3" (e.g. a result came in after promotion already ran) --
+ * moves them back to a specific JSS3 class and marks them repeating in
+ * one step, rather than leaving them in limbo between two write calls.
+ */
+export async function sendPendingToRepeatJSS3(id: string, jss3ClassId: string): Promise<void> {
+	const { error } = await supabase
+		.from('students')
+		.update({ class_id: jss3ClassId, repeating: true, repeat_assigned_at: new Date().toISOString() })
+		.eq('id', id);
+	if (error) throw error;
+}
+
+export interface PromotionResult {
+	promoted_count: number;
+	graduated_count: number;
+	pending_assignment_count: number;
+}
+
+/**
+ * Runs the September 1st promotion job -- calls run_promotion()
+ * (0012_run_promotion.sql). Whole-roster, one-shot, not something to
+ * retry casually -- the caller (the attendance page) gates this behind
+ * its own multi-step confirm before ever calling here.
+ */
+export async function runPromotion(): Promise<PromotionResult> {
+	const { data, error } = await supabase.rpc('run_promotion');
+	if (error) throw error;
+	const row = (Array.isArray(data) ? data[0] : data) as PromotionResult;
+	return row;
 }
 
 /**
