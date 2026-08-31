@@ -1,0 +1,39 @@
+name: Nightly backup export
+
+# Independent-export leg of the antifail backup story (see
+# scripts/backup/run_nightly.md). Only safe to run now that this repo is
+# private -- the export contains real student names, scores, and staff
+# records. If this repo is ever made public again, disable this workflow
+# first, before anything else.
+
+on:
+  schedule:
+    - cron: '0 2 * * *' # 2am UTC nightly -- adjust if a different time suits the school's own timezone better
+  workflow_dispatch: {} # manual "run now" button in the Actions tab, for testing or an off-schedule backup
+
+permissions:
+  contents: write
+
+jobs:
+  export:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Run export
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+        run: python3 scripts/backup/export_backup.py
+
+      - name: Commit snapshot
+        run: |
+          git config user.name "Nightly Backup"
+          git config user.email "backup@tendercare.local"
+          git add scripts/backup/exports/
+          git diff --staged --quiet || git commit -m "Nightly backup export $(date -u +%Y-%m-%d)"
+          git push
