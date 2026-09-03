@@ -4,7 +4,7 @@
 	import { supabase } from '$lib/supabase';
 	import Crest from '$lib/components/Crest.svelte';
 	import ConfirmButton from '$lib/components/ConfirmButton.svelte';
-	import { runPromotion, type PromotionResult } from '$lib/roster';
+	import { runPromotion, checkPromotionAlreadyRun, type PromotionResult } from '$lib/roster';
 
 	let checkingSession = $state(true);
 	let loading = $state(true);
@@ -14,6 +14,7 @@
 	let running = $state(false);
 	let result = $state<PromotionResult | null>(null);
 	let promotionError = $state('');
+	let promotionAlreadyRun = $state(false);
 
 	onMount(async () => {
 		const {
@@ -33,6 +34,13 @@
 		} finally {
 			loading = false;
 		}
+		try {
+			promotionAlreadyRun = await checkPromotionAlreadyRun();
+		} catch {
+			// If this check itself fails, leave the button live -- the
+			// database-side guard in run_promotion() still refuses a
+			// second run regardless of what the UI shows.
+		}
 	});
 
 	async function handleRunPromotion() {
@@ -41,10 +49,16 @@
 		result = null;
 		try {
 			result = await runPromotion();
+			promotionAlreadyRun = true;
 			const { data } = await supabase.from('classes').select('id, label').order('sort_order');
 			classes = data ?? [];
 		} catch (e) {
-			promotionError = e instanceof Error ? e.message : 'Promotion failed';
+			const message = e instanceof Error ? e.message : 'Promotion failed';
+			if (message.toLowerCase().includes('already been run')) {
+				promotionAlreadyRun = true;
+			} else {
+				promotionError = message;
+			}
 		} finally {
 			running = false;
 		}
@@ -93,14 +107,20 @@
 				now pending department assignment.
 			</div>
 		{/if}
-		<ConfirmButton
-			label="Run September 1st Promotion"
-			confirmLabel="This moves the ENTIRE roster. Confirm?"
-			finalLabel="Yes — run it now"
-			variant="danger"
-			disabled={running}
-			onconfirm={handleRunPromotion}
-		/>
+		{#if promotionAlreadyRun}
+			<div class="promotion-done">
+				Already run for this cycle — the next run unlocks after next year's September 1st rollover.
+			</div>
+		{:else}
+			<ConfirmButton
+				label="Run September 1st Promotion"
+				confirmLabel="This moves the ENTIRE roster. Confirm?"
+				finalLabel="Yes — run it now"
+				variant="danger"
+				disabled={running}
+				onconfirm={handleRunPromotion}
+			/>
+		{/if}
 	</div>
 
 	<div class="form-card">
@@ -228,6 +248,11 @@
 		padding: var(--space-3) var(--space-4);
 		border-radius: var(--radius-md);
 		margin-bottom: var(--space-4);
+	}
+	.promotion-done {
+		font-size: var(--text-sm);
+		opacity: 0.65;
+		font-style: italic;
 	}
 	.loading-note {
 		opacity: 0.6;

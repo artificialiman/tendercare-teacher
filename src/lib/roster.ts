@@ -263,6 +263,19 @@ export async function runPromotion(): Promise<PromotionResult> {
 }
 
 /**
+ * Whether calling runPromotion() right now would be rejected because
+ * this cycle's rollover already happened (0014_promotion_terms_rollover.sql
+ * / 0015_guard_run_promotion_single_use.sql). The database itself refuses
+ * a second run either way -- this just lets the UI retract the button
+ * instead of waiting for staff to hit the error.
+ */
+export async function checkPromotionAlreadyRun(): Promise<boolean> {
+	const { data, error } = await supabase.rpc('promotion_already_run');
+	if (error) throw error;
+	return Boolean(data);
+}
+
+/**
  * Moves a student to a different class -- used for both the JSS3->SS1
  * promotion (staff picks which SS1 department, since that's the one
  * branch point in an otherwise straight-line promotion path) and for a
