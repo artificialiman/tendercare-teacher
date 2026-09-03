@@ -44,12 +44,12 @@ function getDb(): Promise<IDBPDatabase> {
 	return dbPromise;
 }
 
-async function cacheRead<T>(key: string): Promise<CacheEntry<T> | undefined> {
+export async function cacheRead<T>(key: string): Promise<CacheEntry<T> | undefined> {
 	const db = await getDb();
 	return (await db.get('cache', key)) as CacheEntry<T> | undefined;
 }
 
-async function cacheWrite<T>(key: string, data: T): Promise<void> {
+export async function cacheWrite<T>(key: string, data: T): Promise<void> {
 	const db = await getDb();
 	await db.put('cache', { key, data, cachedAt: new Date().toISOString() });
 }

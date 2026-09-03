@@ -1,4 +1,5 @@
 import { supabase } from '$lib/supabase';
+import { readThroughCache } from '$lib/offline';
 
 export interface Student {
 	id: string;
@@ -81,12 +82,22 @@ export async function permanentlyEraseStudent(id: string): Promise<void> {
 	if (error) throw error;
 }
 
+/**
+ * Every student on the roster (or one class's, if `classId` is given).
+ * Read-through cached (offline.ts): a live fetch refreshes the cache on
+ * success; a dropped connection falls back to whatever was last fetched,
+ * so the roster is still viewable offline, just possibly stale.
+ */
 export async function listRoster(classId?: string): Promise<Student[]> {
-	let query = supabase.from('students').select('*').order('id');
-	if (classId) query = query.eq('class_id', classId);
-	const { data, error } = await query;
-	if (error) throw error;
-	return data as Student[];
+	const key = `roster:${classId ?? 'all'}`;
+	const result = await readThroughCache(key, async () => {
+		let query = supabase.from('students').select('*').order('id');
+		if (classId) query = query.eq('class_id', classId);
+		const { data, error } = await query;
+		if (error) throw error;
+		return data as Student[];
+	});
+	return result.data;
 }
 
 /**
@@ -147,12 +158,15 @@ export interface ClassInfo {
  * reflects whatever actually exists in `classes` right now.
  */
 export async function listClasses(): Promise<ClassInfo[]> {
-	const { data, error } = await supabase
-		.from('classes')
-		.select('id, label, arm, stage, level, sort_order')
-		.order('sort_order');
-	if (error) throw error;
-	return data as ClassInfo[];
+	const result = await readThroughCache('classes:all', async () => {
+		const { data, error } = await supabase
+			.from('classes')
+			.select('id, label, arm, stage, level, sort_order')
+			.order('sort_order');
+		if (error) throw error;
+		return data as ClassInfo[];
+	});
+	return result.data;
 }
 
 /**
