@@ -1,0 +1,18 @@
+{
+	"name": "Tender Care Comprehensive College — Staff",
+	"short_name": "TCC Staff",
+	"description": "Roster, scores, and attendance for Tender Care Comprehensive College staff.",
+	"start_url": "/",
+	"scope": "/",
+	"display": "standalone",
+	"background_color": "#ffffff",
+	"theme_color": "#3A1A5C",
+	"icons": [
+		{
+			"src": "/icons/crest.svg",
+			"sizes": "any",
+			"type": "image/svg+xml",
+			"purpose": "any maskable"
+		}
+	]
+}
