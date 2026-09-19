@@ -13,6 +13,7 @@
 		assignRepeat,
 		pardonRepeat,
 		setPortraitUrl,
+		setBio,
 		listClasses,
 		addClass,
 		isPendingAssignment,
@@ -61,6 +62,10 @@
 	let editingPortraitId = $state<string | null>(null);
 	let editPortraitUrl = $state('');
 	let savingPortrait = $state(false);
+
+	let editingBioId = $state<string | null>(null);
+	let editBioText = $state('');
+	let savingBio = $state(false);
 
 	async function load() {
 		if (!classId) {
@@ -244,6 +249,30 @@
 		}
 	}
 
+	function openBioEditor(s: Student) {
+		editBioText = s.bio ?? '';
+		editingBioId = s.id;
+	}
+
+	function closeBioEditor() {
+		editingBioId = null;
+	}
+
+	async function handleSaveBio() {
+		if (!editingBioId) return;
+		savingBio = true;
+		error = '';
+		try {
+			await setBio(editingBioId, editBioText);
+			await load();
+			editingBioId = null;
+		} catch (e) {
+			error = e instanceof Error ? e.message : 'Failed to save bio';
+		} finally {
+			savingBio = false;
+		}
+	}
+
 	function initials(name: string): string {
 		return name
 			.split(' ')
@@ -376,6 +405,13 @@
 								{#if s.repeating}
 									<span class="repeat-badge" title="Assigned to repeat this class">Repeating</span>
 								{/if}
+								<button
+									class="bio-dot"
+									onclick={() => openBioEditor(s)}
+									title={s.bio ? 'Edit bio' : 'Add bio'}
+								>
+									{s.bio ? 'Bio' : '+ Bio'}
+								</button>
 							</td>
 							<td>
 								{#if remarksByStudent.has(s.id)}
@@ -494,6 +530,30 @@
 					<button class="btn-secondary" onclick={closePortraitEditor}>Cancel</button>
 					<button class="btn-primary" onclick={handleSavePortrait} disabled={savingPortrait}>
 						{savingPortrait ? 'Saving…' : 'Save'}
+					</button>
+				</div>
+			</div>
+		</div>
+	{/if}
+
+	{#if editingBioId}
+		<div
+			class="portrait-modal-backdrop"
+			role="button"
+			tabindex="0"
+			onclick={closeBioEditor}
+			onkeydown={(e) => e.key === 'Escape' && closeBioEditor()}
+		>
+			<div class="portrait-modal bio-modal" role="dialog" aria-modal="true" tabindex="-1" onclick={(e) => e.stopPropagation()}>
+				<h2>Bio</h2>
+				<p class="portrait-modal-note">
+					Teacher-editable, free text — unlike remarks, this is never auto-generated.
+				</p>
+				<textarea rows="5" placeholder="Add a short bio…" bind:value={editBioText}></textarea>
+				<div class="portrait-modal-actions">
+					<button class="btn-secondary" onclick={closeBioEditor}>Cancel</button>
+					<button class="btn-primary" onclick={handleSaveBio} disabled={savingBio}>
+						{savingBio ? 'Saving…' : 'Save'}
 					</button>
 				</div>
 			</div>
@@ -830,6 +890,24 @@
 		margin-left: 0.4rem;
 		vertical-align: middle;
 	}
+
+	.bio-dot {
+		display: inline-block;
+		font-size: 0.7rem;
+		font-weight: 600;
+		padding: 0.15rem 0.5rem;
+		border-radius: var(--radius-full);
+		border: 1px solid var(--color-cream-deep);
+		background: transparent;
+		color: var(--color-ash-dark);
+		margin-left: 0.4rem;
+		vertical-align: middle;
+		cursor: pointer;
+	}
+	.bio-dot:hover {
+		border-color: var(--color-purple-light);
+		color: var(--color-purple-deep);
+	}
 	.remark-badge {
 		display: inline-block;
 		font-size: 0.78rem;
@@ -893,6 +971,21 @@
 		margin-bottom: var(--space-4);
 	}
 	.portrait-modal input:focus {
+		outline: none;
+		border-color: var(--color-purple-light);
+	}
+	.bio-modal textarea {
+		width: 100%;
+		box-sizing: border-box;
+		padding: 0.7rem 0.9rem;
+		border: 1.5px solid var(--color-cream-deep);
+		border-radius: var(--radius-md);
+		font-size: var(--text-sm);
+		font-family: inherit;
+		resize: vertical;
+		margin-bottom: var(--space-4);
+	}
+	.bio-modal textarea:focus {
 		outline: none;
 		border-color: var(--color-purple-light);
 	}

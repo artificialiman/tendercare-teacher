@@ -12,6 +12,7 @@ export interface Student {
 	repeat_assigned_at: string | null;
 	repeat_pardoned_at: string | null;
 	portrait_url: string | null;
+	bio: string | null;
 }
 
 export interface NewStudentInput {
@@ -137,6 +138,23 @@ export async function setPortraitUrl(id: string, url: string | null): Promise<vo
 	const { error } = await supabase
 		.from('students')
 		.update({ portrait_url: url?.trim() || null })
+		.eq('id', id);
+	if (error) throw error;
+}
+
+/**
+ * Set or clear a student's bio (invariant #2). Free text, teacher-
+ * editable -- unlike remarks (see listRemarksForTerm below), which are
+ * auto-assigned by a trigger and deliberately have no write path here,
+ * bio is exactly the field remarks used to be before that changed:
+ * staff type it in directly. The `bio` column has existed on
+ * `students` since 0008_alumni_id_recycling.sql; this is the first
+ * write path for it.
+ */
+export async function setBio(id: string, bio: string | null): Promise<void> {
+	const { error } = await supabase
+		.from('students')
+		.update({ bio: bio?.trim() || null })
 		.eq('id', id);
 	if (error) throw error;
 }
