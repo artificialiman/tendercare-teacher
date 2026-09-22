@@ -3,6 +3,7 @@
 	import { supabase } from '$lib/supabase';
 	import Crest from '$lib/components/Crest.svelte';
 	import BarChart from '$lib/components/BarChart.svelte';
+	import { requireSession } from '$lib/authGuard';
 	import {
 		listSubjectAverages,
 		listClassAverages,
@@ -14,6 +15,8 @@
 		type NewStudent
 	} from '$lib/analytics';
 
+	// Had no auth guard at all before -- see admin/+page.svelte's note.
+	let checkingSession = $state(true);
 	let loading = $state(true);
 	let termLabel = $state('');
 
@@ -23,7 +26,12 @@
 	let newStudents = $state<NewStudent[]>([]);
 	let staffByType = $state<{ label: string; value: number }[]>([]);
 
-	onMount(load);
+	onMount(async () => {
+		const check = await requireSession();
+		if (!check.ok) return;
+		checkingSession = false;
+		await load();
+	});
 
 	async function load() {
 		loading = true;
@@ -125,6 +133,9 @@
 	<title>Analytics — Tendercare Admin</title>
 </svelte:head>
 
+{#if checkingSession}
+	<p class="session-check">Checking session…</p>
+{:else}
 <div class="analytics">
 	<Crest class="analytics__watermark" />
 
@@ -244,8 +255,15 @@
 		</section>
 	{/if}
 </div>
+{/if}
 
 <style>
+	.session-check {
+		text-align: center;
+		padding: 4rem 1rem;
+		opacity: 0.6;
+		font-family: var(--font-sans);
+	}
 	.analytics {
 		position: relative;
 		overflow: hidden;

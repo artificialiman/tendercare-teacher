@@ -1,11 +1,31 @@
 <script lang="ts">
+	import { onMount } from 'svelte';
 	import Crest from '$lib/components/Crest.svelte';
+	import { requireSession } from '$lib/authGuard';
+
+	// This page had NO auth guard at all before -- reachable by direct
+	// navigation regardless of session, the only protection being that
+	// the dashboard simply didn't link here for anyone not already
+	// logged in (irrelevant if someone bookmarks or types the URL).
+	// Viewable by staff AND admin (matching "staff can view the staff
+	// list" RLS on the staff table) -- admin-only enforcement happens
+	// within /admin/staff for the actual write actions, not at this hub.
+	let checkingSession = $state(true);
+
+	onMount(async () => {
+		const check = await requireSession();
+		if (!check.ok) return;
+		checkingSession = false;
+	});
 </script>
 
 <svelte:head>
 	<title>Tendercare Admin</title>
 </svelte:head>
 
+{#if checkingSession}
+	<p class="session-check">Checking session…</p>
+{:else}
 <div class="admin-home">
 	<Crest class="admin-home__watermark" />
 
@@ -32,8 +52,15 @@
 		</div>
 	</div>
 </div>
+{/if}
 
 <style>
+	.session-check {
+		text-align: center;
+		padding: 4rem 1rem;
+		opacity: 0.6;
+		font-family: var(--font-sans);
+	}
 	.admin-home {
 		position: relative;
 		overflow: hidden;

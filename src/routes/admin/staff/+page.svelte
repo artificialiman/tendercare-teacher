@@ -2,6 +2,7 @@
 	import { onMount } from 'svelte';
 	import { supabase } from '$lib/supabase';
 	import Crest from '$lib/components/Crest.svelte';
+	import { requireSession } from '$lib/authGuard';
 
 	type StaffRow = {
 		id: string;
@@ -11,6 +12,15 @@
 		subject: string | null;
 		active: boolean;
 	};
+
+	// Had no auth guard at all before -- see admin/+page.svelte's note.
+	// Viewable by staff+admin (matching "staff can view the staff list"
+	// RLS), but the actual write actions below (add/remove) are
+	// admin-only per "admin manages staff" RLS -- isAdmin gates the form
+	// and remove buttons so a staff member sees an honest "admin only"
+	// message instead of a raw RLS rejection after clicking Add.
+	let checkingSession = $state(true);
+	let isAdmin = $state(false);
 
 	let staff = $state<StaffRow[]>([]);
 	let loading = $state(true);
@@ -28,7 +38,13 @@
 		corps_member: 'Corps Member'
 	};
 
-	onMount(load);
+	onMount(async () => {
+		const check = await requireSession();
+		if (!check.ok) return;
+		checkingSession = false;
+		isAdmin = check.role === 'admin';
+		await load();
+	});
 
 	async function load() {
 		loading = true;
@@ -43,7 +59,7 @@
 	}
 
 	async function addStaff() {
-		if (!newName.trim()) return;
+		if (!isAdmin || !newName.trim()) return;
 		saving = true;
 		error = null;
 		const { error: err } = await supabase.from('staff').insert({
@@ -64,6 +80,7 @@
 	}
 
 	async function removeStaff(id: string) {
+		if (!isAdmin) return;
 		saving = true;
 		const { error: err } = await supabase.from('staff').update({ active: false }).eq('id', id);
 		if (err) error = err.message;
@@ -76,6 +93,9 @@
 	<title>Staff &amp; Roles — Tendercare Admin</title>
 </svelte:head>
 
+{#if checkingSession}
+	<p class="session-check">Checking session…</p>
+{:else}
 <div class="staff-page">
 	<Crest class="staff-page__watermark" />
 
@@ -89,20 +109,24 @@
 		<p class="staff-page__error">{error}</p>
 	{/if}
 
-	<form class="staff-form" onsubmit={(e) => { e.preventDefault(); addStaff(); }}>
-		<input type="text" placeholder="Full name" bind:value={newName} required />
-		<select bind:value={newType}>
-			<option value="full_time">Full-time</option>
-			<option value="part_time">Part-time</option>
-			<option value="corps_member">Corps Member</option>
-		</select>
-		<input type="text" placeholder="Subject (optional)" bind:value={newSubject} />
-		<label class="staff-form__checkbox">
-			<input type="checkbox" bind:checked={newIsClassTeacher} />
-			Class teacher
-		</label>
-		<button type="submit" disabled={saving}>Add Staff</button>
-	</form>
+	{#if isAdmin}
+		<form class="staff-form" onsubmit={(e) => { e.preventDefault(); addStaff(); }}>
+			<input type="text" placeholder="Full name" bind:value={newName} required />
+			<select bind:value={newType}>
+				<option value="full_time">Full-time</option>
+				<option value="part_time">Part-time</option>
+				<option value="corps_member">Corps Member</option>
+			</select>
+			<input type="text" placeholder="Subject (optional)" bind:value={newSubject} />
+			<label class="staff-form__checkbox">
+				<input type="checkbox" bind:checked={newIsClassTeacher} />
+				Class teacher
+			</label>
+			<button type="submit" disabled={saving}>Add Staff</button>
+		</form>
+	{:else}
+		<p class="staff-page__readonly-note">You can view the staff list. Adding or removing staff needs an admin account.</p>
+	{/if}
 
 	{#if loading}
 		<p class="staff-page__loading">Loading…</p>
@@ -118,16 +142,25 @@
 							{typeLabels[person.staff_type]}{person.is_class_teacher ? ' · Class Teacher' : ''}{person.subject ? ` · ${person.subject}` : ''}
 						</span>
 					</div>
-					<button class="staff-row__remove" onclick={() => removeStaff(person.id)} disabled={saving}>
-						Remove
-					</button>
+					{#if isAdmin}
+						<button class="staff-row__remove" onclick={() => removeStaff(person.id)} disabled={saving}>
+							Remove
+						</button>
+					{/if}
 				</div>
 			{/each}
 		</div>
 	{/if}
 </div>
+{/if}
 
 <style>
+	.session-check {
+		text-align: center;
+		padding: 4rem 1rem;
+		opacity: 0.6;
+		font-family: var(--font-sans);
+	}
 	.staff-page {
 		position: relative;
 		overflow: hidden;
@@ -154,6 +187,7 @@
 	.staff-form,
 	.staff-list,
 	.staff-page__error,
+	.staff-page__readonly-note,
 	.staff-page__loading,
 	.staff-page__empty {
 		position: relative;
@@ -182,6 +216,14 @@
 		color: var(--color-wine);
 		font-size: var(--text-sm);
 		margin-bottom: var(--space-4);
+	}
+	.staff-page__readonly-note {
+		font-size: var(--text-sm);
+		opacity: 0.55;
+		background: var(--color-cream);
+		border-radius: var(--radius-md);
+		padding: var(--space-4) var(--space-5);
+		margin-bottom: var(--space-6);
 	}
 	.staff-form {
 		display: flex;
