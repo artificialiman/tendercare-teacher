@@ -1,0 +1,1896 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Grant CGPA Manual v2 — Mid-Project Technical &amp; Architectural Manual</title>
+<style>
+  /* ============================================================
+     TOKENS
+     ============================================================ */
+  :root {
+    --ink:        #131a21;
+    --body:       #2b343e;
+    --muted:      #5f6b78;
+    --faint:      #8b96a2;
+    --accent:     #0e4f5c;
+    --accent-dk:  #093b45;
+    --accent-lt:  #e6f0f2;
+    --warm:       #a8562a;
+    --warm-lt:    #faf1ea;
+    --rule:       #dbe2e8;
+    --rule-soft:  #eaeff3;
+    --paper:      #ffffff;
+    --tint:       #f5f9fa;
+    --code-bg:    #eef3f5;
+  }
+
+  /* ============================================================
+     RESET
+     ============================================================ */
+  *,
+  *::before,
+  *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { -webkit-text-size-adjust: 100%; }
+
+  /* ============================================================
+     PAGE / PAPER
+     ============================================================ */
+  @page {
+    size: A4;
+    margin: 18mm 16mm;
+  }
+
+  body {
+    background: #e9eef1;
+    color: var(--body);
+    font-family: Georgia, "Iowan Old Style", "Palatino Linotype", "Times New Roman", serif;
+    font-size: 16px;
+    line-height: 1.72;
+    padding: 44px 18px 80px;
+    display: flex;
+    justify-content: center;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .doc {
+    background: var(--paper);
+    width: 100%;
+    max-width: 900px;
+    padding: 64px 72px 76px;
+    border-radius: 3px;
+    box-shadow: 0 6px 34px rgba(11, 34, 40, 0.13);
+  }
+
+  /* ============================================================
+     COVER
+     ============================================================ */
+  .cover {
+    text-align: center;
+    padding: 22px 0 46px;
+    border-bottom: 3px double var(--accent);
+    margin-bottom: 42px;
+  }
+
+  .cover .eyebrow {
+    font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 3.2px;
+    text-transform: uppercase;
+    color: var(--warm);
+    margin-bottom: 20px;
+  }
+
+  .cover h1 {
+    font-family: Georgia, "Iowan Old Style", serif;
+    font-size: 40px;
+    line-height: 1.16;
+    font-weight: 700;
+    color: var(--accent-dk);
+    letter-spacing: -0.6px;
+    margin-bottom: 8px;
+  }
+
+  .cover .rule {
+    width: 68px;
+    height: 3px;
+    background: var(--warm);
+    margin: 22px auto;
+    border-radius: 2px;
+  }
+
+  .cover .standfirst {
+    font-size: 17px;
+    font-style: italic;
+    color: var(--muted);
+    max-width: 620px;
+    margin: 0 auto;
+    line-height: 1.62;
+  }
+
+  .cover .standfirst + .standfirst {
+    margin-top: 14px;
+    font-size: 15.5px;
+  }
+
+  /* ============================================================
+     TABLE OF CONTENTS
+     ============================================================ */
+  .toc {
+    background: var(--tint);
+    border: 1px solid var(--rule);
+    border-left: 4px solid var(--accent);
+    border-radius: 0 5px 5px 0;
+    padding: 24px 30px 26px;
+    margin-bottom: 52px;
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  .toc-title {
+    font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2.4px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 14px;
+  }
+
+  .toc ol {
+    list-style: none;
+    counter-reset: toc;
+  }
+
+  .toc li {
+    counter-increment: toc;
+    font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    font-size: 14.5px;
+    line-height: 1.5;
+    padding: 5px 0 5px 34px;
+    position: relative;
+    border-bottom: 1px dotted var(--rule);
+  }
+
+  .toc li:last-child { border-bottom: 0; }
+
+  .toc li::before {
+    content: counter(toc, decimal-leading-zero);
+    position: absolute;
+    left: 0;
+    top: 5px;
+    font-size: 11.5px;
+    font-weight: 700;
+    color: var(--warm);
+    letter-spacing: 0.5px;
+  }
+
+  .toc li .t {
+    font-weight: 600;
+    color: var(--ink);
+  }
+
+  .toc li .d {
+    display: block;
+    font-size: 13px;
+    color: var(--muted);
+    font-weight: 400;
+    margin-top: 1px;
+  }
+
+  /* ============================================================
+     CHAPTERS
+     ============================================================ */
+  .chapter {
+    margin-bottom: 54px;
+  }
+
+  .chapter + .chapter {
+    border-top: 1px solid var(--rule-soft);
+    padding-top: 44px;
+  }
+
+  .chapter-head {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid var(--accent);
+    break-after: avoid;
+    page-break-after: avoid;
+  }
+
+  .chapter-head .num {
+    font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1.8px;
+    text-transform: uppercase;
+    color: var(--warm);
+    white-space: nowrap;
+    flex-shrink: 0;
+    padding-top: 3px;
+  }
+
+  .chapter-head h2 {
+    font-family: Georgia, "Iowan Old Style", serif;
+    font-size: 25px;
+    line-height: 1.24;
+    font-weight: 700;
+    color: var(--accent-dk);
+    letter-spacing: -0.3px;
+  }
+
+  h3 {
+    font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    font-size: 16.5px;
+    font-weight: 700;
+    color: var(--accent);
+    line-height: 1.4;
+    margin: 34px 0 12px;
+    break-after: avoid;
+    page-break-after: avoid;
+  }
+
+  /* ============================================================
+     PROSE
+     ============================================================ */
+  .prose p {
+    margin-bottom: 15px;
+    text-align: justify;
+    hyphens: auto;
+  }
+
+  .prose p:last-child { margin-bottom: 0; }
+
+  /* Questions — the manual's defining tic */
+  .q {
+    color: var(--accent-dk);
+    font-weight: 700;
+    background: linear-gradient(transparent 62%, rgba(14, 79, 92, 0.10) 62%);
+    padding-bottom: 1px;
+  }
+
+  em { font-style: italic; }
+
+  code {
+    font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+    font-size: 0.845em;
+    background: var(--code-bg);
+    color: var(--accent-dk);
+    padding: 1px 5px;
+    border-radius: 3px;
+    white-space: nowrap;
+  }
+
+  /* ============================================================
+     QUESTION BLOCK (chapter-level questions)
+     ============================================================ */
+  .qblock {
+    position: relative;
+    background: var(--accent-lt);
+    border: 1px solid #c3d9dd;
+    border-left: 4px solid var(--accent);
+    border-radius: 0 5px 5px 0;
+    padding: 20px 26px 20px 30px;
+    margin: 28px 0 6px;
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  .qblock .label {
+    display: block;
+    font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 2.2px;
+    text-transform: uppercase;
+    color: var(--warm);
+    margin-bottom: 9px;
+  }
+
+  .qblock p {
+    margin: 0;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--ink);
+    text-align: justify;
+  }
+
+  .qblock .mark {
+    position: absolute;
+    right: 14px;
+    top: 2px;
+    font-size: 74px;
+    line-height: 1;
+    font-family: Georgia, serif;
+    color: rgba(14, 79, 92, 0.10);
+    pointer-events: none;
+    user-select: none;
+  }
+
+  /* ============================================================
+     PREFACE / CLOSING VARIANTS
+     ============================================================ */
+  .preface {
+    background: var(--tint);
+    border-top: 2px solid var(--accent);
+    border-bottom: 1px solid var(--rule);
+    padding: 30px 34px;
+    margin-bottom: 52px;
+    border-radius: 3px;
+  }
+
+  .preface .kicker {
+    font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2.6px;
+    text-transform: uppercase;
+    color: var(--warm);
+    margin-bottom: 6px;
+  }
+
+  .preface h2 {
+    font-family: Georgia, "Iowan Old Style", serif;
+    font-size: 21px;
+    color: var(--accent-dk);
+    margin-bottom: 16px;
+    letter-spacing: -0.2px;
+  }
+
+  .preface p { text-align: justify; margin-bottom: 14px; }
+  .preface p:last-child { margin-bottom: 0; }
+
+  /* ============================================================
+     CLOSING BLOCK
+     ============================================================ */
+  .closing {
+    margin-top: 58px;
+    padding-top: 40px;
+    border-top: 3px double var(--accent);
+  }
+
+  .closing > h2 {
+    font-family: Georgia, "Iowan Old Style", serif;
+    font-size: 25px;
+    color: var(--accent-dk);
+    letter-spacing: -0.3px;
+    margin-bottom: 8px;
+  }
+
+  .closing .sub {
+    font-size: 15px;
+    font-style: italic;
+    color: var(--muted);
+    margin-bottom: 26px;
+  }
+
+  .closing .qblock {
+    background: var(--warm-lt);
+    border-color: #ecd6c6;
+    border-left-color: var(--warm);
+  }
+
+  .closing .qblock .mark { color: rgba(168, 86, 42, 0.11); }
+
+  .closing .qblock + .qblock { margin-top: 16px; }
+
+  /* ============================================================
+     FOOTER
+     ============================================================ */
+  .footer {
+    margin-top: 56px;
+    padding-top: 18px;
+    border-top: 1px solid var(--rule);
+    text-align: center;
+    font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    font-size: 11.5px;
+    letter-spacing: 0.6px;
+    color: var(--faint);
+  }
+
+  /* ============================================================
+     PRINT
+     ============================================================ */
+  @media print {
+    body {
+      background: #fff;
+      padding: 0;
+      font-size: 10.8pt;
+      line-height: 1.62;
+    }
+
+    .doc {
+      box-shadow: none;
+      border-radius: 0;
+      max-width: 100%;
+      padding: 0;
+    }
+
+    .cover { padding-top: 0; }
+    .cover h1 { font-size: 30pt; }
+    .cover .standfirst { font-size: 12pt; }
+
+    .chapter { break-before: page; page-break-before: always; }
+    .chapter:first-of-type { break-before: auto; page-break-before: auto; }
+
+    .preface { break-before: auto; }
+
+    .toc, .preface, .qblock, .closing .qblock {
+      break-inside: avoid;
+      page-break-inside: avoid;
+    }
+
+    .toc { background: #f7fafb; }
+
+    .qblock {
+      background: #f0f6f7;
+      border-color: #c3d9dd;
+    }
+
+    .closing .qblock {
+      background: #fbf4ef;
+      border-color: #ecd6c6;
+    }
+
+    h3, .chapter-head { break-after: avoid; page-break-after: avoid; }
+
+    .prose p { orphans: 3; widows: 3; }
+  }
+
+  /* ============================================================
+     NARROW SCREENS
+     ============================================================ */
+  @media (max-width: 700px) {
+    body { padding: 18px 10px 50px; }
+    .doc { padding: 32px 22px 42px; }
+    .cover h1 { font-size: 27px; }
+    .cover .standfirst { font-size: 15.5px; }
+    .chapter-head { flex-direction: column; gap: 6px; }
+    .chapter-head h2 { font-size: 21px; }
+    .toc { padding: 20px 18px 22px; }
+    .qblock { padding: 18px 18px 18px 20px; }
+    .qblock .mark { font-size: 54px; right: 8px; }
+    .preface { padding: 24px 20px; }
+    .prose p { text-align: left; hyphens: none; }
+  }
+
+  /* ============================================================
+     V2 ADDITIONS — tables, tags, registers, diagrams
+     ============================================================ */
+  .tbl-wrap { overflow-x: auto; margin: 22px 0 8px; -webkit-overflow-scrolling: touch; }
+
+  table.t {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    font-size: 13.2px;
+    line-height: 1.5;
+    color: var(--body);
+  }
+  table.t caption {
+    caption-side: top;
+    text-align: left;
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--warm);
+    padding-bottom: 8px;
+  }
+  table.t th {
+    background: var(--accent-lt);
+    color: var(--accent-dk);
+    font-weight: 700;
+    text-align: left;
+    padding: 8px 10px;
+    border-bottom: 2px solid var(--accent);
+    vertical-align: bottom;
+    white-space: nowrap;
+  }
+  table.t td {
+    padding: 8px 10px;
+    border-bottom: 1px solid var(--rule);
+    vertical-align: top;
+  }
+  table.t tr:nth-child(even) td { background: var(--tint); }
+  table.t td.id { font-weight: 700; color: var(--accent-dk); white-space: nowrap; }
+  table.t td.rule-cell { min-width: 150px; background: var(--warm-lt) !important; color: var(--warm); font-style: italic; }
+  table.t td.num { text-align: right; white-space: nowrap; }
+
+  .tag {
+    display: inline-block;
+    font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 2px 7px;
+    border-radius: 3px;
+    white-space: nowrap;
+    vertical-align: 1px;
+  }
+  .tag.pending  { background: var(--warm-lt); color: var(--warm); border: 1px solid #ecd6c6; }
+  .tag.settled  { background: var(--accent-lt); color: var(--accent-dk); border: 1px solid #c3d9dd; }
+  .tag.unver    { background: #f1f1f4; color: var(--muted); border: 1px solid var(--rule); }
+  .tag.blocked  { background: #fbeaea; color: #8a2b2b; border: 1px solid #efc9c9; }
+  .tag.new      { background: var(--accent); color: #fff; }
+
+  .eq {
+    font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+    font-size: 13.5px;
+    background: var(--code-bg);
+    border-left: 3px solid var(--accent);
+    padding: 12px 16px;
+    margin: 18px 0;
+    color: var(--accent-dk);
+    line-height: 1.85;
+    overflow-x: auto;
+    white-space: pre;
+    break-inside: avoid;
+  }
+
+  .stage-strip {
+    display: flex; gap: 0; margin: 22px 0; flex-wrap: wrap;
+    font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  }
+  .stage-strip .st {
+    flex: 1 1 150px; padding: 12px 14px; background: var(--accent-lt);
+    border: 1px solid #c3d9dd; margin: 0 -1px -1px 0; font-size: 12.5px; line-height: 1.45;
+  }
+  .stage-strip .st b { display: block; color: var(--accent-dk); font-size: 12px; letter-spacing: 1.2px; text-transform: uppercase; margin-bottom: 4px; }
+  .stage-strip .st.gate { background: var(--warm-lt); border-color: #ecd6c6; }
+  .stage-strip .st.gate b { color: var(--warm); }
+
+  .note {
+    background: var(--warm-lt);
+    border: 1px solid #ecd6c6;
+    border-left: 4px solid var(--warm);
+    border-radius: 0 5px 5px 0;
+    padding: 16px 22px;
+    margin: 22px 0;
+    font-size: 15px;
+    break-inside: avoid;
+  }
+  .note .label {
+    display: block; font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    font-size: 10.5px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+    color: var(--warm); margin-bottom: 6px;
+  }
+  .note p { margin: 0 0 8px; text-align: left; }
+  .note p:last-child { margin-bottom: 0; }
+
+  .qgroup-label {
+    font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    font-size: 11px; font-weight: 700; letter-spacing: 2.2px; text-transform: uppercase;
+    color: var(--accent); margin: 30px 0 6px; padding-bottom: 5px; border-bottom: 1px solid var(--rule);
+  }
+
+  .qlist { list-style: none; counter-reset: qn; margin: 8px 0 4px; }
+  .qlist li {
+    counter-increment: qn; position: relative; padding: 10px 0 10px 56px;
+    border-bottom: 1px dotted var(--rule); text-align: left; line-height: 1.62;
+  }
+  .qlist li::before {
+    content: attr(data-id); position: absolute; left: 0; top: 11px;
+    font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    font-size: 11px; font-weight: 700; letter-spacing: .5px; color: var(--warm);
+  }
+  .qlist li .opts {
+    display: block; margin-top: 4px; font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    font-size: 12.5px; color: var(--muted);
+  }
+
+  @media (max-width: 700px) {
+    table.t { font-size: 12px; }
+    table.t th, table.t td { padding: 6px 7px; }
+    .qlist li { padding-left: 48px; }
+    .note { padding: 14px 16px; }
+  }
+
+  @media print {
+    .tbl-wrap { overflow: visible; }
+    table.t { font-size: 8.8pt; }
+    table.t tr { break-inside: avoid; page-break-inside: avoid; }
+    .eq, .note, .stage-strip { break-inside: avoid; page-break-inside: avoid; }
+    .qlist li { break-inside: avoid; page-break-inside: avoid; }
+  }
+
+</style>
+</head>
+<body>
+
+<article class="doc">
+  <!-- ================= COVER ================= -->
+  <header class="cover">
+    <div class="eyebrow">Mid-Project Technical &amp; Architectural Manual &middot; v2</div>
+    <h1>The Grant CGPA Manual</h1>
+    <div class="rule"></div>
+    <p class="standfirst">
+      A mid-project technical and architectural manual, written after UI, Device Identity,
+      and Data Infrastructure have already been designed and proven to work in production.
+    </p>
+    <p class="standfirst">
+      Written to be read by someone who is about to write most of the custom code themselves,
+      and who needs granular control over every decision, not a summary of them.
+    </p>
+  </header>
+  <!-- ================= TOC (v2, reordered) ================= -->
+  <nav class="toc">
+    <div class="toc-title">Contents</div>
+    <ol>
+      <li><span class="t">Preface &mdash; What This Document Is and Is Not</span>
+        <span class="d">A discipline of questions, not a pitch <span class="tag settled">v1</span></span></li>
+      <li><span class="t">Part I &middot; Control Sheet, Scope Ruling, Evidence Grades</span>
+        <span class="d">Roadmap scope fixed; grade legend <span class="tag new">v2</span></span></li>
+      <li><span class="t">Part II &middot; Glossary, Doctrine Statements, Priority Order</span>
+        <span class="d">Every coined term; rules that can be tested <span class="tag new">v2</span></span></li>
+      <li><span class="t">Part III &middot; The Three Layers</span>
+        <span class="d">UI/UX, DevEx, Data infrastructure; live-site observation <span class="tag new">v2</span></span></li>
+      <li><span class="t">Chapter One &mdash; The Three-Stage Native Roadmap</span>
+        <span class="d">Vanilla &rarr; SvelteKit PWA &rarr; Native, stated as a sequence <span class="tag settled">v1</span> <span class="tag unver">scope-narrowed</span></span></li>
+      <li><span class="t">Chapter Two &mdash; Database Independence as a Precondition</span>
+        <span class="d">Why the split is load-bearing, not parallel <span class="tag settled">v1</span></span></li>
+      <li><span class="t">Chapter Three &mdash; What &ldquo;Proscale Doctrine&rdquo; Requires</span>
+        <span class="d">Named where findable, flagged where not <span class="tag settled">v1</span></span></li>
+      <li><span class="t">Chapter Four &mdash; Granular Control Points</span>
+        <span class="d">Where the codebase decides for you <span class="tag settled">v1</span></span></li>
+      <li><span class="t">Chapter Five &mdash; What Changes Once Native Is Certain</span>
+        <span class="d">Re-reading prior findings through a committed endpoint <span class="tag settled">v1</span> <span class="tag unver">scope-narrowed</span></span></li>
+      <li><span class="t">Part IV &middot; The Decision Register</span>
+        <span class="d">62 rows: 4 settled by scope, 58 open, ruling column blank <span class="tag new">v2</span></span></li>
+      <li><span class="t">Part V &middot; Roadmap With Gates and Acceptance Tests</span>
+        <span class="d">SvelteKit PWA &rarr; independent DB &rarr; freeze <span class="tag new">v2</span></span></li>
+      <li><span class="t">Part VI &middot; Threat Model</span>
+        <span class="d">What &ldquo;pinnacle of anti-theft&rdquo; must defend against <span class="tag new">v2</span></span></li>
+      <li><span class="t">Part VII &middot; Constants, Runbooks, Risks, Metrics</span>
+        <span class="d">The operating registers <span class="tag new">v2</span></span></li>
+      <li><span class="t">Part VIII &middot; Agent Rules (<code>MANUAL.md</code>)</span>
+        <span class="d">Standing instructions for every session <span class="tag new">v2</span></span></li>
+      <li><span class="t">Manual-Level Closing Questions</span>
+        <span class="d">The questions that shape everything above them <span class="tag settled">v1</span></span></li>
+    </ol>
+  </nav>
+
+  <!-- ================= PREFACE ================= -->
+  <section class="preface">
+    <div class="kicker">Preface</div>
+    <h2>What This Document Is and Is Not</h2>
+    <p>
+      This is not a pitch document. It does not exist to make the project sound finished, ambitious,
+      or impressive. It exists because five prior chapters of plain-prose auditing — reading actual
+      files, actual live row counts, actual git history, rather than trusting memory or intention —
+      surfaced a real, recurring pattern: things I built, or things other agents built, that were
+      reasonable engineering decisions made under time pressure or incomplete specification, sitting
+      silently in the codebase as if they were settled architecture, when in fact almost none of them
+      had ever been explicitly confirmed as <em>your</em> decision rather than <em>an</em> agent's guess.
+    </p>
+    <p>
+      This manual continues that discipline, but reorganizes it. Where the five chapters were organized
+      by subsystem (routing, database, question flow, infrastructure, deployment futures), this manual
+      is organized as a <strong>startup manual</strong> — the document a founder hands to an engineer on
+      day one of the &ldquo;we've proven the prototype works, now we build it properly&rdquo; phase. It assumes
+      UI, Device Identity (the anti-theft device-binding system), and Data Infrastructure (the
+      <code>cgpa</code> schema, RLS posture, auth wiring) are already designed and have already proven
+      themselves to work — which, per the prior chapters' verified findings, is true in the narrow sense
+      that the code exists, type-checks, and builds cleanly, and is <em>not yet fully true</em> in the
+      stronger sense of having been exercised by real students at scale, since Chapter Three's live row
+      counts showed most of the actual data tables sitting empty in production as of the time I checked them.
+    </p>
+    <p>
+      Every paragraph below ends with at least one question. Every chapter ends with a chapter-level
+      question. The manual itself ends with a set of questions that only you can answer, because they are
+      about what you want the brand to be, not about what the code currently does. I am not going to
+      answer these questions for you by guessing plausibly and moving on — that is precisely the failure
+      mode this whole exercise exists to prevent.
+    </p>
+  </section>
+
+  <div class="note">
+    <span class="label">v2 correction to the Preface</span>
+    <p>
+      The Preface above describes UI, Device Identity, and Data Infrastructure as &ldquo;designed and proven to
+      work in production,&rdquo; and in the same paragraph records that most data tables were empty when checked.
+      Both statements are kept because both were true of the audit. The precise status, per v2 evidence grades
+      (Part I), is: <strong>built, type-checked, and building cleanly; not yet exercised under real student load.</strong>
+      The live public surface confirms only the sign-up and login pages. Risk K3 (Part VII) carries the gap, and
+      Metric &ldquo;Concurrent students&rdquo; (Part VII.4) defines what &ldquo;proven&rdquo; will mean.
+    </p>
+    <p>
+      <span class="q">What threshold of real usage &mdash; students, sessions, or weeks in production &mdash; turns
+      &ldquo;built&rdquo; into &ldquo;proven&rdquo; for the purposes of Gate 1?</span>
+    </p>
+  </div>
+
+  <!-- ================= NEW: CONTROL SHEET ================= -->
+  <section class="chapter">
+    <div class="chapter-head">
+      <span class="num">Part I &middot; Control</span>
+      <h2>Control Sheet, Scope Ruling, and Evidence Grades</h2>
+    </div>
+
+    <div class="prose">
+      <div class="tbl-wrap"><table class="t">
+        <caption>Document control</caption>
+        <thead><tr><th>Field</th><th>Value</th></tr></thead>
+        <tbody>
+          <tr><td class="id">Document</td><td>The Grant CGPA Manual, v2</td></tr>
+          <tr><td class="id">Supersedes</td><td>v1 (mid-project manual, seven sections, question-only)</td></tr>
+          <tr><td class="id">Method</td><td>Questions produce rulings; rulings populate the register; the register produces the specification</td></tr>
+          <tr><td class="id">Roadmap scope</td><td>SvelteKit PWA + independent Supabase project. Vanilla and native stages are out of the active path</td></tr>
+          <tr><td class="id">Live surface checked</td><td>grantapp-cgpa.vercel.app: root redirects to <code>/signup</code>; <code>/login</code> and <code>/signup</code> render; all other routes sit behind auth</td></tr>
+          <tr><td class="id">Change rule</td><td>Nothing in v1 is removed. Additions are marked <span class="tag new">v2</span>. Rulings replace questions only when entered in the Decision Register</td></tr>
+        </tbody>
+      </table></div>
+
+      <h3>Scope ruling carried from the founder</h3>
+
+      <div class="eq">roadmap  = SvelteKit PWA + independent DB
+excluded = vanilla stage, native stage
+effect   = Ch.1 (3-stage sequence), 5.3 (native definition) become scope-clarification items, not open forks</div>
+
+      <p>
+        The v1 chapters that discuss a vanilla stage and a native stage remain in the document untouched, since
+        they record how the question was originally posed. Where a v1 question is made moot by the scope ruling,
+        the Decision Register (Part IV) marks it <span class="tag settled">settled by scope</span> and the
+        original text stays as the audit trail.
+      </p>
+
+      <h3>Evidence grades used throughout the v2 additions</h3>
+
+      <div class="tbl-wrap"><table class="t">
+        <caption>Grade legend</caption>
+        <thead><tr><th>Tag</th><th>Meaning</th><th>Example</th></tr></thead>
+        <tbody>
+          <tr><td><span class="tag settled">Settled</span></td><td>Stated by founder or verified in code/live</td><td>2-device cap; independent DB</td></tr>
+          <tr><td><span class="tag pending">Pending</span></td><td>Needs a founder ruling; options listed</td><td>Proscale definition</td></tr>
+          <tr><td><span class="tag unver">Unverified-live</span></td><td>Appears in v1 audit; not reachable without auth from outside</td><td>Row counts, RLS posture</td></tr>
+          <tr><td><span class="tag blocked">Blocked</span></td><td>Cannot proceed until a named item resolves</td><td>Threat model &larr; adversary definition</td></tr>
+        </tbody>
+      </table></div>
+
+      <p>
+        <span class="q">Is the scope ruling above complete as stated</span> &mdash; SvelteKit PWA plus an independent
+        database, with no later native stage &mdash; <span class="q">or should the manual keep a single line reserving
+        the option of a later native wrapper, so a future decision is not foreclosed by omission?</span>
+        <span class="q">Should v1's Chapter One and Chapter 5.3 be left visibly superseded (strikethrough or a
+        &ldquo;settled by scope&rdquo; tag beside them), or left exactly as written with the register carrying all
+        status?</span>
+      </p>
+    </div>
+
+    <div class="qblock">
+      <span class="mark">&nbsp;?</span>
+      <span class="label">Part I Question</span>
+      <p>
+        <span class="q">Who holds authority to change a ruling once it is entered in the register &mdash; the
+        founder alone, or can a delegated agent amend a ruling when a code fact contradicts it, with the change
+        logged and flagged for founder review?</span>
+      </p>
+    </div>
+  </section>
+
+
+  <!-- ================= NEW: GLOSSARY AND DOCTRINE ================= -->
+  <section class="chapter">
+    <div class="chapter-head">
+      <span class="num">Part II &middot; Doctrine</span>
+      <h2>Glossary, Doctrine Statements, and Priority Order</h2>
+    </div>
+
+    <div class="prose">
+      <h3>II.1 Glossary: terms used in v1 without a written definition</h3>
+
+      <div class="tbl-wrap"><table class="t">
+        <caption>Glossary &mdash; definition column is founder-owned; draft entries marked pending</caption>
+        <thead><tr><th>Term</th><th>Working definition (draft)</th><th>Where used</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td class="id">Antifail</td><td>The system degrades gracefully; no single failure blocks a student from studying</td><td>Doctrine files</td><td><span class="tag pending">Pending</span></td></tr>
+          <tr><td class="id">Antitheft</td><td>Content and accounts cannot be shared or copied at a cost lower than the price of access</td><td>1.1, 3.2</td><td><span class="tag pending">Pending</span></td></tr>
+          <tr><td class="id">Antisweat</td><td>Build effort is not spent on work a cheaper mechanism already covers</td><td>Doctrine files</td><td><span class="tag pending">Pending</span></td></tr>
+          <tr><td class="id">Proscale</td><td>Undefined. v1 admits no written definition exists</td><td>Ch.3</td><td><span class="tag blocked">Blocked</span></td></tr>
+          <tr><td class="id">Keystone</td><td>Question class reviewed before entering the approved bank (56 of 76 pending per v1)</td><td>4.2</td><td><span class="tag unver">Unverified-live</span></td></tr>
+          <tr><td class="id">Device fingerprint</td><td>Hash of user-agent plus a <code>localStorage</code>-persisted random ID</td><td>1.1</td><td><span class="tag settled">Settled</span></td></tr>
+          <tr><td class="id">Quick Test</td><td>Session of N questions (default 20), one batched write per session</td><td>3.1, 4.1</td><td><span class="tag settled">Settled</span></td></tr>
+          <tr><td class="id">100-day Mastery</td><td>Spaced delivery over 100 days using the EMA mastery score</td><td>4.1, 5.1</td><td><span class="tag settled">Settled</span></td></tr>
+          <tr><td class="id">Mastery (EMA)</td><td>Exponential moving average of per-question outcome, <code>alpha = 0.25</code></td><td>4.1</td><td><span class="tag settled">Settled</span></td></tr>
+          <tr><td class="id">Independent DB</td><td>A Supabase project with its own Auth, owned separately from the UTME project</td><td>Ch.2</td><td><span class="tag pending">Pending</span> (account vs project)</td></tr>
+          <tr><td class="id">Reference implementation</td><td>The final SvelteKit build, held as the canonical source of business logic</td><td>5.2</td><td><span class="tag pending">Pending</span></td></tr>
+        </tbody>
+      </table></div>
+
+      <p>
+        <span class="q">Which definitions in the draft column do you accept as written, which do you rewrite,
+        and which of the three named doctrines (antifail, antitheft, antisweat) already have a definition in
+        your own words that should replace mine?</span> <span class="q">Is any term missing from this table that
+        you use with agents and expect them to understand without explanation?</span>
+      </p>
+
+      <h3>II.2 Doctrine statements: principle, testable rule, violation signal</h3>
+
+      <div class="tbl-wrap"><table class="t">
+        <caption>Doctrine as checkable rules &mdash; a rule that cannot be tested is not a rule</caption>
+        <thead><tr><th>Doctrine</th><th>Testable rule (draft)</th><th>Violation signal</th></tr></thead>
+        <tbody>
+          <tr><td class="id">Antifail</td><td>Every student-facing route has a defined behaviour when its data call fails</td><td>Blank screen or unhandled rejection on a failed query</td></tr>
+          <tr><td class="id">Antitheft</td><td>A third device cannot start a session; a shared credential cannot exceed the device cap</td><td>Session created for a device outside the allowed set</td></tr>
+          <tr><td class="id">Antisweat</td><td>A new mechanism is added only when no existing table, trigger, or function covers the need</td><td>Duplicate upsert logic beside an existing <code>handle_new_user</code> trigger (v1 Ch.5)</td></tr>
+          <tr><td class="id">Proscale</td><td><span class="tag blocked">Blocked</span> pending definition</td><td>&mdash;</td></tr>
+        </tbody>
+      </table></div>
+
+      <h3>II.3 Priority order when doctrines conflict</h3>
+
+      <div class="eq">v1 3.2 conflict:  antitheft (add friction)  vs  proscale (remove friction)
+ruling needed:    rank(antifail, antitheft, proscale, antisweat)
+default rule:     higher rank wins;  tie broken by  lower student-facing latency</div>
+
+      <div class="tbl-wrap"><table class="t">
+        <caption>Options for the ranking</caption>
+        <thead><tr><th>Option</th><th>Order</th><th>Consequence</th></tr></thead>
+        <tbody>
+          <tr><td class="id">R1</td><td>antifail &gt; antitheft &gt; proscale &gt; antisweat</td><td>Availability first; security may add latency; scale features yield to both</td></tr>
+          <tr><td class="id">R2</td><td>antitheft &gt; antifail &gt; proscale &gt; antisweat</td><td>Security first; an outage is acceptable if it prevents a breach</td></tr>
+          <tr><td class="id">R3</td><td>antifail &gt; proscale &gt; antitheft &gt; antisweat</td><td>Growth-weighted; anti-theft friction is minimised</td></tr>
+          <tr><td class="id">R4</td><td>Ranking is per-layer (UI, DevEx, Data), not global</td><td>Each layer has its own order; conflicts across layers escalate</td></tr>
+        </tbody>
+      </table></div>
+
+      <p>
+        <span class="q">Which ranking do you rule for &mdash; R1, R2, R3, R4, or an order of your own?</span>
+        <span class="q">Is the ranking absolute, or can a stated exception exist (for example, antitheft
+        outranks everything for question-bank exports specifically)?</span> <span class="q">Do you want the
+        &ldquo;violation signal&rdquo; column turned into automated checks (lint rules, CI tests) or kept as a
+        human review checklist?</span>
+      </p>
+    </div>
+
+    <div class="qblock">
+      <span class="mark">&nbsp;?</span>
+      <span class="label">Part II Question</span>
+      <p>
+        <span class="q">Should the doctrine statements live in a single <code>DOCTRINE.md</code> that every
+        other document links to, or stay in this manual with the repository files (<code>INVARIANTS.md</code>,
+        <code>DECISIONS.md</code>) pointing back here as the source of truth?</span>
+      </p>
+    </div>
+  </section>
+
+
+  <!-- ================= NEW: THREE-LAYER ARCHITECTURE ================= -->
+  <section class="chapter">
+    <div class="chapter-head">
+      <span class="num">Part III &middot; Architecture</span>
+      <h2>The Three Layers: User Interface/Experience, Developer Interface/Experience, Data Infrastructure/Experience</h2>
+    </div>
+
+    <div class="prose">
+      <div class="eq">UI/UX   = what the student sees and does
+DevEx   = what the builder (human or agent) reads, edits, and ships
+Data    = what persists, who may read/write it, and how it survives failure
+Data is infrastructure, not an interface: no layer above it holds state that it does not</div>
+
+      <h3>III.1 Layer map</h3>
+
+      <div class="tbl-wrap"><table class="t">
+        <caption>Three-layer inventory, from v1 findings (unverified-live items flagged)</caption>
+        <thead><tr><th>Layer</th><th>Component</th><th>Current form</th><th>Owner</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td class="id">UI/UX</td><td>Auth screens</td><td><code>/signup</code>, <code>/login</code>, email + password, dark theme <code>#0a0a0f</code></td><td>Founder</td><td><span class="tag settled">Settled</span> (live-verified)</td></tr>
+          <tr><td class="id">UI/UX</td><td>Device-limit screen</td><td>Lists devices, self-serve removal at cap</td><td>Founder</td><td><span class="tag unver">Unverified-live</span></td></tr>
+          <tr><td class="id">UI/UX</td><td>Quick Test flow</td><td><code>quick-test-session</code>, 20 default</td><td>Founder</td><td><span class="tag unver">Unverified-live</span></td></tr>
+          <tr><td class="id">UI/UX</td><td>Analytics</td><td><code>/analytics</code>, all-time unpaginated mastery query</td><td>Founder</td><td><span class="tag unver">Unverified-live</span></td></tr>
+          <tr><td class="id">UI/UX</td><td>Approval screen</td><td>None found</td><td>&mdash;</td><td><span class="tag blocked">Missing</span></td></tr>
+          <tr><td class="id">DevEx</td><td>Constants</td><td><code>scoreAnswer</code> +1/0/0; <code>alpha = 0.25</code>; default N = 20</td><td>Agent-editable</td><td><span class="tag settled">Settled</span></td></tr>
+          <tr><td class="id">DevEx</td><td>Repo governance files</td><td><code>INVARIANTS.md</code>, <code>DECISIONS.md</code>, <code>DATA_DICTIONARY.md</code>, <code>EXPERIENCE_CONTEXT.md</code></td><td>Founder + agents</td><td><span class="tag settled">Settled</span></td></tr>
+          <tr><td class="id">DevEx</td><td>Manual as entry point</td><td>This document; no <code>MANUAL.md</code> at repo root yet</td><td>Founder</td><td><span class="tag pending">Pending</span></td></tr>
+          <tr><td class="id">Data</td><td>Schema</td><td><code>cgpa</code> schema, RLS on, service-role mediates writes</td><td>Founder</td><td><span class="tag unver">Unverified-live</span></td></tr>
+          <tr><td class="id">Data</td><td>Auth trigger</td><td><code>handle_new_user</code> creates the student row</td><td>Founder</td><td><span class="tag unver">Unverified-live</span></td></tr>
+          <tr><td class="id">Data</td><td>Tables</td><td><code>devices</code>, <code>students</code>, <code>mastery_state</code>, <code>student_question_progress</code>, courses (203), keystone questions (76)</td><td>Founder</td><td><span class="tag unver">Unverified-live</span></td></tr>
+          <tr><td class="id">Data</td><td>Independent project</td><td>Not yet provisioned</td><td>Founder</td><td><span class="tag pending">Pending</span></td></tr>
+        </tbody>
+      </table></div>
+
+      <h3>III.2 Interfaces between layers</h3>
+
+      <div class="tbl-wrap"><table class="t">
+        <caption>Contracts crossing a layer boundary</caption>
+        <thead><tr><th>From &rarr; To</th><th>Contract</th><th>Defined where</th></tr></thead>
+        <tbody>
+          <tr><td class="id">UI &rarr; Data</td><td>Route handlers call the service role; the browser never writes directly</td><td>v1 Ch.5 &sect;7</td></tr>
+          <tr><td class="id">UI &rarr; DevEx</td><td>Route naming and file layout follow a stated convention</td><td><span class="tag pending">Pending</span></td></tr>
+          <tr><td class="id">DevEx &rarr; Data</td><td>Migrations are versioned, reversible, and reviewed before apply</td><td><span class="tag pending">Pending</span></td></tr>
+          <tr><td class="id">Data &rarr; UI</td><td>Failure returns a typed error the UI renders (antifail)</td><td><span class="tag pending">Pending</span></td></tr>
+        </tbody>
+      </table></div>
+
+      <p>
+        <span class="q">Does this three-layer inventory match how you divide the work, and is any component filed
+        in the wrong layer?</span> <span class="q">Which layer owns the shared business logic (scoring, mastery,
+        course selection) &mdash; DevEx as a library, or Data as database functions?</span>
+        <span class="q">Should each layer carry its own doctrine ranking (option R4 in II.3), given that Data
+        infrastructure fails differently from a user interface?</span>
+      </p>
+
+      <h3>III.3 What the live site confirms today</h3>
+
+      <div class="tbl-wrap"><table class="t">
+        <caption>Live observation &mdash; grantapp-cgpa.vercel.app</caption>
+        <thead><tr><th>Route</th><th>Observed</th></tr></thead>
+        <tbody>
+          <tr><td class="id">/</td><td>Redirects to <code>/signup</code></td></tr>
+          <tr><td class="id">/signup</td><td>Fields: Full name, Email, Password. Link to sign in</td></tr>
+          <tr><td class="id">/login</td><td>Fields: Email, Password. Link to sign up</td></tr>
+          <tr><td class="id">Header nav</td><td>Home, Login only (unauthenticated state)</td></tr>
+          <tr><td class="id">Meta</td><td>Description: &ldquo;course-mastery and degree-planning companion for university students&rdquo;; theme colour <code>#0a0a0f</code></td></tr>
+          <tr><td class="id">Footer</td><td>&copy; 2026 Grant CGPA</td></tr>
+        </tbody>
+      </table></div>
+
+      <p>
+        <span class="q">The public meta description promises &ldquo;degree-planning&rdquo; as well as course mastery:
+        is degree-planning (the path-to-first-class tree, transcript, calculator) in scope for the SvelteKit
+        release, or a later addition the public description currently overstates?</span>
+        <span class="q">Should the unauthenticated surface show anything beyond the sign-up form &mdash; a value
+        statement, a sample question, a WhatsApp link &mdash; or is a bare form the intended antisweat
+        choice?</span>
+      </p>
+    </div>
+
+    <div class="qblock">
+      <span class="mark">&nbsp;?</span>
+      <span class="label">Part III Question</span>
+      <p>
+        <span class="q">If Data is infrastructure and not an interface, which artefact is its authoritative
+        specification &mdash; the SQL migrations, <code>DATA_DICTIONARY.md</code>, or a generated schema dump
+        &mdash; and which one wins when they disagree?</span>
+      </p>
+    </div>
+  </section>
+
+  <!-- ================= CHAPTER ONE ================= -->
+  <section class="chapter">
+    <div class="chapter-head">
+      <span class="num">Chapter One</span>
+      <h2>The Three-Stage Native Roadmap, Stated as an Actual Sequence, Not an Aspiration</h2>
+    </div>
+
+    <div class="prose">
+      <p>
+        You've now specified something I did not have before this conversation: a concrete, ordered,
+        three-stage plan — <strong>one vanilla build, one SvelteKit build, one fully native build</strong> —
+        with the SvelteKit-based Progressive Web App representing &ldquo;the pinnacle of anti-theft&rdquo; before
+        the native rewrite begins, and the database migration to CGPA's own Supabase project happening
+        immediately after the PWA stage is live, not concurrently with it and not deferred indefinitely.
+        I want to restate this precisely so I can be corrected if I've misread the sequencing: Stage 1 is
+        a vanilla (I read this as: not SvelteKit, likely plain HTML/CSS/JS or a minimal framework)
+        implementation; Stage 2 is the current SvelteKit codebase, hardened specifically for anti-theft as
+        its defining achievement; Stage 3 is native — and only after Stage 2 is genuinely live does the
+        database split happen, followed by the native rewrite.
+      </p>
+      <p>
+        This reframes something I treated as symmetric in Chapter Six's &ldquo;Part Two&rdquo; as actually
+        sequential and dependency-ordered, which changes the engineering calculus meaningfully. If the
+        native rewrite is Stage 3, definitionally after the database split, then Chapter Six's Section 7
+        point — that doing the database migration as a clean break (Option A, new Auth, new project) gives
+        a native/offline rewrite a better foundation to build against — stops being a nice-to-have
+        observation and becomes load-bearing sequencing logic: the database has to be independent
+        <em>before</em> Stage 3 can begin cleanly, because Stage 3 is not &ldquo;wrap the existing thing,&rdquo;
+        it's a genuine rewrite, and a genuine rewrite against a shared, UTME-entangled Supabase project
+        would import Chapter Five's shared-fate risk directly into the one part of this roadmap meant to be
+        the most independent and most carefully built.
+      </p>
+      <p>
+        <span class="q">Is my reading of the sequence correct</span> — vanilla, then SvelteKit-as-PWA,
+        then native, with the database split sitting between stage two and stage three rather than at the
+        very start or the very end? <span class="q">And is &ldquo;vanilla&rdquo; here a completed or planned
+        stage</span> — does a vanilla-JS version of this product already exist somewhere I have not been
+        shown, or is it a planned first stage that the SvelteKit build was meant to supersede, in which
+        case is the SvelteKit codebase I've been auditing across five chapters actually Stage 2, already
+        underway, rather than a standalone deliverable?
+      </p>
+
+      <h3>1.1 What &ldquo;the pinnacle of anti-theft&rdquo; as a PWA-stage goal actually implies for the current codebase</h3>
+
+      <p>
+        I want to take this phrase seriously as a specification, not a slogan, because it changes what
+        &ldquo;done&rdquo; means for the SvelteKit stage in a way that isn't yet reflected in the current code.
+        Chapter Two's audit of <code>+layout.svelte</code> and Chapter Three's audit of
+        <code>cgpa.devices</code> both described a real, working 2-device self-serve limit — hashed
+        fingerprint (user-agent plus a <code>localStorage</code>-persisted random ID), checked at login and
+        signup, with a self-serve removal screen for when the cap is hit. That is a real anti-theft
+        mechanism, and it is meaningfully different from, and I'd argue currently <em>weaker than</em>,
+        UTME's own device-binding approach, which — as I documented while building UTME's own admin
+        tooling in a separate session — is a hard, 1-device lock requiring either self-serve removal or
+        (for certain exempt accounts) admin intervention, not a 2-device allowance.
+      </p>
+      <p>
+        If the PWA stage is meant to be &ldquo;the pinnacle of anti-theft,&rdquo; full stop, before any native
+        rewrite, I do not currently know whether that means: tightening CGPA's device limit to match or
+        exceed UTME's 1-device rigor; adding server-side heuristics beyond device fingerprinting (IP-based
+        anomaly detection, session-concurrency limits, something else entirely); building anti-theft
+        protections around the <em>content</em> itself (question-bank scraping prevention, rate-limiting on
+        <code>quick-test-session</code> calls, watermarking) rather than only around <em>account</em>
+        sharing; or something I haven't considered because it wasn't in scope for the audit chapters.
+        <span class="q">What does &ldquo;pinnacle of anti-theft&rdquo; concretely mean beyond the device-limit
+        mechanism that already exists</span> — is the 2-device model itself the target state, just needing
+        to be verified as robust under real adversarial use, or is there a harder anti-theft ceiling you
+        have in mind that the current codebase doesn't yet reach?
+      </p>
+
+      <h3>1.2 The vanilla-to-SvelteKit-to-native pattern as a hedge against framework lock-in, and whether that reading is correct</h3>
+
+      <p>
+        One plausible reading of &ldquo;one vanilla, one SvelteKitted, one native&rdquo; is that it functions as
+        a deliberate hedge: prove the product concept works with the least framework commitment possible
+        (vanilla), prove it can scale and be secured properly with a real framework's conveniences
+        (SvelteKit), then commit to the heaviest, most permanent investment (native) only once both prior
+        stages have de-risked the product and the security model. Under this reading, the <em>reason</em>
+        SvelteKit is a middle stage and not the final one isn't primarily about offline capability
+        (Chapter Six's framing) — it's about not fully committing to any one technology stack until the
+        product itself is proven, with SvelteKit specifically chosen for stage two because it offers
+        server-side rendering and a mature ecosystem without the platform-specific lock-in of jumping
+        straight to native.
+      </p>
+      <p>
+        <span class="q">Is this the actual reasoning behind the three-stage structure, or is the
+        SvelteKit-to-native transition primarily about the offline/local-data-ownership requirement from
+        Chapter Six's Part Two, with the framework-hedging benefit being incidental rather than the
+        point?</span> This matters because it changes what &ldquo;prove SvelteKit works&rdquo; should be optimized
+        for during this stage — proving the framework choice was sound and scalable, versus proving the
+        anti-theft/security model specifically, versus proving the product concept has real user demand
+        before native investment is justified.
+      </p>
+    </div>
+  
+    <div class="note">
+      <span class="label">v2 scope note on Chapter One</span>
+      <p>
+        The founder has fixed the active roadmap as <strong>SvelteKit PWA plus independent database</strong>. The
+        vanilla and native stages described in this chapter are retained as the record of how the sequence was
+        first posed. Their questions are marked settled-by-scope in the Decision Register (D01, D02, D04); the
+        anti-theft questions in 1.1 (D03) remain open and carry forward into Part VI.
+      </p>
+    </div>
+
+  </section>
+  <!-- ================= CHAPTER TWO ================= -->
+  <section class="chapter">
+    <div class="chapter-head">
+      <span class="num">Chapter Two</span>
+      <h2>Database Independence as a Precondition, Not a Parallel Track</h2>
+    </div>
+
+    <div class="prose">
+      <h3>2.1 Restating Chapter Six's options under the new, sequenced understanding</h3>
+
+      <p>
+        Chapter Six laid out three options for the database split — clean-break new Auth (Option A),
+        shared-auth-split-data (Option B), and defer (Option C) — as if they were live alternatives with
+        roughly comparable merit depending on risk tolerance. Under this manual's new information,
+        Option C (defer) reads very differently: if the database split is a hard precondition for a
+        well-founded native Stage 3, deferring it doesn't just accept Chapter Five's shared-infrastructure
+        risk a little longer — it defers the start of Stage 3 by the same amount, since Stage 3 depends on
+        it. Option B (shared auth, split data) also reads worse under this framing than it did in Chapter
+        Six, because it explicitly does not give the native stage the clean, fully-independent foundation
+        the manual's stated goal implies is wanted. That leaves Option A — full clean break, CGPA gets its
+        own Supabase Auth, all 12 current accounts re-register — looking like the option that actually
+        matches the roadmap you've described, not merely one of three defensible choices.
+      </p>
+      <p>
+        <span class="q">Do you want me to treat Option A as the settled direction now, and start planning
+        concretely for a full clean-break migration timed to happen right after the PWA stage is confirmed
+        live</span> — including the real, user-facing cost named in Chapter Six, that every current CGPA
+        account holder re-registers from scratch — <span class="q">or is there a reason to keep the
+        shared-auth question genuinely open a while longer</span>, for instance if the number of real
+        accounts is expected to grow substantially during the remainder of the PWA stage, making a later
+        clean break costlier than doing a shared-auth split sooner?
+      </p>
+
+      <h3>2.2 What &ldquo;gets its own Supabase account and project&rdquo; implies about billing, ownership, and operational independence that a schema-level split alone doesn't address</h3>
+
+      <p>
+        Chapter Six's Part One focused on the technical shape of the migration — which tables move, what
+        happens to auth, foreign keys across servers. It did not address something your phrasing here
+        makes newly relevant: &ldquo;its own Supabase <em>account</em>,&rdquo; not merely its own
+        <em>project</em>. A new project under the <em>same</em> Supabase organization/account is a smaller,
+        cheaper, more mechanically contained change than a genuinely separate Supabase account — separate
+        billing, separate organization-level settings, separate API key management, potentially separate
+        team access if other agents or collaborators need scoped permissions to one product but not the
+        other.
+      </p>
+      <p>
+        <span class="q">Is &ldquo;its own Supabase account&rdquo; meant literally</span> — a fully separate
+        Supabase organization, with its own billing relationship, independent of whatever account
+        currently hosts the shared UTME/CGPA project — <span class="q">or is &ldquo;account&rdquo; being used
+        loosely here to mean &ldquo;project,&rdquo;</span> matching Chapter Six's schema-and-tables-level
+        framing? This has real, practical consequences for who needs login credentials to what, and
+        whether CGPA's infrastructure becomes something you or a specific team member owns and controls
+        independently of UTME's infrastructure ownership, which is a business and access-control question
+        as much as a technical one.
+      </p>
+    </div>
+
+    <div class="qblock">
+      <span class="mark">&nbsp;?</span>
+      <span class="label">Chapter Two Question</span>
+      <p>
+        <span class="q">Given that the database split is now understood as a precondition for Stage 3
+        rather than an independent, deferrable decision — does that change the urgency of doing it, such
+        that it should begin planning now, during the current PWA stage, rather than strictly
+        &ldquo;immediately after the progressive is live&rdquo; as stated</span> — for instance, provisioning
+        the new project and testing the migration path against a copy of production data while the PWA
+        stage is still active, so that the actual cutover, when it happens, is fast and low-risk rather
+        than a from-scratch effort started only once the PWA is declared done?
+      </p>
+    </div>
+  </section>
+  <!-- ================= CHAPTER THREE ================= -->
+  <section class="chapter">
+    <div class="chapter-head">
+      <span class="num">Chapter Three</span>
+      <h2>What &ldquo;Proscale Doctrine&rdquo; Requires of the Current Codebase, Named Explicitly Where I Can Find It and Flagged Where I Cannot</h2>
+    </div>
+
+    <div class="prose">
+      <p>
+        I want to be honest that &ldquo;proscale doctrine&rdquo; is a term you've used that I do not have a
+        written definition for anywhere in the documents I've read across this project —
+        <code>cgpa-state-of-play.md</code>, <code>INVARIANTS.md</code>, <code>DATA_DICTIONARY.md</code>,
+        <code>DECISIONS.md</code>, <code>EXPERIENCE_CONTEXT.md</code>. I have UTME's own doctrine documents
+        as a point of comparison, and I know &ldquo;antifail&rdquo; and &ldquo;antitheft&rdquo; as named doctrines
+        from earlier in this project's history, but I cannot point you to a document that defines what
+        &ldquo;proscale&rdquo; specifically means as a set of engineering requirements, the way I could point
+        to specific files and line numbers for anti-theft's device-limit mechanism.
+      </p>
+      <p>
+        <span class="q">Does a written proscale doctrine document exist that I have not been given access
+        to, or is this the first time the term is being introduced as something that needs to be written
+        down</span> — and if it needs to be written, is defining it the actual next deliverable this manual
+        should be building toward, rather than a section I should attempt to fill in from inference?
+      </p>
+
+      <h3>3.1 What I can infer about &ldquo;proscale&rdquo; from the codebase's existing behavior, offered cautiously, as inference rather than citation</h3>
+
+      <p>
+        Absent a definition, I can point to a few places in the current codebase that seem to gesture
+        toward scale-consciousness, and I want to name them, while being clear these are patterns I'm
+        <em>finding</em>, not confirming as intentional &ldquo;proscale&rdquo; engineering: the batched-write
+        principle repeated across <code>submit-quick-test</code> and (per Chapter Four's description)
+        UTME's own submission endpoints — one write per session rather than one write per question — is a
+        real, deliberate concession to database load under concurrent usage, not an accident. The
+        service-role-mediates-all-writes RLS posture (Chapter Five, Section 7) centralizes write logic in
+        a way that would make rate-limiting, auditing, or write-throttling <em>possible</em> to add
+        centrally later, even though nothing currently does so. The EMA-based mastery scoring (Chapter
+        Four) is computationally cheap per-answer (no need to recompute from full history) in a way that
+        scales better than a naive &ldquo;average every attempt ever made&rdquo; approach would as
+        <code>student_question_progress</code> grows.
+      </p>
+      <p>
+        <span class="q">Are these the kinds of decisions &ldquo;proscale doctrine&rdquo; is meant to capture
+        and formalize — architectural choices that keep the system cheap and responsive as usage grows —
+        or does proscale mean something more specific to this brand</span> — a target number of concurrent
+        users, a specific infrastructure tier or hosting commitment, a philosophy about when and how to
+        introduce caching, CDNs, or read replicas, something about how quickly features should be allowed
+        to ship versus how much load-testing should gate a release? <span class="q">Without a definition, I
+        risk either doing nothing toward it (leaving genuine scale risk unaddressed) or doing something
+        toward my own guess of it (spending effort on a version of &ldquo;proscale&rdquo; you didn't actually
+        mean) — which of those two failure modes are you more worried about right now, given how early-stage
+        the product's real usage still is per Chapter Three's row counts?</span>
+      </p>
+
+      <h3>3.2 The one place scale and anti-theft doctrine directly collide, which needs an explicit ruling</h3>
+
+      <p>
+        I want to flag a genuine tension rather than let it sit unnoticed: anti-theft's device-fingerprinting
+        and account-sharing prevention, taken to its logical extreme, tends to work <em>against</em>
+        frictionless scale — every additional check, every additional server round-trip to verify a device
+        or session, every additional constraint on how freely a student can move between devices, is a
+        small tax against the smoothest possible growth experience. UTME's stricter 1-device model is, by
+        construction, more anti-theft-rigorous and more scale-friction-inducing than CGPA's current
+        2-device allowance. If Stage Two's explicit goal is to be &ldquo;the pinnacle of anti-theft,&rdquo; and
+        proscale doctrine (whatever it turns out to specify) pulls toward minimizing friction,
+        <span class="q">which doctrine wins when they conflict, and is there a principled way to state the
+        priority order rather than resolving it ad hoc, case by case, as specific features get built?</span>
+      </p>
+    </div>
+
+    <div class="qblock">
+      <span class="mark">&nbsp;?</span>
+      <span class="label">Chapter Three Question</span>
+      <p>
+        <span class="q">Should the actual next artifact produced — before any more code gets written under
+        this manual's guidance — be a proscale doctrine document, written the same way
+        <code>cgpa-state-of-play.md</code> and <code>INVARIANTS.md</code> were written, so that future
+        chapters of this manual, and future engineering decisions generally, have something concrete to
+        check against the way Chapters One through Six checked against the existing doctrine files</span>
+        — or is proscale meant to remain an informal, case-by-case judgment you apply personally rather
+        than a document delegated agents build against?
+      </p>
+    </div>
+  </section>
+  <!-- ================= CHAPTER FOUR ================= -->
+  <section class="chapter">
+    <div class="chapter-head">
+      <span class="num">Chapter Four</span>
+      <h2>Granular Control Points — Where the Codebase Currently Makes a Decision For You, and Where a Real Configuration Surface Should Exist Instead</h2>
+    </div>
+
+    <div class="prose">
+      <p>
+        You've said you want &ldquo;more granular control over code&rdquo; as an explicit goal of this manual.
+        I want to take that literally and produce something useful from it: a list of every place, verified
+        against the actual files, where the current codebase has hard-coded a decision that could instead
+        be a named, adjustable setting — not because every hard-coded value is wrong, but because
+        &ldquo;granular control&rdquo; specifically means converting silent defaults into visible knobs you can
+        turn without needing to read source code first.
+      </p>
+
+      <h3>4.1 Scoring and quiz-shape constants</h3>
+
+      <p>
+        <code>scoreAnswer</code>'s +1/0/0 model (Chapter Four of the audit, Chapter Five's Section 4) is a
+        single function, not a configuration value — changing it means editing code and redeploying, not
+        adjusting a setting. The same is true of Quick Test's default question count (<code>20</code>, a
+        literal default in <code>quick-test-session</code>'s query-param parsing) and the EMA mastery
+        formula's <code>alpha = 0.25</code> (a named constant in <code>lib/quiz/mastery.ts</code>, at least
+        commented and isolated, per Chapter Five's praise of that pattern, but still not adjustable without
+        a code change).
+      </p>
+      <p>
+        <span class="q">Do you want these converted into real, database-backed or environment-based
+        configuration — an admin-adjustable scoring model per course or per faculty, a configurable default
+        question count, a tunable EMA weight — or is code-level control (a developer edits a named constant
+        and redeploys) actually the granularity you want, with &ldquo;granular control&rdquo; meaning something
+        more like &ldquo;I want to see and approve every constant's value,&rdquo; rather than &ldquo;I want a UI
+        to change it without a deploy&rdquo;?</span>
+      </p>
+
+      <h3>4.2 The approval pipeline's complete absence of a granular interface</h3>
+
+      <p>
+        Chapter Three established, and Chapter Four's live query confirmed, that 56 of 76 keystone
+        questions sit in <code>pending</code> with — as far as I have verified — no confirmed screen
+        anywhere that lets anyone move them to <code>approved</code> or <code>rejected</code>. This is the
+        single largest, most concrete &ldquo;control&rdquo; gap in the entire audited codebase: there is
+        currently no granular control here at all, not fine-grained, not coarse-grained, none. Whatever the
+        approval mechanism turns out to be — a real admin UI, a direct Supabase dashboard SQL edit, a
+        bulk-approval script — it does not yet exist in any form I can verify.
+      </p>
+      <p>
+        <span class="q">Is building this the single highest-priority item to come out of this whole
+        six-chapter-plus-manual audit, given that it's the one gap that isn't a tradeoff or a judgment call
+        but a straightforward, unambiguous missing piece blocking the entire question-flow pipeline from
+        functioning for 202 of 203 courses</span> — and if so, what should the granularity of control look
+        like: per-question approve/reject, per-course bulk-approve, per-submission-batch approve, something
+        tied to reviewing the <em>source</em> (trusting certain submitters' questions automatically, for
+        instance)?
+      </p>
+
+      <h3>4.3 The faculty/department/course catalog as a control surface, not just data</h3>
+
+      <p>
+        Chapter Three noted 203 courses, a duplicate GST101 row across two departments, and no verified
+        mechanism for reconciling or merging duplicates. This is a data-quality problem today, but it's
+        also, prospectively, a control-granularity problem: as more agents or content contributors seed
+        courses independently (as Obase clearly has, repeatedly, across this project's git history), the
+        absence of any uniqueness constraint or review gate on the catalog itself means duplication is not
+        just possible but has already happened at least once, verifiably.
+      </p>
+      <p>
+        <span class="q">Do you want a uniqueness constraint added at the database level (e.g., on
+        <code>(department_id, code)</code> or a normalized course-name match) to prevent future duplicates
+        mechanically, or is catalog curation meant to stay a human, judgment-based process</span> — periodic
+        manual review and merge — with the granular control being &ldquo;I personally look at the catalog
+        periodically,&rdquo; not &ldquo;the system enforces uniqueness for me&rdquo;?
+      </p>
+    </div>
+
+    <div class="qblock">
+      <span class="mark">&nbsp;?</span>
+      <span class="label">Chapter Four Question</span>
+      <p>
+        <span class="q">Across scoring, approval, and catalog curation — the three control surfaces named
+        above — is there a single, common granularity principle you want applied consistently, such as
+        &ldquo;everything content-related gets a real admin UI, everything scoring/algorithmic-related stays
+        a code-level constant reviewed by a human before each deploy,&rdquo; or does each of these three
+        genuinely warrant a different answer, decided independently?</span>
+      </p>
+    </div>
+  </section>
+  <!-- ================= CHAPTER FIVE ================= -->
+  <section class="chapter">
+    <div class="chapter-head">
+      <span class="num">Chapter Five</span>
+      <h2>What Changes About Every Prior Chapter's Findings, Once the Native/Offline Endpoint Is Treated as Certain Rather Than Speculative</h2>
+    </div>
+
+    <div class="prose">
+      <p>
+        Chapter Six of the original audit treated native/offline as a possible future, weighed against
+        alternatives. This manual establishes it as a committed Stage 3. I want to revisit a handful of the
+        audit's earlier findings specifically through that lens, because &ldquo;this will definitely become
+        native and offline&rdquo; changes whether certain current patterns are acceptable technical debt or
+        genuine architecture-level mistakes that will cost more the longer they're left uncorrected.
+      </p>
+
+      <h3>5.1 The <code>/analytics</code> all-time, unpaginated, unfiltered query, reconsidered</h3>
+
+      <p>
+        Chapter Four's audit of <code>/analytics</code> noted the mastery query fetches a student's entire
+        history with no date filtering, no pagination, no limit. At current scale (Chapter Three:
+        <code>mastery_state</code> sitting at zero rows in production) this is a complete non-issue. Under a
+        native, offline-capable rewrite, this exact query pattern — &ldquo;fetch everything, render it
+        all&rdquo; — is close to the <em>opposite</em> of how an offline-first client should think about
+        data: a local-first architecture typically wants incrementally-synced, bounded datasets, not
+        &ldquo;pull the full table on every screen load,&rdquo; because the whole premise of local-first is
+        that the device holds a <em>working copy</em>, synced and pruned deliberately, not a live mirror of
+        an unbounded server table.
+      </p>
+      <p>
+        <span class="q">Should the current SvelteKit/PWA stage start shaping its data-access patterns now —
+        smaller, bounded, paginated queries; explicit &ldquo;what does the device need to know locally&rdquo;
+        thinking — specifically to make the eventual native rewrite's data layer less of a from-scratch
+        redesign, even though nothing about the current scale requires this optimization today?</span> This
+        is a real tradeoff: it would mean writing more careful, more constrained code during the PWA stage
+        for a benefit that only pays off at Stage 3, at the cost of slower feature velocity now.
+      </p>
+
+      <h3>5.2 The three-copy-pasted-upserts pattern (Chapter Five, Section 3), reconsidered as a native-rewrite liability</h3>
+
+      <p>
+        Chapter Five named the repeated &ldquo;ensure a students row exists&rdquo; upsert as glue that
+        outlived its own justification once the <code>handle_new_user</code> trigger existed to make it
+        redundant. Under a near-certain native rewrite, every one of these patterns is code that either
+        gets ported faithfully (carrying the redundancy forward into a second codebase) or gets cleaned up
+        now, once, in the version that's easier to still edit.
+      </p>
+      <p>
+        <span class="q">Do you want a dedicated cleanup pass — removing now-redundant defensive code,
+        consolidating repeated patterns into shared functions, generally tightening the SvelteKit codebase —
+        scheduled explicitly before the native rewrite begins, treating the PWA stage's final form as
+        &ldquo;the reference implementation Stage 3 gets built from,&rdquo; or is the expectation that Stage 3
+        is a large enough rewrite anyway that current-codebase tidiness won't meaningfully affect it, since
+        most of it won't be directly ported code regardless?</span>
+      </p>
+
+      <h3>5.3 What &ldquo;native&rdquo; resolves that a WebView wrapper (Chapter Six, Section 5) does not, now that native is the stated final stage rather than one option among several</h3>
+
+      <p>
+        Chapter Six laid out WebView-wrapper, WebView-plus-offline-layer, and full-native-rewrite as a
+        spectrum, without knowing a genuine native endpoint was already decided. With that now established,
+        I want to ask directly rather than assume: <span class="q">is &ldquo;native&rdquo; here meant in the
+        strictest sense — real Kotlin/Swift/platform-specific UI, no WebView anywhere in the final product —
+        or does &ldquo;native app&rdquo; in your usage include a WebView-wrapped app with a genuine
+        local-first offline data layer underneath it, which produces an installable,
+        app-store-distributable, offline-capable product without necessarily rewriting every UI screen in
+        platform-native code?</span> This is not a pedantic distinction — it's close to the single largest
+        cost variable in the entire roadmap, and Chapter Six's spectrum showed these two things can look
+        similar from a user's perspective (an icon on their home screen, works offline) while being wildly
+        different engineering efforts underneath.
+      </p>
+    </div>
+
+    <div class="qblock">
+      <span class="mark">&nbsp;?</span>
+      <span class="label">Chapter Five Question</span>
+      <p>
+        <span class="q">Given that Stage 3 is now a certainty rather than a possibility, should any part of
+        the <em>current</em> SvelteKit build be deliberately architected as shared, reusable business logic
+        — the scoring functions, the mastery-update formula, the course-selection algorithm — written in a
+        way that could be extracted and reused by a native client later (for instance, as a well-isolated
+        TypeScript library with no SvelteKit-specific dependencies), rather than left embedded inside
+        SvelteKit route handlers the way <code>lib/quiz/mastery.ts</code> currently is — mostly separable,
+        per Chapter Five's own praise of it, but still written assuming a SvelteKit/Supabase server context
+        around it?</span>
+      </p>
+    </div>
+  
+    <div class="note">
+      <span class="label">v2 scope note on Chapter Five</span>
+      <p>
+        With native outside the active path, sections 5.1 and 5.2 still apply, re-grounded: bounded queries and a
+        cleanup pass serve a <strong>frozen reference implementation</strong> (Part V, Stage 3) and PWA
+        performance, not a later rewrite. Section 5.3 (strict native versus WebView) is settled by scope (D21).
+        The extraction question at the end of the chapter (D22) stays open, since an isolated scoring and mastery
+        module benefits a PWA regardless.
+      </p>
+    </div>
+
+  </section>
+  <!-- ================= NEW: DECISION REGISTER ================= -->
+  <section class="chapter">
+    <div class="chapter-head">
+      <span class="num">Part IV &middot; Register</span>
+      <h2>The Decision Register: Every Open Question, Numbered, With Options and a Ruling Column</h2>
+    </div>
+
+    <div class="prose">
+      <div class="eq">question --> options --> ruling (founder) --> specification --> code
+the ruling column is the only column an agent may not fill</div>
+
+      <p>
+        Rows D01 to D38 carry every question raised in the v1 chapters, in order of appearance, with the
+        chapter reference. Rows D39 onward carry the questions added in v2. The <em>Ruling</em> column is left
+        empty for the founder; each row lists options so a ruling can be a single letter. A row marked
+        <span class="tag settled">settled by scope</span> is closed by the SvelteKit-plus-independent-database
+        scope ruling.
+      </p>
+
+      <h3>IV.1 Register: questions carried from v1</h3>
+
+      <div class="tbl-wrap"><table class="t">
+        <caption>Decision Register &mdash; v1 questions</caption>
+        <thead><tr><th>ID</th><th>Ref</th><th>Question</th><th>Options</th><th>Default if unruled</th><th>Ruling</th></tr></thead>
+        <tbody>
+          <tr><td class="id">D01</td><td>1</td><td>Is the three-stage sequence read correctly?</td><td><span class="tag settled">Settled by scope</span></td><td>SvelteKit PWA then independent DB</td><td class="rule-cell">&nbsp;</td></tr>
+          <tr><td class="id">D02</td><td>1</td><td>Is a vanilla version complete, planned, or superseded?</td><td><span class="tag settled">Settled by scope</span></td><td>Out of active path</td><td class="rule-cell">&nbsp;</td></tr>
+          <tr><td class="id">D03</td><td>1.1</td><td>What does &ldquo;pinnacle of anti-theft&rdquo; mean beyond the device cap?</td><td>(a) verify current cap under attack; (b) tighten cap to 1; (c) add session and IP heuristics; (d) protect the question bank itself; (e) combination</td><td>(a)+(d)</td><td class="rule-cell">&nbsp;</td></tr>
+          <tr><td class="id">D04</td><td>1.2</td><td>Is the stage structure a framework hedge or a capability need?</td><td><span class="tag settled">Settled by scope</span></td><td>Moot</td><td class="rule-cell">&nbsp;</td></tr>
+          <tr><td class="id">D05</td><td>2.1</td><td>Is Option A (clean break, new Auth) the settled direction?</td><td>A clean break; B shared auth, split data; C defer</td><td>A</td><td class="rule-cell">&nbsp;</td></tr>
+          <tr><td class="id">D06</td><td>2.1</td><td>Is there a reason to keep shared-auth open longer?</td><td>Yes (state reason); No</td><td>No</td><td class="rule-cell">&nbsp;</td></tr>
+          <tr><td class="id">D07</td><td>2.2</td><td>Is &ldquo;own Supabase account&rdquo; a separate organisation or a separate project?</td><td>Separate organisation with own billing; separate project in same organisation</td><td>Separate project</td><td class="rule-cell">&nbsp;</td></tr>
+          <tr><td class="id">D08</td><td>2</td><td>Should DB migration planning start during the PWA stage?</td><td>Start now; start after G1</td><td>Start now, cut over after G1</td><td class="rule-cell">&nbsp;</td></tr>
+          <tr><td class="id">D09</td><td>3</td><td>Does a written proscale doctrine exist elsewhere?</td><td>Yes (supply it); No</td><td>No</td><td class="rule-cell">&nbsp;</td></tr>
+          <tr><td class="id">D10</td><td>3.1</td><td>Do the batched write, service-role writes, and EMA scoring capture proscale, or does it mean more?</td><td>Yes as listed; No (state target users, tier, caching, load-gating policy)</td><td>State target</td><td class="rule-cell">&nbsp;</td></tr>
+          <tr><td class="id">D11</td><td>3.1</td><td>Which failure worries you more: doing nothing toward proscale, or doing the wrong version?</td><td>Under-build; Mis-build</td><td>Mis-build</td><td class="rule-cell">&nbsp;</td></tr>
+          <tr><td class="id">D12</td><td>3.2</td><td>Which doctrine wins when antitheft and proscale conflict?</td><td>R1, R2, R3, R4 (II.3)</td><td>R1</td><td class="rule-cell">&nbsp;</td></tr>
+          <tr><td class="id">D13</td><td>3</td><td>Is a proscale doctrine document the next artefact?</td><td>Yes, before more feature code; No, informal judgment</td><td>Yes</td><td class="rule-cell">&nbsp;</td></tr>
+          <tr><td class="id">D14</td><td>4.1</td><td>Should scoring, question count, and EMA weight become adjustable settings?</td><td>Code constants reviewed per deploy; DB-backed admin settings; environment variables</td><td>Code constants</td><td class="rule-cell">&nbsp;</td></tr>
+          <tr><td class="id">D15</td><td>4.2</td><td>Is the approval UI the highest-priority item?</td><td>Yes; No (name another)</td><td>Yes</td><td class="rule-cell">&nbsp;</td></tr>
+          <tr><td class="id">D16</td><td>4.2</td><td>What granularity should approval have?</td><td>Per question; per course bulk; per batch; trusted-submitter auto-approve</td><td>Per course bulk plus per question override</td><td class="rule-cell">&nbsp;</td></tr>
+          <tr><td class="id">D17</td><td>4.3</td><td>Enforce course uniqueness in the database?</td><td>Constraint on (department_id, code); normalised name match; human curation only</td><td>Constraint</td><td class="rule-cell">&nbsp;</td></tr>
+          <tr><td class="id">D18</td><td>4</td><td>Is there one common granularity principle across scoring, approval, catalog?</td><td>Content gets admin UI, algorithms stay code; independent per surface</td><td>Content UI, algorithm code</td><td class="rule-cell">&nbsp;</td></tr>
+          <tr><td class="id">D19</td><td>5.1</td><td>Shape PWA data access now (bounded, paginated) for later?</td><td>Yes now; only when scale demands</td><td>Yes for analytics</td><td class="rule-cell">&nbsp;</td></tr>
+          <tr><td class="id">D20</td><td>5.2</td><td>Schedule a cleanup pass before the freeze?</td><td>Yes at S3; ad hoc; never</td><td>Yes at S3</td><td class="rule-cell">&nbsp;</td></tr>
+          <tr><td class="id">D21</td><td>5.3</td><td>Strict native versus WebView definition</td><td><span class="tag settled">Settled by scope</span></td><td>Moot; PWA only</td><td class="rule-cell">&nbsp;</td></tr>
+          <tr><td class="id">D22</td><td>5</td><td>Extract scoring, mastery, course selection into an isolated TypeScript module?</td><td>Yes at S3; yes now; no</td><td>Yes at S3</td><td class="rule-cell">&nbsp;</td></tr>
+          <tr><td class="id">D23</td><td>Close 1</td><td>Is a proscale doctrine the next deliverable ahead of feature code?</td><td>Same as D13</td><td>Yes</td><td class="rule-cell">&nbsp;</td></tr>
+          <tr><td class="id">D24</td><td>Close 2</td><td>Which gaps are next-session work versus leave-as-is?</td><td>Per gap: approval UI, explanation display, GST101, upsert cleanup</td><td>Approval UI, explanation display now</td><td class="rule-cell">&nbsp;</td></tr>
+          <tr><td class="id">D25</td><td>Close 3</td><td>Must every session open by reading the manual?</td><td>Yes as <code>MANUAL.md</code> at repo root; conversation only</td><td>Yes</td><td class="rule-cell">&nbsp;</td></tr>
+        </tbody>
+      </table></div>
+
+      <h3>IV.2 Register: questions added in v2</h3>
+
+      <div class="tbl-wrap"><table class="t">
+        <caption>Decision Register &mdash; v2 questions</caption>
+        <thead><tr><th>ID</th><th>Ref</th><th>Question</th><th>Options</th><th>Default if unruled</th><th>Ruling</th></tr></thead>
+        <tbody>
+          <tr><td class="id">D26</td><td>I</td><td>Is the scope ruling complete, or reserve a line for a later native wrapper?</td><td>Complete; reserve one line</td><td>Complete</td><td class="rule-cell">&nbsp;</td></tr>
+          <tr><td class="id">D27</td><td>I</td><td>Show superseded v1 items visibly, or let the register carry status?</td><td>Visible tag; register only</td><td>Register only</td><td class="rule-cell">&nbsp;</td></tr>
+          <tr><td class="id">D28</td><td>I</td><td>Who may amend a ruling?</td><td>Founder only; agent with logged flag</td><td>Founder only</td><td class="rule-cell">&nbsp;</td></tr>
+          <tr><td class="id">D29</td><td>II.1</td><td>Definitions of antifail, antitheft, antisweat, proscale</td><td>Accept draft; rewrite; supply own</td><td>Supply own</td><td class="rule-cell">&nbsp;</td></tr>
+          <tr><td class="id">D30</td><td>II.2</td><td>Doctrine violation signals: automated checks or human checklist?</td><td>Lint and CI; human checklist; both</td><td>Human checklist</td><td class="rule-cell">&nbsp;</td></tr>
+          <tr><td class="id">D31</td><td>II.3</td><td>Is the ranking absolute, or may named exceptions exist?</td><td>Absolute; exceptions allowed</td><td>Exceptions allowed</td><td class="rule-cell">&nbsp;</td></tr>
+          <tr><td class="id">D32</td><td>II</td><td>Where do doctrine statements live?</td><td>Single <code>DOCTRINE.md</code>; inside this manual</td><td>Inside manual</td><td class="rule-cell">&nbsp;</td></tr>
+          <tr><td class="id">D33</td><td>III.2</td><td>Which layer owns shared business logic?</td><td>DevEx library; Data functions</td><td>DevEx library</td><td class="rule-cell">&nbsp;</td></tr>
+          <tr><td class="id">D34</td><td>III.2</td><td>Per-layer doctrine ranking?</td><td>Global; per layer</td><td>Global</td><td class="rule-cell">&nbsp;</td></tr>
+          <tr><td class="id">D35</td><td>III.3</td><td>Is degree-planning in scope for the SvelteKit release?</td><td>In scope; later addition; correct the public description</td><td>Later; correct description</td><td class="rule-cell">&nbsp;</td></tr>
+          <tr><td class="id">D36</td><td>III.3</td><td>Should the signed-out page show more than the form?</td><td>Bare form; value statement; sample question; WhatsApp link</td><td>Bare form</td><td class="rule-cell">&nbsp;</td></tr>
+          <tr><td class="id">D37</td><td>III</td><td>Which artefact is the authoritative data specification?</td><td>SQL migrations; <code>DATA_DICTIONARY.md</code>; generated dump</td><td>SQL migrations</td><td class="rule-cell">&nbsp;</td></tr>
+          <tr><td class="id">D38</td><td>V.2</td><td>Is shared-fate risk alone sufficient to justify the clean break?</td><td>Yes; No (state added reason)</td><td>Yes</td><td class="rule-cell">&nbsp;</td></tr>
+          <tr><td class="id">D39</td><td>V.2</td><td>Provision and rehearse the new project during S1?</td><td>Yes; No</td><td>Yes</td><td class="rule-cell">&nbsp;</td></tr>
+          <tr><td class="id">D40</td><td>V.3</td><td>Is A1 to A8 the right acceptance set, and which are gate-blocking?</td><td>Accept; edit (list)</td><td>A1, A4, A6 blocking</td><td class="rule-cell">&nbsp;</td></tr>
+          <tr><td class="id">D41</td><td>V.3</td><td>What works offline in the PWA?</td><td>App shell only; shell plus downloaded set for current course</td><td>App shell only</td><td class="rule-cell">&nbsp;</td></tr>
+          <tr><td class="id">D42</td><td>V.3</td><td>If offline sets are in scope, does antitheft or proscale win?</td><td>Antitheft; proscale; per II.3 ruling</td><td>Per II.3</td><td class="rule-cell">&nbsp;</td></tr>
+          <tr><td class="id">D43</td><td>V</td><td>Who declares a gate passed, and are waivers allowed?</td><td>Founder sign-off; automated run; both; waiver logged</td><td>Both, no waiver</td><td class="rule-cell">&nbsp;</td></tr>
+          <tr><td class="id">D44</td><td>VI</td><td>Which of T1 to T7 are real today?</td><td>Mark each real or hypothetical</td><td>T1, T3, T4 real</td><td class="rule-cell">&nbsp;</td></tr>
+          <tr><td class="id">D45</td><td>VI</td><td>Is a cap of 2 (T1 sharing) an accepted tradeoff?</td><td>Accepted; reduce to 1</td><td>Accepted</td><td class="rule-cell">&nbsp;</td></tr>
+          <tr><td class="id">D46</td><td>VI</td><td>Target adversary cost?</td><td>Over 1 hour; over 1 day; paid tool</td><td>Over 1 day</td><td class="rule-cell">&nbsp;</td></tr>
+          <tr><td class="id">D47</td><td>VI</td><td>Is question-bank scraping (T3) the priority threat?</td><td>Yes; No (name another)</td><td>Yes</td><td class="rule-cell">&nbsp;</td></tr>
+          <tr><td class="id">D48</td><td>VI</td><td>Control on open signup (T5) now?</td><td>Email verification; throttle; CAPTCHA; none</td><td>Throttle</td><td class="rule-cell">&nbsp;</td></tr>
+          <tr><td class="id">D49</td><td>VI</td><td>Does &ldquo;pinnacle&rdquo; stop at zero added taps for the student?</td><td>Yes; No, strongest possible</td><td>Yes</td><td class="rule-cell">&nbsp;</td></tr>
+          <tr><td class="id">D50</td><td>VII.1</td><td>Per constant: code-reviewed or admin-adjustable?</td><td>Mark each row</td><td>Code-reviewed</td><td class="rule-cell">&nbsp;</td></tr>
+          <tr><td class="id">D51</td><td>VII.2</td><td>Which runbooks first, and in what form?</td><td>RB1 to RB7; checklist or decision tree</td><td>RB1, RB3, RB2 as checklists</td><td class="rule-cell">&nbsp;</td></tr>
+          <tr><td class="id">D52</td><td>VII.2</td><td>Add an audit trail to manual premium unlock (RB5)?</td><td>Yes; No</td><td>Yes, minimal</td><td class="rule-cell">&nbsp;</td></tr>
+          <tr><td class="id">D53</td><td>VII.3</td><td>Accept risk ratings; add missing risks?</td><td>Accept; edit</td><td>Accept</td><td class="rule-cell">&nbsp;</td></tr>
+          <tr><td class="id">D54</td><td>VII.3</td><td>Account-count threshold that flips Option A to Option B?</td><td>Number; none</td><td>None</td><td class="rule-cell">&nbsp;</td></tr>
+          <tr><td class="id">D55</td><td>VII.4</td><td>Design-scale concurrency target?</td><td>One cohort; several cohorts; national exam night</td><td>One cohort</td><td class="rule-cell">&nbsp;</td></tr>
+          <tr><td class="id">D56</td><td>VII.4</td><td>Is proscale a cost, latency, or capacity doctrine?</td><td>Cost; latency; capacity; combination</td><td>Cost</td><td class="rule-cell">&nbsp;</td></tr>
+          <tr><td class="id">D57</td><td>VII.4</td><td>Hosting tiers the product may assume?</td><td>State Vercel plan and Supabase plan</td><td>Free tier</td><td class="rule-cell">&nbsp;</td></tr>
+          <tr><td class="id">D58</td><td>VII</td><td>Review cadence for the four registers, and signer?</td><td>Each release; monthly; each gate</td><td>Each gate</td><td class="rule-cell">&nbsp;</td></tr>
+          <tr><td class="id">D59</td><td>VIII</td><td>Which of AR1 to AR8 are absolute?</td><td>Mark each</td><td>AR1 to AR6 absolute</td><td class="rule-cell">&nbsp;</td></tr>
+          <tr><td class="id">D60</td><td>VIII</td><td>On a Pending block: stop and ask, or proceed conservatively and flag?</td><td>Stop; proceed; differs by layer</td><td>Stop for Data, proceed for UI</td><td class="rule-cell">&nbsp;</td></tr>
+          <tr><td class="id">D61</td><td>VIII</td><td>Where does <code>MANUAL.md</code> live?</td><td>Repo root; linked from <code>INVARIANTS.md</code>; copied to agent files</td><td>Repo root</td><td class="rule-cell">&nbsp;</td></tr>
+          <tr><td class="id">D62</td><td>VIII</td><td>How does the manual detect staleness?</td><td>Version stamp against commit; date per ruling; scheduled re-audit</td><td>Version stamp</td><td class="rule-cell">&nbsp;</td></tr>
+        </tbody>
+      </table></div>
+
+      <h3>IV.3 Register arithmetic</h3>
+
+      <div class="eq">62 rows total
+ 4 settled by scope  (D01, D02, D04, D21)
+58 open
+rows dependent on a proscale or doctrine definition:  D09, D10, D11, D12, D13, D23, D29, D42, D56   (9 rows)
+rule: rule D09 and D29 first; the other 7 rows (D10-D13, D23, D42, D56) then have a defined term to answer against</div>
+
+      <p>
+        <span class="q">Would you rather rule the register in row order, or in dependency order &mdash; definitions
+        (D29, D09) first, then ranking (D12), then threat model (D44 to D49), then scale (D55 to D57)?</span>
+        <span class="q">Should a row with a default that you never rule on be treated as accepted after a stated
+        interval, or remain Pending until explicitly ruled?</span>
+      </p>
+    </div>
+
+    <div class="qblock">
+      <span class="mark">&nbsp;?</span>
+      <span class="label">Part IV Question</span>
+      <p>
+        <span class="q">When rulings come back, should the next version of the manual move each answered row
+        into a Specification section and delete the original question, or keep the question beside its ruling
+        as the audit trail &mdash; given that the questions are the mechanism that produced the manual in the
+        first place?</span>
+      </p>
+    </div>
+  </section>
+
+  <!-- ================= NEW: ROADMAP WITH GATES ================= -->
+  <section class="chapter">
+    <div class="chapter-head">
+      <span class="num">Part V &middot; Roadmap</span>
+      <h2>The Active Roadmap: SvelteKit PWA, Then Independent Database, With Gates</h2>
+    </div>
+
+    <div class="prose">
+      <div class="eq">S1  SvelteKit PWA (hardened)   -->  G1
+G1  gate: PWA live, antitheft acceptance passed
+S2  independent DB (new project, new Auth)  -->  G2
+G2  gate: cutover complete, UTME/CGPA fate separated
+S3  reference implementation frozen  (cleanup pass, logic extracted)</div>
+
+      <div class="stage-strip">
+        <div class="st"><b>S1 &middot; PWA</b>SvelteKit, hardened for antitheft</div>
+        <div class="st gate"><b>Gate 1</b>Acceptance tests A1&ndash;A8 pass</div>
+        <div class="st"><b>S2 &middot; DB split</b>Own project, own Auth</div>
+        <div class="st gate"><b>Gate 2</b>Cutover verified, rollback tested</div>
+        <div class="st"><b>S3 &middot; Freeze</b>Cleanup, logic extraction</div>
+      </div>
+
+      <h3>V.1 Entry and exit criteria</h3>
+
+      <div class="tbl-wrap"><table class="t">
+        <caption>Stage gates &mdash; every criterion must be checkable</caption>
+        <thead><tr><th>Stage</th><th>Entry criteria</th><th>Exit criteria</th><th>Blockers</th></tr></thead>
+        <tbody>
+          <tr><td class="id">S1 PWA</td><td>Current SvelteKit codebase builds and type-checks (v1: true)</td><td>Antitheft acceptance A1&ndash;A5; approval UI live; explanation-after-submit shown; PWA manifest and service worker installable</td><td>Definition of &ldquo;pinnacle of anti-theft&rdquo; (Pt.VI); approval UI spec</td></tr>
+          <tr><td class="id">S2 DB split</td><td>G1 passed; new Supabase project provisioned; migration rehearsed on a data copy</td><td>Independent Auth live; accounts re-registered or migrated; cutover verified; rollback tested; UTME unaffected</td><td>Option A/B/C ruling (2.1); account-vs-project ruling (2.2)</td></tr>
+          <tr><td class="id">S3 Freeze</td><td>G2 passed</td><td>Redundant upserts removed; scoring and mastery extracted to an isolated module; constants register complete; <code>MANUAL.md</code> at repo root</td><td>Cleanup-pass ruling (5.2); extraction ruling (Ch.5 question)</td></tr>
+        </tbody>
+      </table></div>
+
+      <h3>V.2 Sequencing note</h3>
+
+      <p>
+        With native removed from scope, the independent database stops being a precondition for a later rewrite
+        and becomes a precondition for operational independence: separate failure domain, separate billing,
+        separate access control. The v1 argument in Chapter Two therefore rests on shared-fate risk alone.
+        <span class="q">Is shared-fate risk (a UTME outage or misconfiguration taking CGPA down) sufficient
+        justification on its own for the clean break, at the stated cost of every existing account
+        re-registering?</span> <span class="q">Should the new project be provisioned and rehearsed during S1, so
+        cutover is a scheduled event and not a project?</span> <span class="q">Does the split happen only after
+        G1, or does the rehearsal start before G1 with only the cutover gated?</span>
+      </p>
+
+      <h3>V.3 Acceptance tests for Gate 1</h3>
+
+      <div class="tbl-wrap"><table class="t">
+        <caption>Draft acceptance tests &mdash; wording is provisional until the threat model is ruled</caption>
+        <thead><tr><th>ID</th><th>Test</th><th>Pass condition</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td class="id">A1</td><td>Third device login</td><td>Blocked; self-serve screen lists existing two</td><td><span class="tag unver">Unverified-live</span></td></tr>
+          <tr><td class="id">A2</td><td>Device removal then re-login</td><td>Removed device loses session; new device admitted</td><td><span class="tag pending">Pending</span></td></tr>
+          <tr><td class="id">A3</td><td>Cleared <code>localStorage</code></td><td>Behaviour defined (counts as new device, or recovers identity)</td><td><span class="tag pending">Pending</span></td></tr>
+          <tr><td class="id">A4</td><td>Question-bank scraping</td><td>Bulk fetch rate-limited; full bank not obtainable in one call</td><td><span class="tag blocked">Blocked</span></td></tr>
+          <tr><td class="id">A5</td><td>Concurrent sessions on one account</td><td>Limit and behaviour defined</td><td><span class="tag pending">Pending</span></td></tr>
+          <tr><td class="id">A6</td><td>Approval workflow</td><td>Pending item moved to approved or rejected through a screen</td><td><span class="tag blocked">Missing</span></td></tr>
+          <tr><td class="id">A7</td><td>Data-call failure</td><td>Each route renders a typed error state</td><td><span class="tag pending">Pending</span></td></tr>
+          <tr><td class="id">A8</td><td>Installability</td><td>Manifest valid; service worker registers; offline shell loads</td><td><span class="tag pending">Pending</span></td></tr>
+        </tbody>
+      </table></div>
+
+      <p>
+        <span class="q">Is A1 through A8 the right set, and which items are gate-blocking versus advisory?</span>
+        <span class="q">For A8: what should work offline in a PWA that is not native &mdash; only the app shell, or
+        also a downloaded question set for the current course?</span> <span class="q">If offline question sets
+        are in scope, does that conflict with antitheft (a cached bank is a copyable bank), and which doctrine
+        wins under the ranking ruled in II.3?</span>
+      </p>
+    </div>
+
+    <div class="qblock">
+      <span class="mark">&nbsp;?</span>
+      <span class="label">Part V Question</span>
+      <p>
+        <span class="q">Who declares a gate passed &mdash; a founder sign-off on a checklist, an automated test
+        run, or both, and is a partially passed gate allowed to proceed with a logged waiver?</span>
+      </p>
+    </div>
+  </section>
+
+
+  <!-- ================= NEW: THREAT MODEL ================= -->
+  <section class="chapter">
+    <div class="chapter-head">
+      <span class="num">Part VI &middot; Threat Model</span>
+      <h2>What &ldquo;Pinnacle of Anti-Theft&rdquo; Must Defend Against</h2>
+    </div>
+
+    <div class="prose">
+      <div class="eq">threat  = adversary + asset + attack + cost to adversary
+control = mechanism that raises the adversary's cost above the value of the asset
+gap     = attack with no control, or a control the adversary can bypass cheaply</div>
+
+      <div class="tbl-wrap"><table class="t">
+        <caption>Draft threat table &mdash; adversaries and assets are the founder's to correct</caption>
+        <thead><tr><th>ID</th><th>Adversary</th><th>Asset</th><th>Attack</th><th>Current control</th><th>Gap</th></tr></thead>
+        <tbody>
+          <tr><td class="id">T1</td><td>Student sharing login</td><td>Paid or premium access</td><td>Several friends use one account</td><td>2-device cap</td><td>Cap of 2 permits sharing between two people</td></tr>
+          <tr><td class="id">T2</td><td>Student clearing storage</td><td>Device slot</td><td>Clear <code>localStorage</code> to mint a fresh ID and evade the cap</td><td>Hashed fingerprint</td><td>Random ID is client-held; cleared storage looks like a new device</td></tr>
+          <tr><td class="id">T3</td><td>Scraper</td><td>Question bank</td><td>Loop the session endpoint to harvest questions</td><td>None verified</td><td>No rate limit or per-account daily ceiling found</td></tr>
+          <tr><td class="id">T4</td><td>Reseller</td><td>Premium unlock</td><td>Resell manually unlocked accounts</td><td>Manual WhatsApp unlock</td><td>Unlock is not bound to a device set</td></tr>
+          <tr><td class="id">T5</td><td>Automated signup</td><td>Free tier, infrastructure cost</td><td>Bot registrations</td><td>None verified on <code>/signup</code></td><td>No CAPTCHA, email verification, or throttle observed</td></tr>
+          <tr><td class="id">T6</td><td>Insider or agent error</td><td>Cross-product data</td><td>Action lands in the wrong product's data</td><td>Separate schemas</td><td>Shared project; removed by the DB split</td></tr>
+          <tr><td class="id">T7</td><td>Offline copier</td><td>Cached question set</td><td>Extract questions from the PWA cache</td><td>N/A until offline exists</td><td>Depends on the A8 offline ruling</td></tr>
+        </tbody>
+      </table></div>
+
+      <h3>VI.1 Current device policy against UTME, from v1</h3>
+
+      <div class="tbl-wrap"><table class="t">
+        <caption>Device-limit comparison</caption>
+        <thead><tr><th>Property</th><th>CGPA (current)</th><th>UTME (per v1)</th></tr></thead>
+        <tbody>
+          <tr><td class="id">Device cap</td><td>2</td><td>1</td></tr>
+          <tr><td class="id">Self-serve removal</td><td>Yes</td><td>Yes (exempt accounts via admin)</td></tr>
+          <tr><td class="id">Fingerprint</td><td>UA + persisted random ID, hashed</td><td>Not stated in v1</td></tr>
+          <tr><td class="id">Check point</td><td>Login and signup</td><td>Not stated in v1</td></tr>
+        </tbody>
+      </table></div>
+
+      <p>
+        <span class="q">Which adversaries in T1 to T7 are real for this product today, and which are
+        hypothetical?</span> <span class="q">Is T1 acceptable by design &mdash; a cap of 2 is a deliberate
+        allowance for a student's phone plus laptop &mdash; so the sharing gap is a known tradeoff, not a
+        defect?</span> <span class="q">What is the cost you want an adversary to face: a determined student
+        needing more than an hour, more than a day, or a paid tool?</span>
+        <span class="q">Is T3 (bank scraping) the priority threat, since the question bank is the durable
+        asset, ahead of account sharing?</span> <span class="q">Should T5 receive a control now (email
+        verification, throttle), or is open signup part of the funnel design?</span>
+      </p>
+    </div>
+
+    <div class="qblock">
+      <span class="mark">&nbsp;?</span>
+      <span class="label">Part VI Question</span>
+      <p>
+        <span class="q">Does &ldquo;pinnacle of anti-theft&rdquo; mean the strongest possible control set, or the
+        strongest set that does not cost a student a single extra tap at login &mdash; and is that boundary the
+        same one that separates antitheft from proscale in II.3?</span>
+      </p>
+    </div>
+  </section>
+
+
+  <!-- ================= NEW: CONSTANTS, RUNBOOKS, RISKS, METRICS ================= -->
+  <section class="chapter">
+    <div class="chapter-head">
+      <span class="num">Part VII &middot; Operations</span>
+      <h2>Constants Register, Runbooks, Risk Register, and Metrics</h2>
+    </div>
+
+    <div class="prose">
+      <h3>VII.1 Constants register</h3>
+
+      <div class="tbl-wrap"><table class="t">
+        <caption>Every tunable value, its location, and how it changes</caption>
+        <thead><tr><th>Constant</th><th>Value</th><th>Location</th><th>Changes via</th><th>Ruling</th></tr></thead>
+        <tbody>
+          <tr><td class="id">Correct / wrong / skip</td><td>+1 / 0 / 0</td><td><code>scoreAnswer</code></td><td>Code + deploy</td><td><span class="tag pending">Pending</span></td></tr>
+          <tr><td class="id">Quick Test size</td><td>20</td><td><code>quick-test-session</code> query default</td><td>Code + deploy</td><td><span class="tag pending">Pending</span></td></tr>
+          <tr><td class="id">EMA alpha</td><td>0.25</td><td><code>lib/quiz/mastery.ts</code></td><td>Code + deploy</td><td><span class="tag pending">Pending</span></td></tr>
+          <tr><td class="id">Device cap</td><td>2</td><td>Login / signup check</td><td>Code + deploy</td><td><span class="tag pending">Pending</span></td></tr>
+          <tr><td class="id">Mastery horizon</td><td>100 days</td><td>Mastery flow</td><td>Not stated</td><td><span class="tag pending">Pending</span></td></tr>
+          <tr><td class="id">Keystone approval states</td><td>pending / approved / rejected</td><td><code>cgpa</code> question table</td><td>SQL / (no UI)</td><td><span class="tag blocked">Missing UI</span></td></tr>
+        </tbody>
+      </table></div>
+
+      <p>
+        <span class="q">For each row, is the ruling &ldquo;code constant, reviewed by a human before each
+        deploy&rdquo; or &ldquo;database or environment setting an admin can change without a deploy&rdquo;?</span>
+        <span class="q">Is there a constant missing from this register that an agent could change without your
+        seeing it?</span>
+      </p>
+
+      <h3>VII.2 Runbooks required</h3>
+
+      <div class="tbl-wrap"><table class="t">
+        <caption>Procedures that do not yet exist in writing</caption>
+        <thead><tr><th>ID</th><th>Runbook</th><th>Trigger</th><th>Must state</th></tr></thead>
+        <tbody>
+          <tr><td class="id">RB1</td><td>Database cutover to independent project</td><td>G1 passed</td><td>Order of steps, data copy method, auth handling, downtime window, rollback</td></tr>
+          <tr><td class="id">RB2</td><td>Deploy and rollback</td><td>Every release</td><td>Vercel promotion, env vars, revert path</td></tr>
+          <tr><td class="id">RB3</td><td>Approve keystone questions</td><td>Pending queue non-empty</td><td>Who, how, criteria, bulk versus single</td></tr>
+          <tr><td class="id">RB4</td><td>Add or merge a course</td><td>Catalog change</td><td>Uniqueness check, duplicate merge (GST101 case)</td></tr>
+          <tr><td class="id">RB5</td><td>Manual premium unlock</td><td>WhatsApp confirmation</td><td>Exact row change, verification, audit trail</td></tr>
+          <tr><td class="id">RB6</td><td>Device reset for a locked-out student</td><td>Support request</td><td>Admin action, identity check</td></tr>
+          <tr><td class="id">RB7</td><td>New agent session onboarding</td><td>Every session</td><td>Read-first list, forbidden actions, escalation</td></tr>
+        </tbody>
+      </table></div>
+
+      <p>
+        <span class="q">Which runbooks do you want written first, and do you want each as a numbered checklist an
+        agent can follow literally, or as a decision tree?</span> <span class="q">RB5 is a manual database
+        append today: should it gain an audit trail (who unlocked whom, when, on what evidence) or does that
+        conflict with antisweat?</span>
+      </p>
+
+      <h3>VII.3 Risk register</h3>
+
+      <div class="tbl-wrap"><table class="t">
+        <caption>Risks consolidated from v1 prose</caption>
+        <thead><tr><th>ID</th><th>Risk</th><th>Likelihood</th><th>Impact</th><th>Mitigation</th><th>Owner</th></tr></thead>
+        <tbody>
+          <tr><td class="id">K1</td><td>Shared-fate with UTME project</td><td>Rated by founder</td><td>High</td><td>S2 independent DB</td><td>Founder</td></tr>
+          <tr><td class="id">K2</td><td>Approval pipeline absent: 56 of 76 keystone items pending</td><td>Certain</td><td>High</td><td>Approval UI, RB3</td><td>Founder</td></tr>
+          <tr><td class="id">K3</td><td>Core data tables empty in production: design unproven under load</td><td>Certain</td><td>Medium</td><td>Load rehearsal before G1</td><td>Founder</td></tr>
+          <tr><td class="id">K4</td><td>Duplicate catalog rows (GST101)</td><td>Occurred</td><td>Low</td><td>Uniqueness constraint or RB4</td><td>Founder</td></tr>
+          <tr><td class="id">K5</td><td>Unbounded <code>/analytics</code> query</td><td>Rises with data</td><td>Medium</td><td>Pagination and date filter</td><td>Agent</td></tr>
+          <tr><td class="id">K6</td><td>Agent guesses accumulate as unconfirmed architecture</td><td>Recurring</td><td>High</td><td>Decision Register; <code>MANUAL.md</code></td><td>Founder</td></tr>
+          <tr><td class="id">K7</td><td>Re-registration loss at cutover (12 accounts per v1)</td><td>Certain under Option A</td><td>Low at current scale, rises with growth</td><td>Cut over early</td><td>Founder</td></tr>
+        </tbody>
+      </table></div>
+
+      <p>
+        <span class="q">Do you accept the likelihood and impact ratings above, and are any risks missing
+        &mdash; payment or WhatsApp-group dependency, single-founder dependency, hosting-tier limits?</span>
+        <span class="q">K7 grows with every new signup: is there an account-count threshold past which you would
+        rule for Option B instead of Option A?</span>
+      </p>
+
+      <h3>VII.4 Metrics, so that &ldquo;proscale&rdquo; can carry a number</h3>
+
+      <div class="tbl-wrap"><table class="t">
+        <caption>Candidate service-level targets &mdash; all values are founder-set</caption>
+        <thead><tr><th>Metric</th><th>Definition</th><th>Target</th><th>Measured by</th></tr></thead>
+        <tbody>
+          <tr><td class="id">Concurrent students</td><td>Simultaneous active sessions supported</td><td><span class="tag pending">Pending</span></td><td>Load test</td></tr>
+          <tr><td class="id">Quick Test submit latency</td><td>Time for the single batched write</td><td><span class="tag pending">Pending</span></td><td>Server timing</td></tr>
+          <tr><td class="id">Time to first question</td><td>Tap to first question rendered on a mobile connection</td><td><span class="tag pending">Pending</span></td><td>Field measurement</td></tr>
+          <tr><td class="id">DB writes per session</td><td>Should equal 1 for Quick Test</td><td>1</td><td>Query log</td></tr>
+          <tr><td class="id">Approval backlog</td><td>Pending keystone items</td><td><span class="tag pending">Pending</span></td><td>SQL count</td></tr>
+          <tr><td class="id">Hosting cost per active student</td><td>Monthly infrastructure cost divided by active students</td><td><span class="tag pending">Pending</span></td><td>Billing export</td></tr>
+        </tbody>
+      </table></div>
+
+      <p>
+        <span class="q">What number of concurrent students defines the scale you are designing for &mdash;
+        the size of one university cohort, of several, or a national exam night?</span>
+        <span class="q">Is proscale primarily a cost doctrine (stay inside a free or low hosting tier as usage
+        grows), a latency doctrine, or a capacity doctrine?</span> <span class="q">Which hosting tier
+        commitments (Vercel plan, Supabase plan) is the product allowed to assume?</span>
+      </p>
+    </div>
+
+    <div class="qblock">
+      <span class="mark">&nbsp;?</span>
+      <span class="label">Part VII Question</span>
+      <p>
+        <span class="q">Which of the four registers (constants, runbooks, risks, metrics) should be reviewed on
+        a fixed cadence &mdash; each release, monthly, each gate &mdash; and who signs that the review
+        happened?</span>
+      </p>
+    </div>
+  </section>
+
+
+  <!-- ================= NEW: AGENT RULES ================= -->
+  <section class="chapter">
+    <div class="chapter-head">
+      <span class="num">Part VIII &middot; Agent Rules</span>
+      <h2>Standing Instructions for Every Session: <code>MANUAL.md</code></h2>
+    </div>
+
+    <div class="prose">
+      <div class="eq">agent session = read(manual) --> read(register) --> read(live files) --> act --> log
+rule: an agent may propose a ruling; only the register records one</div>
+
+      <div class="tbl-wrap"><table class="t">
+        <caption>Draft operating rules for delegated agents</caption>
+        <thead><tr><th>ID</th><th>Rule</th><th>Type</th></tr></thead>
+        <tbody>
+          <tr><td class="id">AR1</td><td>Read this manual and the Decision Register before writing code</td><td>Read-first</td></tr>
+          <tr><td class="id">AR2</td><td>Read the actual file or live surface before asserting its state; never rely on a prior summary</td><td>Read-first</td></tr>
+          <tr><td class="id">AR3</td><td>Where a register row is Pending, ask the founder; do not choose a plausible option</td><td>Escalate</td></tr>
+          <tr><td class="id">AR4</td><td>Do not modify constants in the register without a ruling</td><td>Forbidden</td></tr>
+          <tr><td class="id">AR5</td><td>Do not add a table, trigger, or route that duplicates an existing one (antisweat)</td><td>Forbidden</td></tr>
+          <tr><td class="id">AR6</td><td>Do not write to the UTME project or its data from CGPA code</td><td>Forbidden</td></tr>
+          <tr><td class="id">AR7</td><td>Mark every claim in reports as verified-in-code, verified-live, or unverified</td><td>Reporting</td></tr>
+          <tr><td class="id">AR8</td><td>Log every deviation from a ruling, with the code fact that forced it</td><td>Reporting</td></tr>
+        </tbody>
+      </table></div>
+
+      <p>
+        <span class="q">Which of AR1 to AR8 are absolute, and which allow an exception with a logged reason?</span>
+        <span class="q">Should agents be told to stop and ask when a Pending row blocks the task, or to proceed
+        with the most conservative option and flag it &mdash; and does the answer differ for the Data layer
+        versus the UI layer?</span> <span class="q">Where does the file live &mdash; repository root as
+        <code>MANUAL.md</code>, linked from <code>INVARIANTS.md</code>, or duplicated into each agent's own
+        instruction file?</span>
+      </p>
+    </div>
+
+    <div class="qblock">
+      <span class="mark">&nbsp;?</span>
+      <span class="label">Part VIII Question</span>
+      <p>
+        <span class="q">How does the manual detect that it has gone stale &mdash; a version stamp compared with
+        the latest commit, a required date on each ruling, or a scheduled re-audit against live files?</span>
+      </p>
+    </div>
+  </section>
+
+  <!-- ================= CLOSING ================= -->
+  <section class="closing">
+    <h2>Manual-Level Closing Questions</h2>
+    <p class="sub">
+      These are not chapter-scoped. They are the questions I believe determine the shape of everything
+      above them, and I want to end on them explicitly rather than let the manual trail off into detail.
+    </p>
+
+    <div class="qblock">
+      <span class="mark">&nbsp;?</span>
+      <span class="label">First</span>
+      <p>
+        <span class="q">Is there a written proscale doctrine, anywhere, that I have not seen — and if not,
+        is producing one the actual next deliverable, ahead of any further feature code, given that this
+        manual has now identified at least three places (Chapter Three's Section 3.2, Chapter Four's every
+        subsection, Chapter Five's Section 5.1) where &ldquo;what does proscale actually require&rdquo; is the
+        blocking question, not &ldquo;what should the code do,&rdquo; which I could otherwise answer myself by
+        reading files?</span>
+      </p>
+    </div>
+
+    <div class="qblock">
+      <span class="mark">&nbsp;?</span>
+      <span class="label">Second</span>
+      <p>
+        <span class="q">Of the concrete, unambiguous gaps this six-chapter-plus-manual audit has surfaced —
+        no approval-pipeline UI (Chapter Four, Section 4.2), no <code>explanation</code>-after-submission
+        display (original Chapter Four, Section 5), the duplicate-GST101-row data-quality issue (Chapter
+        Three, Chapter Four Section 4.3), the copy-pasted-upsert cleanup (Chapter Five, Section 5.2) —
+        which of these do you want treated as immediate, next-session work, versus which are acceptable to
+        leave exactly as they are until the native rewrite makes fixing them moot anyway?</span>
+      </p>
+    </div>
+
+    <div class="qblock">
+      <span class="mark">&nbsp;?</span>
+      <span class="label">Third — and I think most important</span>
+      <p>
+        <span class="q">This manual was written under an instruction to ask questions rather than assume
+        answers, specifically so that the architecture reflects your decisions rather than an agent's
+        plausible guesses accumulated silently over many sessions. Do you want every future session working
+        on this codebase to open by reading this manual and the original six chapters before writing code,
+        the way this manual itself opened by re-reading the actual live files rather than trusting the
+        summaries from earlier chapters — and if so, should that be written down somewhere structural (a
+        <code>MANUAL.md</code> at the repository root, referenced the way <code>INVARIANTS.md</code> and
+        <code>DECISIONS.md</code> already are) so it's a standing instruction every agent inherits, rather
+        than something only true because you and I discussed it in this one conversation?</span>
+      </p>
+    </div>
+  </section>
+  <!-- ================= FOOTER ================= -->
+  <footer class="footer">
+    The Grant CGPA Manual &bull; Mid-Project Technical &amp; Architectural Manual
+  </footer>
+
+</article>
+
+</body>
+</html>
