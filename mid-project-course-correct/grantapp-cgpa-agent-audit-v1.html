@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GrantApp CGPA — Agent Audit &amp; Decision Register v1</title>
+<style>
+  :root {
+    --ink:        #131a21;
+    --body:       #2b343e;
+    --muted:      #5f6b78;
+    --faint:      #8b96a2;
+    --accent:     #0e4f5c;
+    --accent-dk:  #093b45;
+    --accent-lt:  #e6f0f2;
+    --warm:       #a8562a;
+    --warm-lt:    #faf1ea;
+    --rule:       #dbe2e8;
+    --rule-soft:  #eaeff3;
+    --paper:      #ffffff;
+    --tint:       #f5f9fa;
+    --code-bg:    #eef3f5;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { -webkit-text-size-adjust: 100%; }
+  @page { size: A4; margin: 18mm 16mm; }
+  body {
+    background: #e9eef1; color: var(--body);
+    font-family: Georgia, "Iowan Old Style", "Palatino Linotype", "Times New Roman", serif;
+    font-size: 16px; line-height: 1.72; padding: 44px 18px 80px;
+    display: flex; justify-content: center;
+    -webkit-print-color-adjust: exact; print-color-adjust: exact;
+  }
+  .doc {
+    background: var(--paper); width: 100%; max-width: 900px;
+    padding: 64px 72px 76px; border-radius: 3px;
+    box-shadow: 0 6px 34px rgba(11, 34, 40, 0.13);
+  }
+  .cover { text-align: center; padding: 22px 0 46px; border-bottom: 3px double var(--accent); margin-bottom: 42px; }
+  .cover .eyebrow {
+    font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif; font-size: 11px; font-weight: 700;
+    letter-spacing: 3.2px; text-transform: uppercase; color: var(--warm); margin-bottom: 20px;
+  }
+  .cover h1 {
+    font-family: Georgia, "Iowan Old Style", serif; font-size: 40px; line-height: 1.16;
+    font-weight: 700; color: var(--accent-dk); letter-spacing: -0.6px; margin-bottom: 8px;
+  }
+  .cover .rule { width: 68px; height: 3px; background: var(--warm); margin: 22px auto; border-radius: 2px; }
+  .cover .standfirst { font-size: 17px; font-style: italic; color: var(--muted); max-width: 620px; margin: 0 auto; line-height: 1.62; }
+  .cover .standfirst + .standfirst { margin-top: 14px; font-size: 15.5px; }
+  .toc {
+    background: var(--tint); border: 1px solid var(--rule); border-left: 4px solid var(--accent);
+    border-radius: 0 5px 5px 0; padding: 24px 30px 26px; margin-bottom: 52px;
+    break-inside: avoid; page-break-inside: avoid;
+  }
+  .toc-title {
+    font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif; font-size: 11px; font-weight: 700;
+    letter-spacing: 2.4px; text-transform: uppercase; color: var(--accent); margin-bottom: 14px;
+  }
+  .toc ol { list-style: none; counter-reset: toc; }
+  .toc li {
+    counter-increment: toc; font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif; font-size: 14.5px;
+    line-height: 1.5; padding: 5px 0 5px 34px; position: relative; border-bottom: 1px dotted var(--rule);
+  }
+  .toc li:last-child { border-bottom: 0; }
+  .toc li::before {
+    content: counter(toc, decimal-leading-zero); position: absolute; left: 0; top: 5px;
+    font-size: 11.5px; font-weight: 700; color: var(--warm); letter-spacing: 0.5px;
+  }
+  .toc li .t { font-weight: 600; color: var(--ink); }
+  .toc li .d { display: block; font-size: 13px; color: var(--muted); font-weight: 400; margin-top: 1px; }
+  .chapter { margin-bottom: 54px; }
+  .chapter + .chapter { border-top: 1px solid var(--rule-soft); padding-top: 44px; }
+  .chapter-head {
+    display: flex; align-items: baseline; gap: 16px; margin-bottom: 20px; padding-bottom: 12px;
+    border-bottom: 2px solid var(--accent); break-after: avoid; page-break-after: avoid;
+  }
+  .chapter-head .num {
+    font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif; font-size: 12px; font-weight: 700;
+    letter-spacing: 1.8px; text-transform: uppercase; color: var(--warm); white-space: nowrap;
+    flex-shrink: 0; padding-top: 3px;
+  }
+  .chapter-head h2 {
+    font-family: Georgia, "Iowan Old Style", serif; font-size: 25px; line-height: 1.24;
+    font-weight: 700; color: var(--accent-dk); letter-spacing: -0.3px;
+  }
+  h3 {
+    font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif; font-size: 16.5px; font-weight: 700;
+    color: var(--accent); line-height: 1.4; margin: 34px 0 12px; break-after: avoid; page-break-after: avoid;
+  }
+  .prose p { margin-bottom: 15px; text-align: justify; hyphens: auto; }
+  .prose p:last-child { margin-bottom: 0; }
+  .q {
+    color: var(--accent-dk); font-weight: 700;
+    background: linear-gradient(transparent 62%, rgba(14, 79, 92, 0.10) 62%); padding-bottom: 1px;
+  }
+  em { font-style: italic; }
+  code {
+    font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace; font-size: 0.845em;
+    background: var(--code-bg); color: var(--accent-dk); padding: 1px 5px; border-radius: 3px; white-space: nowrap;
+  }
+  .qblock {
+    position: relative; background: var(--accent-lt); border: 1px solid #c3d9dd; border-left: 4px solid var(--accent);
+    border-radius: 0 5px 5px 0; padding: 20px 26px 20px 30px; margin: 28px 0 6px;
+    break-inside: avoid; page-break-inside: avoid;
+  }
+  .qblock .label {
+    display: block; font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif; font-size: 10.5px;
+    font-weight: 700; letter-spacing: 2.2px; text-transform: uppercase; color: var(--warm); margin-bottom: 9px;
+  }
+  .qblock p { margin: 0; font-size: 16px; line-height: 1.7; color: var(--ink); text-align: justify; }
+  .qblock .mark {
+    position: absolute; right: 14px; top: 2px; font-size: 74px; line-height: 1; font-family: Georgia, serif;
+    color: rgba(14, 79, 92, 0.10); pointer-events: none; user-select: none;
+  }
+  .preface {
+    background: var(--tint); border-top: 2px solid var(--accent); border-bottom: 1px solid var(--rule);
+    padding: 30px 34px; margin-bottom: 52px; border-radius: 3px;
+  }
+  .preface .kicker {
+    font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif; font-size: 11px; font-weight: 700;
+    letter-spacing: 2.6px; text-transform: uppercase; color: var(--warm); margin-bottom: 6px;
+  }
+  .preface h2 { font-family: Georgia, "Iowan Old Style", serif; font-size: 21px; color: var(--accent-dk); margin-bottom: 16px; letter-spacing: -0.2px; }
+  .preface p { text-align: justify; margin-bottom: 14px; }
+  .preface p:last-child { margin-bottom: 0; }
+  .closing { margin-top: 58px; padding-top: 40px; border-top: 3px double var(--accent); }
+  .closing > h2 { font-family: Georgia, "Iowan Old Style", serif; font-size: 25px; color: var(--accent-dk); letter-spacing: -0.3px; margin-bottom: 8px; }
+  .closing .sub { font-size: 15px; font-style: italic; color: var(--muted); margin-bottom: 26px; }
+  .closing .qblock { background: var(--warm-lt); border-color: #ecd6c6; border-left-color: var(--warm); }
+  .closing .qblock .mark { color: rgba(168, 86, 42, 0.11); }
+  .closing .qblock + .qblock { margin-top: 16px; }
+  .footer {
+    margin-top: 56px; padding-top: 18px; border-top: 1px solid var(--rule); text-align: center;
+    font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif; font-size: 11.5px; letter-spacing: 0.6px; color: var(--faint);
+  }
+  @media print {
+    body { background: #fff; padding: 0; font-size: 10.8pt; line-height: 1.62; }
+    .doc { box-shadow: none; border-radius: 0; max-width: 100%; padding: 0; }
+    .cover { padding-top: 0; } .cover h1 { font-size: 30pt; } .cover .standfirst { font-size: 12pt; }
+    .chapter { break-before: page; page-break-before: always; }
+    .chapter:first-of-type { break-before: auto; page-break-before: auto; }
+    .preface { break-before: auto; }
+    .toc, .preface, .qblock, .closing .qblock { break-inside: avoid; page-break-inside: avoid; }
+    .toc { background: #f7fafb; }
+    .qblock { background: #f0f6f7; border-color: #c3d9dd; }
+    .closing .qblock { background: #fbf4ef; border-color: #ecd6c6; }
+    h3, .chapter-head { break-after: avoid; page-break-after: avoid; }
+    .prose p { orphans: 3; widows: 3; }
+  }
+  @media (max-width: 700px) {
+    body { padding: 18px 10px 50px; } .doc { padding: 32px 22px 42px; }
+    .cover h1 { font-size: 27px; } .cover .standfirst { font-size: 15.5px; }
+    .chapter-head { flex-direction: column; gap: 6px; } .chapter-head h2 { font-size: 21px; }
+    .toc { padding: 20px 18px 22px; } .qblock { padding: 18px 18px 18px 20px; } .qblock .mark { font-size: 54px; right: 8px; }
+    .preface { padding: 24px 20px; } .prose p { text-align: left; hyphens: none; }
+  }
+  .tbl-wrap { overflow-x: auto; margin: 22px 0 8px; -webkit-overflow-scrolling: touch; }
+  table.t { width: 100%; border-collapse: collapse; font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif; font-size: 13.2px; line-height: 1.5; color: var(--body); }
+  table.t caption { caption-side: top; text-align: left; font-size: 10.5px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--warm); padding-bottom: 8px; }
+  table.t th { background: var(--accent-lt); color: var(--accent-dk); font-weight: 700; text-align: left; padding: 8px 10px; border-bottom: 2px solid var(--accent); vertical-align: bottom; white-space: nowrap; }
+  table.t td { padding: 8px 10px; border-bottom: 1px solid var(--rule); vertical-align: top; }
+  table.t tr:nth-child(even) td { background: var(--tint); }
+  table.t td.id { font-weight: 700; color: var(--accent-dk); white-space: nowrap; }
+  table.t td.rule-cell { min-width: 150px; background: var(--warm-lt) !important; color: var(--warm); font-style: italic; }
+  table.t td.num { text-align: right; white-space: nowrap; }
+  .tag { display: inline-block; font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; padding: 2px 7px; border-radius: 3px; white-space: nowrap; vertical-align: 1px; }
+  .tag.pending  { background: var(--warm-lt); color: var(--warm); border: 1px solid #ecd6c6; }
+  .tag.settled  { background: var(--accent-lt); color: var(--accent-dk); border: 1px solid #c3d9dd; }
+  .tag.unver    { background: #f1f1f4; color: var(--muted); border: 1px solid var(--rule); }
+  .tag.blocked  { background: #fbeaea; color: #8a2b2b; border: 1px solid #efc9c9; }
+  .tag.new      { background: var(--accent); color: #fff; }
+  .eq { font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace; font-size: 13.5px; background: var(--code-bg); border-left: 3px solid var(--accent); padding: 12px 16px; margin: 18px 0; color: var(--accent-dk); line-height: 1.85; overflow-x: auto; white-space: pre; break-inside: avoid; }
+  .note { background: var(--warm-lt); border: 1px solid #ecd6c6; border-left: 4px solid var(--warm); border-radius: 0 5px 5px 0; padding: 16px 22px; margin: 22px 0; font-size: 15px; break-inside: avoid; }
+  .note .label { display: block; font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif; font-size: 10.5px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--warm); margin-bottom: 6px; }
+  .note p { margin: 0 0 8px; text-align: left; } .note p:last-child { margin-bottom: 0; }
+  @media (max-width: 700px) { table.t { font-size: 12px; } table.t th, table.t td { padding: 6px 7px; } .note { padding: 14px 16px; } }
+  @media print { .tbl-wrap { overflow: visible; } table.t { font-size: 8.8pt; } table.t tr { break-inside: avoid; page-break-inside: avoid; } .eq, .note { break-inside: avoid; page-break-inside: avoid; } }
+</style>
+</head>
+<body>
+<article class="doc">
+
+  <header class="cover">
+    <div class="eyebrow">Agent Audit &amp; Decision Register &middot; v1</div>
+    <h1>GrantApp CGPA</h1>
+    <div class="rule"></div>
+    <p class="standfirst">
+      Written directly from the repository, its migrations, and its branches — not from the live site alone.
+      Every claim below is tagged by how it was checked.
+    </p>
+    <p class="standfirst">
+      Every ruling column is intentionally blank. This document produces questions and options; it does not
+      answer them.
+    </p>
+  </header>
+
+  <nav class="toc">
+    <div class="toc-title">Contents</div>
+    <ol>
+      <li><span class="t">Preface</span><span class="d">What this is, and how it differs from the earlier mid-project manual</span></li>
+      <li><span class="t">Part I &middot; Control Sheet</span><span class="d">Repo state, branches, build health, as of this audit</span></li>
+      <li><span class="t">Part II &middot; Doctrine Drift</span><span class="d">Where the written doctrine and the shipped code disagree</span></li>
+      <li><span class="t">Part III &middot; Content &amp; Data Integrity</span><span class="d">Keystone bank, catalog, migration history</span></li>
+      <li><span class="t">Part IV &middot; The Decision Register</span><span class="d">Every open item found, numbered, options listed, ruling blank</span></li>
+      <li><span class="t">Part V &middot; Pipeline &amp; Operations</span><span class="d">What has no CI, no runbook, no admin surface yet</span></li>
+      <li><span class="t">Part VI &middot; Risk Register</span><span class="d">Consolidated, rated where I can rate them, blank where only you can</span></li>
+      <li><span class="t">Closing Questions</span><span class="d">The ones I think shape everything above them</span></li>
+    </ol>
+  </nav>
+
+  <section class="preface">
+    <div class="kicker">Preface</div>
+    <h2>What This Is, and Is Not</h2>
+    <p>
+      This is a companion to the mid-project manual (v1/v2) already circulating for this project, not a
+      replacement for it. That document was written checking the live site and prior audit chapters; this one
+      was written with the actual repository cloned, its branches diffed, its migrations read line by line, and
+      one real merge (<code>arty/exam-ui</code> into <code>main</code>) carried out during the audit itself. Where
+      the two documents overlap, this one notes it and gives the more current or more directly verified figure.
+      Where they don't overlap, this one is additive.
+    </p>
+    <p>
+      Every claim here is tagged <span class="tag settled">Verified in code</span>,
+      <span class="tag unver">Verified live</span>, or <span class="tag pending">Unverified</span> — the same
+      discipline the mid-project manual's Agent Rules ask for (its AR7). The Decision Register's ruling column
+      is intentionally left blank throughout; filling it is the one thing this document does not do.
+    </p>
+  </section>
+
+  <!-- ================= PART I ================= -->
+  <section class="chapter">
+    <div class="chapter-head">
+      <span class="num">Part I &middot; Control</span>
+      <h2>Control Sheet</h2>
+    </div>
+    <div class="prose">
+      <div class="tbl-wrap"><table class="t">
+        <caption>Document control</caption>
+        <thead><tr><th>Field</th><th>Value</th></tr></thead>
+        <tbody>
+          <tr><td class="id">Repo</td><td>github.com/artificialiman/grantapp-CGPA</td></tr>
+          <tr><td class="id">Audited at</td><td><code>main</code> @ <code>6c75a7c</code>, immediately after merging <code>arty/exam-ui</code></td></tr>
+          <tr><td class="id">Branches at time of audit</td><td><code>main</code> (trunk); <code>arty/exam-ui</code> (merged this session); <code>obase</code> (3 commits, content-only, not yet merged); <code>sloww/onboarding-flow</code> (fully merged, stale, safe to delete)</td></tr>
+          <tr><td class="id">Build health</td><td><span class="tag settled">Verified in code</span> — clean <code>npm ci</code> + <code>npm run build</code> on <code>main</code> post-merge, zero errors</td></tr>
+          <tr><td class="id">Method</td><td>Read every doctrine file (<code>PROJECT_BRIEF.md</code>, <code>INVARIANTS.md</code>, <code>DECISIONS.md</code>, <code>DATA_DICTIONARY.md</code>, <code>EXPERIENCE_CONTEXT.md</code>) against the actual migrations and routes, not against each other</td></tr>
+        </tbody>
+      </table></div>
+      <p>
+        <span class="q">Is the branch inventory above complete, or are there other in-flight branches (a
+        founder's own local work, another agent's paused session) this audit should account for before the
+        Decision Register below is treated as current?</span>
+      </p>
+    </div>
+  </section>
+
+  <!-- ================= PART II ================= -->
+  <section class="chapter">
+    <div class="chapter-head">
+      <span class="num">Part II &middot; Drift</span>
+      <h2>Doctrine Drift — Where the Written Record and the Shipped Code Disagree</h2>
+    </div>
+    <div class="prose">
+      <h3>II.1 Faculty scope: written brief versus seeded content</h3>
+      <p>
+        <code>PROJECT_BRIEF.md</code> names the seven starting faculties as Medicine, Pharmacy, Biochemistry,
+        Microbiology, Law, Economics, and Insurance. What is actually seeded with real departments and courses,
+        across migrations 0007, 0008, 0011, and 0013, is Medicine, Pharmacy, <strong>Nursing</strong>, <strong>all
+        Engineering disciplines</strong>, Law, <strong>General Studies (GST/GSS)</strong>, and
+        <strong>Environmental Management &amp; Toxicology</strong>. Four of the seven originally named faculties —
+        Biochemistry, Microbiology, Economics, Insurance — have zero seeded content. Four faculties never named in
+        the brief do.
+      </p>
+      <p>
+        <span class="tag settled">Verified in code</span> — confirmed by reading <code>PROJECT_BRIEF.md</code>
+        against migrations 0007/0008/0011/0013 directly.
+      </p>
+      <p>
+        <span class="q">Was this pivot a real founder decision made in a conversation that never made it back
+        into <code>PROJECT_BRIEF.md</code>, or did it drift unintentionally across several agent sessions each
+        adding whichever faculty seemed reasonable at the time?</span> <span class="q">Either way — is the
+        seven-faculty list in <code>PROJECT_BRIEF.md</code> now wrong and due for a rewrite, or is the seeded
+        content the thing that's wrong and due for correction back toward the original seven?</span>
+      </p>
+
+      <h3>II.2 A broken append-only log</h3>
+      <p>
+        <code>DECISIONS.md</code> states its own rule plainly: "Never edit a past entry." Its most recent entry
+        (2026-09-13, "Onboarding-flow merge EXECUTED") opens with "Status update to the 2026-09-12 19:57 UTC
+        entry above" — but no entry dated 2026-09-12 exists anywhere in the file. Either an entry was deleted,
+        breaking the file's own stated rule, or it was referenced before ever being written.
+      </p>
+      <p><span class="tag settled">Verified in code</span> — read the full file; the referenced entry is absent.</p>
+      <p>
+        <span class="q">Do you have the missing entry's content anywhere else (an earlier chat, a draft), so it
+        can be restored rather than left as a permanent gap in the record?</span> <span class="q">If it's truly
+        lost, should the current entry be amended (an exception to "never edit," logged as such) to remove the
+        dangling reference, or left exactly as-is so the gap itself is part of the honest record?</span>
+      </p>
+
+      <h3>II.3 Two "reused taxonomy engine" claims, not yet cross-checked against each other</h3>
+      <p>
+        <code>DECISIONS.md</code> and <code>INVARIANTS.md</code> both state the taxonomy is reused from
+        grantapp-shell's exact two-axis baseline. Having audited grantapp-shell directly this same session: its
+        actual live taxonomy (per its own <code>TAXONOMY.md</code>) is Cognitive Patterns (Pragmatic, Logical,
+        Canon/Administrative, Statistical/Predictive, Pure Mathematical) and Information Types (Essential/
+        Definitive, Contextual/Historical, Abstract/Visual, Supply Chain/Procedural, Mathematical Proofs). The
+        values seeded into CGPA's <code>taxonomy_tags</code> (migration 0003) match this. <span class="tag settled">Verified in code, cross-repo</span> — no drift found here, stated for completeness since it was
+        an explicit claim worth checking rather than assuming true.
+      </p>
+    </div>
+    <div class="qblock">
+      <span class="mark">&nbsp;?</span>
+      <span class="label">Part II Question</span>
+      <p>
+        <span class="q">Given two doctrine-drift findings in one audit pass (faculty scope, the broken log
+        entry), do you want a standing rule that any agent changing seeded content or faculty scope must first
+        write the change into <code>PROJECT_BRIEF.md</code>/<code>DECISIONS.md</code> in the same commit — not
+        after, not "when there's time" — so this kind of drift stops being discoverable only by audit?</span>
+      </p>
+    </div>
+  </section>
+
+  <!-- ================= PART III ================= -->
+  <section class="chapter">
+    <div class="chapter-head">
+      <span class="num">Part III &middot; Content</span>
+      <h2>Content &amp; Data Integrity</h2>
+    </div>
+    <div class="prose">
+      <h3>III.1 The keystone bank has zero real, approved content — not "56 of 76 pending, 20 fine"</h3>
+      <p>
+        The mid-project manual's risk K2 states 56 of 76 keystone_questions are pending. That figure is
+        accurate as a row count, but its framing implies the other 20 are legitimate approved content offsetting
+        the backlog. They are not: all 20 are <code>BCH101</code> (Biochemistry) rows explicitly marked
+        <code>[TEST FIXTURE]</code>, generic placeholder options, committed with an inline comment stating they
+        exist purely so the adaptive-selection algorithm has data to weight against during development, and
+        "should never be mistaken for authored curriculum material." The real count of approved, real-content
+        keystone questions in the schema right now is zero.
+      </p>
+      <p><span class="tag settled">Verified in code</span> — read migration <code>20260912184327_cgpa_dev_seed_test_questions.sql</code> in full.</p>
+      <p>
+        <span class="q">Should the 20 test-fixture rows be deleted from the seed migration once real BCH101
+        content exists (if Biochemistry re-enters scope per II.1), or left in permanently as fixture data
+        clearly separated from production content by a flag the application layer checks?</span>
+      </p>
+
+      <h3>III.2 GST101 duplicated across two departments</h3>
+      <p>
+        Migration 0005 seeds <code>GST101</code> ("Use of English") under the <code>computer-science</code>
+        department. Migration 0008 separately seeds <code>GST101</code> ("Use of English and Communication
+        Skills I") under <code>general-studies</code>. No uniqueness constraint on <code>(department_id, code)</code>
+        or normalized-name matching exists to have prevented this.
+      </p>
+      <p><span class="tag settled">Verified in code</span>.</p>
+      <p>
+        <span class="q">Merge these two rows into one (which department should own it — GST courses
+        conceptually belong to General Studies, not Computer Science), or add a uniqueness constraint now so this
+        specific class of duplicate can't recur as more departments get seeded independently by different
+        agents?</span>
+      </p>
+
+      <h3>III.3 No admin surface exists for any of this</h3>
+      <p>
+        There is no route anywhere in <code>src/routes</code> resembling an admin panel. <code>my-submissions</code>
+        shows a student their own submission status, read-only — that is the only place
+        <code>approval_status</code> surfaces in the UI at all. Moving a keystone question from
+        <code>pending</code> to <code>approved</code>, or merging the GST101 duplicate, currently requires a
+        direct SQL edit against the live database.
+      </p>
+      <p><span class="tag settled">Verified in code</span> — <code>find src/routes -iname "*admin*"</code> returns nothing.</p>
+    </div>
+    <div class="qblock">
+      <span class="mark">&nbsp;?</span>
+      <span class="label">Part III Question</span>
+      <p>
+        <span class="q">Given zero real approved content exists and there's no way to approve any without raw
+        SQL, is a minimal admin approval screen (even a single unstyled page: list pending, approve/reject
+        button, done) the actual highest-priority next build item over anything else in this document?</span>
+      </p>
+    </div>
+  </section>
+
+  <!-- ================= PART IV : REGISTER ================= -->
+  <section class="chapter">
+    <div class="chapter-head">
+      <span class="num">Part IV &middot; Register</span>
+      <h2>The Decision Register</h2>
+    </div>
+    <div class="prose">
+      <div class="eq">question --> options --> ruling (you) --> specification --> code
+the ruling column is the only column an agent may not fill</div>
+      <p>
+        Rows C01&ndash;C12 are new findings from this audit. Rows C13&ndash;C20 are items already marked
+        <code>[OPEN]</code> in <code>INVARIANTS.md</code>/<code>DATA_DICTIONARY.md</code>, carried in here so
+        every open decision lives in one register rather than scattered across files.
+      </p>
+
+      <div class="tbl-wrap"><table class="t">
+        <caption>Decision Register</caption>
+        <thead><tr><th>ID</th><th>Source</th><th>Question</th><th>Options</th><th>Ruling</th></tr></thead>
+        <tbody>
+          <tr><td class="id">C01</td><td>II.1</td><td>Faculty scope: keep the seven originally named, or formalize the seven actually seeded?</td><td>Rewrite brief to match seeded; re-seed to match brief; hybrid (name which four of each set actually stay)</td><td class="rule-cell">&nbsp;</td></tr>
+          <tr><td class="id">C02</td><td>II.2</td><td>Restore, amend, or leave the broken DECISIONS.md log entry?</td><td>Restore from another source; amend with logged exception; leave the gap as-is</td><td class="rule-cell">&nbsp;</td></tr>
+          <tr><td class="id">C03</td><td>II.3</td><td>Standing rule: doctrine-file updates land in the same commit as the content change?</td><td>Yes, enforced by convention; yes, enforced by a PR checklist; no, periodic review is enough</td><td class="rule-cell">&nbsp;</td></tr>
+          <tr><td class="id">C04</td><td>III.1</td><td>Delete or keep the 20 BCH101 test-fixture rows long-term?</td><td>Delete once real content exists; keep permanently behind a fixture flag; keep as-is, undocumented risk accepted</td><td class="rule-cell">&nbsp;</td></tr>
+          <tr><td class="id">C05</td><td>III.2</td><td>Resolve the GST101 duplicate how?</td><td>Merge into general-studies; merge into computer-science; add a uniqueness constraint and merge manually</td><td class="rule-cell">&nbsp;</td></tr>
+          <tr><td class="id">C06</td><td>III.3</td><td>Build a minimal admin approval screen now?</td><td>Yes, before any other feature work; yes, but after [name something]; no, raw SQL is fine for now</td><td class="rule-cell">&nbsp;</td></tr>
+          <tr><td class="id">C07</td><td>V.1</td><td>Add CI to this repo, matching what grantapp-shell now has?</td><td>Yes, same workflow shape; yes, different shape (state how); not yet</td><td class="rule-cell">&nbsp;</td></tr>
+          <tr><td class="id">C08</td><td>V.2</td><td><code>CGPA_DEV_BYPASS_AUTH</code> — confirmed unset in the real Vercel production project?</td><td>Confirmed unset; confirmed set, intentionally, for a stated reason; not yet checked</td><td class="rule-cell">&nbsp;</td></tr>
+          <tr><td class="id">C09</td><td>V.3</td><td>Is the offline requirement (EXPERIENCE_CONTEXT #5, confirmed but unbuilt) still active, or superseded?</td><td>Still active, schedule it; superseded by a later decision; defer indefinitely, state until when</td><td class="rule-cell">&nbsp;</td></tr>
+          <tr><td class="id">C10</td><td>VI</td><td>Rate limiting / scraping protection on <code>quick-test-session</code> and similar endpoints — priority?</td><td>Build now; acceptable risk at current scale, revisit at a stated user count; not a priority</td><td class="rule-cell">&nbsp;</td></tr>
+          <tr><td class="id">C11</td><td>I</td><td>Merge or discard the <code>obase</code> branch's 3 pending commits (GST/GSS completion, first keystone batch, Environmental Mgmt department)?</td><td>Merge as-is; review content first, then merge; discard</td><td class="rule-cell">&nbsp;</td></tr>
+          <tr><td class="id">C12</td><td>I</td><td>Delete the stale, fully-merged <code>sloww/onboarding-flow</code> branch?</td><td>Delete now; keep as historical record</td><td class="rule-cell">&nbsp;</td></tr>
+          <tr><td class="id">C13</td><td>INVARIANTS #3</td><td>Grading scale: one model for all 7 faculties, or faculty-specific variants?</td><td>One model; per-faculty; per-school override on top of per-faculty</td><td class="rule-cell">&nbsp;</td></tr>
+          <tr><td class="id">C14</td><td>INVARIANTS #5</td><td>What exactly is in the transcript and the "Wrapped" artifact, and what triggers generation?</td><td>Define transcript contents; define Wrapped contents; define both triggers (graduation event, inactivity timeout, manual request)</td><td class="rule-cell">&nbsp;</td></tr>
+          <tr><td class="id">C15</td><td>INVARIANTS #6</td><td>Can "graduated" be detected automatically, or is it always self-reported?</td><td>Automatic (state the signal); self-reported; hybrid with self-report overriding a guessed default</td><td class="rule-cell">&nbsp;</td></tr>
+          <tr><td class="id">C16</td><td>INVARIANTS #8</td><td>Sister-app opt-in granularity: whole profile or selected fields? One-time or revocable?</td><td>Whole profile, one-time; whole profile, revocable; field-level, revocable; field-level, one-time</td><td class="rule-cell">&nbsp;</td></tr>
+          <tr><td class="id">C17</td><td>INVARIANTS #9</td><td>Sister app's name and the technical shape of the handoff?</td><td>Name it; API; shared DB view; export file</td><td class="rule-cell">&nbsp;</td></tr>
+          <tr><td class="id">C18</td><td>INVARIANTS #15</td><td>Review workflow for user-submitted school/lecturer-specific content — who reviews, what criteria?</td><td>Same admin as keystone approval; a separate reviewer role; trusted-submitter auto-approve after N accepted</td><td class="rule-cell">&nbsp;</td></tr>
+          <tr><td class="id">C19</td><td>DATA_DICTIONARY <code>lesson_notes</code></td><td>Real schema for the "proper/standard lesson notes" table — still just a placeholder?</td><td>Design now, before more question-bank work; defer until keystone approval pipeline exists</td><td class="rule-cell">&nbsp;</td></tr>
+          <tr><td class="id">C20</td><td>DATA_DICTIONARY <code>academic_records</code></td><td>Grade-entry table shape — depends on C13's grading-scale ruling. Design order?</td><td>Rule C13 first, then design this table; design both together</td><td class="rule-cell">&nbsp;</td></tr>
+        </tbody>
+      </table></div>
+
+      <p>
+        <span class="q">Rule these in the order listed, or in a different order — for instance C13/C20 together
+        since they're linked, or all the "II/III" findings before touching any of the longer-standing INVARIANTS
+        items?</span>
+      </p>
+    </div>
+    <div class="qblock">
+      <span class="mark">&nbsp;?</span>
+      <span class="label">Part IV Question</span>
+      <p>
+        <span class="q">Should this register and the mid-project manual's register (D01&ndash;D62) be merged
+        into one document going forward, cross-referenced by ID, or kept as two separate living documents that
+        each get updated independently as their respective audits continue?</span>
+      </p>
+    </div>
+  </section>
+
+  <!-- ================= PART V ================= -->
+  <section class="chapter">
+    <div class="chapter-head">
+      <span class="num">Part V &middot; Operations</span>
+      <h2>Pipeline &amp; Operations</h2>
+    </div>
+    <div class="prose">
+      <h3>V.1 No CI/CD pipeline exists</h3>
+      <p>
+        No <code>.github</code> directory anywhere in the repo. Nothing runs on push or on pull request —
+        no build check, no type check. grantapp-shell (the sibling UTME product) has one, and its build was
+        found broken and fixed this same session; this repo has no equivalent to break yet, but also nothing to
+        catch a break when it happens.
+      </p>
+      <p><span class="tag settled">Verified in code</span>.</p>
+
+      <h3>V.2 Dev-auth-bypass, well-built but worth a live confirmation</h3>
+      <p>
+        <code>CGPA_DEV_BYPASS_AUTH</code> is real and well-gated in code — never defaulted true, clearly
+        documented, resolves every request to one fixed test student when enabled. Its risk is entirely
+        operational: whether it is set <code>true</code> in the actual Vercel production environment variables,
+        which is outside what a code audit can see.
+      </p>
+      <p><span class="tag pending">Unverified — requires checking the live deployment's environment variables directly</span>.</p>
+
+      <h3>V.3 Offline requirement: confirmed as doctrine, absent in code</h3>
+      <p>
+        <code>EXPERIENCE_CONTEXT.md</code> #5 states the app is used heavily offline and calls this a
+        data/infrastructure requirement, "not yet built — no service worker, cache strategy, or local-first data
+        layer exists in the repo as of this doctrine's writing." That remains true after this audit; nothing in
+        the merged <code>arty/exam-ui</code> work touched offline capability.
+      </p>
+      <p><span class="tag settled">Verified in code</span> — confirmed still absent post-merge.</p>
+    </div>
+    <div class="qblock">
+      <span class="mark">&nbsp;?</span>
+      <span class="label">Part V Question</span>
+      <p>
+        <span class="q">Of the three items above, which is the actual next build priority — CI, confirming the
+        dev-bypass flag's production state, or starting the offline layer — given that all three have sat
+        unaddressed through several sessions of feature work?</span>
+      </p>
+    </div>
+  </section>
+
+  <!-- ================= PART VI ================= -->
+  <section class="chapter">
+    <div class="chapter-head">
+      <span class="num">Part VI &middot; Risk</span>
+      <h2>Risk Register</h2>
+    </div>
+    <div class="prose">
+      <div class="tbl-wrap"><table class="t">
+        <caption>Risks found this session</caption>
+        <thead><tr><th>ID</th><th>Risk</th><th>Likelihood</th><th>Impact</th><th>Mitigation</th></tr></thead>
+        <tbody>
+          <tr><td class="id">R1</td><td>Zero real approved keystone content — the product's core mechanic has nothing to serve</td><td>Certain</td><td>High</td><td>C06 (admin approval screen)</td></tr>
+          <tr><td class="id">R2</td><td>Faculty-scope drift compounds with every new agent session that seeds content against the wrong list</td><td>Recurring</td><td>Medium</td><td>C01 ruling, then C03 (commit-time doctrine sync)</td></tr>
+          <tr><td class="id">R3</td><td>No CI: a broken build merges to <code>main</code> silently, as already happened once in the sibling grantapp-shell repo</td><td>Rises with every unmerged branch</td><td>Medium</td><td>C07</td></tr>
+          <tr><td class="id">R4</td><td>Catalog duplication (GST101) recurs as more departments get seeded independently</td><td>Occurred once, structurally repeatable</td><td>Low, compounds over time</td><td>C05</td></tr>
+          <tr><td class="id">R5</td><td>Broken append-only decision log undermines the log's own purpose as a trustworthy record</td><td>Already occurred</td><td>Low direct impact, high trust cost</td><td>C02</td></tr>
+        </tbody>
+      </table></div>
+      <p>
+        <span class="q">Do these ratings match your own sense of severity, or would you reorder them — for
+        instance, is R2 (scope drift) actually more urgent than R1 to you, since it affects every faculty going
+        forward rather than a one-time content gap?</span>
+      </p>
+    </div>
+  </section>
+
+  <!-- ================= CLOSING ================= -->
+  <section class="closing">
+    <h2>Closing Questions</h2>
+    <p class="sub">Not chapter-scoped — the ones I think shape everything above them.</p>
+
+    <div class="qblock">
+      <span class="mark">&nbsp;?</span>
+      <span class="label">First</span>
+      <p>
+        <span class="q">Between this register (C01&ndash;C20) and the mid-project manual's register (D01&ndash;D62),
+        is there a single item you'd call the one thing that, if left unruled, makes every other ruling less
+        useful — and if so, which one?</span>
+      </p>
+    </div>
+
+    <div class="qblock">
+      <span class="mark">&nbsp;?</span>
+      <span class="label">Second</span>
+      <p>
+        <span class="q">This document was written the same session an actual merge (<code>arty/exam-ui</code>)
+        happened. Do you want future audit documents like this one written <em>before</em> merges, so open
+        questions are captured pre-change, or is auditing immediately after a merge — catching what the merge
+        itself changed or revealed — the more useful moment?</span>
+      </p>
+    </div>
+
+    <div class="qblock">
+      <span class="mark">&nbsp;?</span>
+      <span class="label">Third</span>
+      <p>
+        <span class="q">Where should this document live going forward — appended to in place as rulings come
+        in, replaced by a v2 once rulings land (mirroring how the mid-project manual versioned itself), or
+        folded permanently into <code>DECISIONS.md</code>/<code>INVARIANTS.md</code> once each row is settled,
+        leaving no separate register file at all?</span>
+      </p>
+    </div>
+  </section>
+
+  <footer class="footer">GrantApp CGPA &bull; Agent Audit &amp; Decision Register &bull; v1</footer>
+</article>
+</body>
+</html>
