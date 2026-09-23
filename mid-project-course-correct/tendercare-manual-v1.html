@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Tendercare Manual — Mid-Project Technical &amp; Architectural Manual</title>
+<style>
+  :root {
+    --ink:       #1c1a22;
+    --body:      #322e3a;
+    --muted:     #676176;
+    --faint:     #96909f;
+    --accent:    #5b2a7a;
+    --accent-dk: #3f1c57;
+    --accent-lt: #f1e9f6;
+    --warm:      #8a4a1f;
+    --warm-lt:   #f8efe4;
+    --rule:      #ded6e6;
+    --rule-soft: #ede7f2;
+    --paper:     #ffffff;
+    --tint:      #f8f5fb;
+    --code-bg:   #efe9f4;
+    --red:       #9c2b2b;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { -webkit-text-size-adjust: 100%; }
+  @page { size: A4; margin: 18mm 16mm; }
+  body {
+    background: #ece7ef;
+    color: var(--body);
+    font-family: Georgia, "Iowan Old Style", "Palatino Linotype", "Times New Roman", serif;
+    font-size: 16px;
+    line-height: 1.72;
+    padding: 44px 18px 80px;
+    display: flex;
+    justify-content: center;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  .doc {
+    background: var(--paper);
+    width: 100%;
+    max-width: 900px;
+    padding: 64px 72px 76px;
+    border-radius: 3px;
+    box-shadow: 0 6px 34px rgba(43, 21, 51, 0.14);
+  }
+  .cover { text-align: center; padding: 22px 0 46px; border-bottom: 3px double var(--accent); margin-bottom: 42px; }
+  .cover .eyebrow {
+    font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    font-size: 11px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 18px;
+  }
+  .cover h1 { font-size: 34px; font-weight: 400; color: var(--ink); line-height: 1.28; margin-bottom: 10px; }
+  .cover .sub { font-size: 16px; color: var(--muted); font-style: italic; margin-bottom: 22px; }
+  .cover .meta {
+    font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    font-size: 11.5px; color: var(--faint); letter-spacing: 0.03em;
+  }
+  h2.part {
+    font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    font-size: 12px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--accent); margin: 56px 0 4px;
+  }
+  h1.part-title { font-size: 26px; font-weight: 400; color: var(--ink); margin-bottom: 26px; }
+  h3.chapter { font-size: 20px; font-weight: 400; color: var(--ink); margin: 34px 0 12px; }
+  h4.section { font-size: 15px; font-weight: 700; color: var(--accent-dk); margin: 26px 0 10px; }
+  p { margin-bottom: 14px; }
+  .lede { font-size: 13.5px; color: var(--muted); font-style: italic; border-left: 2px solid var(--rule); padding-left: 14px; margin-bottom: 22px; }
+  strong { color: var(--ink); }
+  code, .mono { font-family: "SF Mono", Menlo, Consolas, monospace; font-size: 0.86em; background: var(--code-bg); padding: 0.1em 0.35em; border-radius: 3px; color: var(--accent-dk); }
+  ul, ol { margin: 0 0 14px 22px; }
+  li { margin-bottom: 6px; }
+  table { width: 100%; border-collapse: collapse; margin: 14px 0 20px; font-size: 13.5px; }
+  caption { text-align: left; font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif; font-size: 10.5px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; caption-side: top; }
+  th, td { text-align: left; padding: 7px 10px; border-bottom: 1px solid var(--rule-soft); vertical-align: top; }
+  th { font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif; font-size: 10.5px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; color: var(--accent-dk); background: var(--tint); }
+  tr:last-child td { border-bottom: none; }
+  .evidence { font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 0.04em; padding: 1px 6px; border-radius: 3px; white-space: nowrap; }
+  .ev-code { background: var(--accent-lt); color: var(--accent-dk); }
+  .ev-live { background: #e3f0e4; color: #2b6b34; }
+  .ev-unv  { background: var(--warm-lt); color: var(--warm); }
+  .formula {
+    font-family: "SF Mono", Menlo, Consolas, monospace; font-size: 13px; background: var(--tint);
+    border: 1px solid var(--rule); border-radius: 4px; padding: 12px 16px; margin: 14px 0; color: var(--accent-dk);
+  }
+  .q-block {
+    background: var(--accent-lt); border-left: 3px solid var(--accent); border-radius: 0 4px 4px 0;
+    padding: 14px 18px; margin: 18px 0; font-size: 14.5px;
+  }
+  .q-block .q-label {
+    font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif; font-size: 10px; font-weight: 700;
+    letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); margin-bottom: 6px; display: block;
+  }
+  .q-block p:last-child { margin-bottom: 0; }
+  .part-question { border-top: 1px solid var(--rule); margin-top: 34px; padding-top: 22px; }
+  .part-question .q-label { font-size: 11px; }
+  .closing { background: var(--accent-dk); color: #f1e9f6; border-radius: 4px; padding: 20px 24px; margin: 20px 0 28px; }
+  .closing .q-label { color: #d3b8e6; }
+  .closing p:last-child { margin-bottom: 0; }
+  .cell-blank { color: var(--faint); font-style: italic; }
+  hr.dbl { border: none; border-top: 3px double var(--accent); margin: 50px 0; }
+  .foot { text-align: center; font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif; font-size: 10.5px; color: var(--faint); letter-spacing: 0.06em; margin-top: 60px; }
+  @media print { body { background: none; padding: 0; } .doc { box-shadow: none; } }
+</style>
+</head>
+<body>
+<div class="doc">
+
+  <div class="cover">
+    <div class="eyebrow">Mid-Project Technical &amp; Architectural Manual — v1</div>
+    <h1>The Tendercare Manual</h1>
+    <div class="sub">tendercare&#8209;web &middot; tendercare&#8209;teacher &middot; tendercare&#8209;portal</div>
+    <div class="meta">Written against live code and, where stated, live data &middot; 2026&#8209;09&#8209;20</div>
+  </div>
+
+  <h2 class="part">Preface</h2>
+  <h1 class="part-title">What This Is, and Isn't</h1>
+
+  <p>This manual exists because a specific complaint — "the staff auth/role and therefore the September&nbsp;1 refresh is very broken" — turned out, on direct investigation, to be three distinct bugs stacked on top of a fourth, unrelated gap (the admin routes had no auth guard at all). None of those four were visible from the outside. Each was found by reading actual files and actual git history, not by trusting an earlier session's summary or this system's own memory of itself. That is the method this document tries to keep applying past the one bug that prompted it.</p>
+
+  <p>Every factual claim below carries an evidence grade:</p>
+  <table>
+    <tr><td style="width:120px"><span class="evidence ev-code">verified&#8209;in&#8209;code</span></td><td>Read directly from a migration, route file, or component in a fresh clone, this session.</td></tr>
+    <tr><td><span class="evidence ev-live">verified&#8209;live</span></td><td>Confirmed against the running Supabase project, not just its schema files.</td></tr>
+    <tr><td><span class="evidence ev-unv">unverified</span></td><td>Stated by someone, in a commit message or an earlier session, but not independently confirmed here.</td></tr>
+  </table>
+
+  <p>This is not a build plan. Every option offered in the Decision Register is a placeholder for you to strike through, not a recommendation ranked first. Where this manual states a default, it states it because a register row cannot be left with a blank options column — not because the default is believed correct.</p>
+
+  <hr class="dbl">
+
+  <h2 class="part">Part I &middot; Control Sheet</h2>
+  <h1 class="part-title">Scope and Standing</h1>
+
+  <table>
+    <caption>The three repositories, as they actually stand</caption>
+    <tr><th>Repo</th><th>Role</th><th>Framework / adapter</th><th>Data access</th><th>Evidence</th></tr>
+    <tr><td class="mono">tendercare&#8209;web</td><td>Public site — home, yearbook, about, sports, alumni, feed</td><td>SvelteKit, <span class="mono">adapter&#8209;static</span> (prerendered)</td><td>Almost entirely static/generated JSON at build time; one live anon-key Supabase read added recently, for the feed only</td><td><span class="evidence ev-code">verified&#8209;in&#8209;code</span></td></tr>
+    <tr><td class="mono">tendercare&#8209;teacher</td><td>Staff and admin app — roster, attendance, score entry, admin</td><td>SvelteKit, live-rendered</td><td>Entirely client-side Supabase calls, protected by RLS; no server-side session handling anywhere in the app</td><td><span class="evidence ev-code">verified&#8209;in&#8209;code</span></td></tr>
+    <tr><td class="mono">tendercare&#8209;portal</td><td>Student result checker</td><td>SvelteKit</td><td>Reads static per-student JSON files generated by <span class="mono">generate.py</span> in tendercare&#8209;teacher; never queries Supabase directly for results</td><td><span class="evidence ev-code">verified&#8209;in&#8209;code</span></td></tr>
+  </table>
+
+  <p>Settled, not open for this register: result-transcript content stays hardcoded and repo-side (invariant&nbsp;#8) — this is a deliberate choice for a bandwidth-constrained student body, not a gap to close. What's open is everything downstream of that choice — see Chapter&nbsp;3.</p>
+
+  <div class="part-question">
+    <span class="q-label">Part I Question</span>
+    <p>Is the three-repo split itself still the right shape, or has anything about running three separate SvelteKit deployments in parallel turned out to be more friction than the separation is worth?</p>
+  </div>
+
+  <hr class="dbl">
+
+  <h2 class="part">Part II &middot; Glossary &amp; Doctrine</h2>
+  <h1 class="part-title">Terms This Manual Uses, and the Ones It Can't Yet Define</h1>
+
+  <p>GrantApp UTME (a separate product, same GitHub account) runs on an explicit, written doctrine — Antifailure, Antitheft, Antisweat — with a ranked priority order for when they conflict. Nothing equivalent has been found for Tendercare in any session this manual draws on. The <span class="mono">iman-doctrine</span> repo's <span class="mono">BUILD-DOCTRINE.md</span> exists and is meant to be localized per project, but no session has confirmed it was ever localized for Tendercare specifically.</p>
+
+  <p>Terms used informally throughout this manual, borrowed from that other product for lack of a Tendercare-specific vocabulary:</p>
+  <ul>
+    <li><strong>Antifailure</strong> — a degraded, visible failure state is acceptable; a silent or corrupted one is not.</li>
+    <li><strong>Antitheft</strong> — protecting the thing of value (here: exam integrity, student data, result authenticity) from being taken or falsified.</li>
+    <li><strong>Antisweat</strong> — not building more than the current stage needs.</li>
+  </ul>
+  <p>Whether these are the right three terms for a school records system, rather than an exam-prep platform, has not been asked before now.</p>
+
+  <div class="part-question">
+    <span class="q-label">Part II Question</span>
+    <p>Is there a written doctrine for Tendercare that this manual simply hasn't been pointed at — and if not, should localizing <span class="mono">BUILD-DOCTRINE.md</span> for this project be the actual next artefact, ahead of any more feature code, the same way a proscale doctrine was the blocking question for the CGPA manual?</p>
+  </div>
+
+  <hr class="dbl">
+
+  <h2 class="part">Part III &middot; The Three Surfaces</h2>
+  <h1 class="part-title">What Each Repo Actually Does, Chapter by Chapter</h1>
+
+  <h3 class="chapter">Chapter 1 &middot; tendercare&#8209;web</h3>
+  <p>Fully static until a recent commit added one real Supabase client, used specifically to read the feed. Everything else — yearbook, alumni, about, sports — is prerendered from either hand-authored markup or a generated JSON file committed to the repo (<span class="mono">alumni.json</span>, and now <span class="mono">yearbook.json</span>).</p>
+
+  <h4 class="section">1.1 &middot; The yearbook is no longer hand-authored, but it isn't populated either</h4>
+  <p>The old <span class="mono">/yearbook</span> page was ~40 individually hand-written student cards for the Class of 2025 — real names, real quotes, no template underneath. A genuinely data-driven replacement now exists, reading a new <span class="mono">yearbook.json</span> and a generator script (<span class="mono">scripts/generate_yearbook_json.py</span>) that pulls the current SS2/JSS2 cohort from Supabase by <span class="mono">stage</span>/<span class="mono">level</span>, never by a hardcoded class id. <span class="evidence ev-code">verified&#8209;in&#8209;code</span></p>
+  <p>That script has never actually been run against live data — no session so far has had both the Supabase credentials and the reason to run it at the same time. The shipped <span class="mono">yearbook.json</span> is honestly empty, with a note saying so, mirroring how <span class="mono">alumni.json</span> handled the same situation before the Alumni Almanac had real graduates to show.</p>
+
+  <h4 class="section">1.2 &middot; Portrait provision is two-thirds done</h4>
+  <p>Invariant&nbsp;#13 names three places a student's <span class="mono">portrait_url</span> should surface: the yearbook (done, above), the result roster, and the login gate. The last two were deliberately not attempted — both routes lead into <span class="mono">generate.py</span>, the script that computes real transcripts, which felt like the wrong thing to touch without more room to verify it against real data than one session had.</p>
+
+  <div class="part-question">
+    <span class="q-label">Part III.1 Question</span>
+    <p>Was deferring the result-roster and login-gate portrait work the right call, or has it been sitting long enough that it should be scheduled now — and separately, who actually runs the yearbook generator, and on what trigger: manually when someone remembers, or tied to the same event that runs promotion?</p>
+  </div>
+
+  <h3 class="chapter">Chapter 2 &middot; tendercare&#8209;teacher</h3>
+  <p>This is where the actually-broken complaint lived, and where the most has been found.</p>
+
+  <h4 class="section">2.1 &middot; The auth-hook bug chain (now fixed, confirmed enabled)</h4>
+  <p>Three stacked bugs, each only visible once the previous one was fixed and tested live:</p>
+  <ol>
+    <li>No Custom Access Token Hook existed at all, so <span class="mono">auth.jwt() -&gt;&gt; 'role'</span> — the check every RLS policy and RPC function assumed would work — was reading a claim that was never actually being set.</li>
+    <li>The first hook migration returned the wrong shape, which made login <em>appear</em> to succeed while every subsequent call 401&#8209;ed.</li>
+    <li>The corrected hook then collided with a genuine PostgREST reservation: <span class="mono">role</span> is a name PostgREST itself uses to attempt <span class="mono">SET ROLE</span>, so using it as a custom claim threw a real Postgres error. The final fix renames the claim to <span class="mono">app_role</span> everywhere.</li>
+  </ol>
+  <p>You have confirmed the hook is enabled and pointed at the current function version. <span class="evidence ev-live">verified&#8209;live</span> (by your statement). Whether every previously-active staff/admin session has done the one fresh login needed to pick up the corrected claim is not something this manual can check.</p>
+
+  <h4 class="section">2.2 &middot; Two role-check mechanisms now coexist, unremarked</h4>
+  <p>Server-side RLS and RPC functions read <span class="mono">auth.jwt() -&gt;&gt; 'app_role'</span> — the custom claim the hook promotes. The one place a role is read client-side (<span class="mono">src/routes/+page.svelte</span>, and now the new <span class="mono">authGuard.ts</span>) reads <span class="mono">session.user.app_metadata.role</span> instead — a different, natively-present field that needs no hook at all and was never touched by the three-bug saga. Both currently happen to agree, because both are fed by the same <span class="mono">app_metadata</span> value at the source. Nothing enforces that they keep agreeing if a future change updates one path and not the other.</p>
+
+  <h4 class="section">2.3 &middot; The admin routes had zero guard; this session added one</h4>
+  <p>Every other staff page (<span class="mono">/attendance</span>, <span class="mono">/score</span>, <span class="mono">/roster</span>) independently checks for a session on mount and redirects to <span class="mono">/login</span> if none exists — a real, if duplicated, convention. <span class="mono">/admin</span>, <span class="mono">/admin/staff</span>, and <span class="mono">/admin/analytics</span> had none of it: reachable by direct navigation by anyone, logged in or not, the only "protection" being that the dashboard simply didn't link there for a logged-out visitor. This is now fixed, extending the existing per-page pattern rather than introducing server-side session handling (no <span class="mono">hooks.server.ts</span> exists anywhere in this app, and none was added). <span class="mono">/admin/staff</span>'s actual write actions (add, remove) are now additionally gated to <span class="mono">app_metadata.role === 'admin'</span>, not just any staff session, matching what the RLS policy already silently enforced. <span class="evidence ev-code">verified&#8209;in&#8209;code</span></p>
+
+  <h4 class="section">2.4 &middot; No mutation in this app is attributed to who made it</h4>
+  <p>An earlier decision, recorded as settled: real per-teacher accounts and attribution are wanted <em>now</em>, driven specifically by staff turnover — sacking, transfers, leave — being the most active lifecycle in the whole system. No <span class="mono">created_by</span> or <span class="mono">updated_by</span> column, or equivalent, has been found on any table this manual's audits have touched — not on score entries, not on roster edits, not on staff CRUD, not on the new bio/portrait fields. Real per-teacher <em>login</em> exists (the auth-hook chain above is about exactly that); attribution of what a logged-in teacher actually did does not yet appear to.</p>
+
+  <h4 class="section">2.5 &middot; How does anyone become <span class="mono">admin</span>?</h4>
+  <p>No admin-promotion UI was found anywhere in this codebase. <span class="mono">app_metadata.role</span> appears to be set by editing a user directly in the Supabase dashboard — outside any app-level screen. That may be entirely fine at the current scale (one school, a handful of admins), but it means the actual answer to "who can become admin" currently lives in dashboard access, not in anything this app displays or governs.</p>
+
+  <div class="part-question">
+    <span class="q-label">Part III.2 Question</span>
+    <p>Of the three items above that aren't bugs exactly but aren't settled design either — the two role-check paths, missing attribution, and dashboard-only admin promotion — which deserve a ruling now, and which are fine to leave as they are at this school's current size?</p>
+  </div>
+
+  <h3 class="chapter">Chapter 3 &middot; tendercare&#8209;portal, and the pipeline behind it</h3>
+  <p>The smallest of the three repos, and arguably carrying the largest operational risk right now.</p>
+
+  <h4 class="section">3.1 &middot; Twelve demo students, and September 1 has already passed</h4>
+  <p><span class="mono">scripts/report-pipeline/students/</span> in tendercare&#8209;teacher — the source <span class="mono">generate.py</span> actually reads to produce the JSON files tendercare&#8209;portal serves — contains twelve demonstration files. The real, currently-enrolled student body is not in this pipeline. This is explicitly a data problem, not a code problem — the generation mechanism itself is built and works — but it means that today, no real student could actually check a real result, regardless of how correct the auth fix or the admin section now are.</p>
+
+  <h4 class="section">3.2 &middot; The distribution mechanism is yours, by design, and its status is unknown to this manual</h4>
+  <p>Result-checker codes — one per student per term, the revenue mechanism, distributed manually over WhatsApp — were explicitly kept out of agent scope. The UI carries a disabled placeholder tile and nothing else. Whether the actual generation/distribution tool is ready, in progress, or not yet started is not something any session behind this manual has visibility into.</p>
+
+  <div class="part-question">
+    <span class="q-label">Part III.3 Question</span>
+    <p>What's the real plan and timeline for getting the current student body's data into the report pipeline — and does the auth/admin work this manual documents actually unblock that, or was it always a separate, parallel track that this manual has no visibility into?</p>
+  </div>
+
+  <hr class="dbl">
+
+  <h2 class="part">Part IV &middot; Register</h2>
+  <h1 class="part-title">The Decision Register: Every Open Question, Numbered, With Options and a Ruling Column</h1>
+
+  <div class="formula">question &rarr; options &rarr; ruling (founder) &rarr; specification &rarr; code<br>the ruling column is the only column an agent may not fill</div>
+
+  <p>Eighteen rows, in the order their chapters appear above. Nothing here is padded to reach a round number — this is everything this manual's audits actually surfaced as open.</p>
+
+  <table>
+    <caption>Decision Register</caption>
+    <tr><th style="width:32px">ID</th><th style="width:32px">Ref</th><th>Question</th><th>Options</th><th style="width:64px">Ruling</th></tr>
+    <tr><td>D01</td><td>1.1</td><td>Was the feed's live Supabase read meant to be the one exception to a static site, or the start of a broader shift?</td><td>(a) feed is the one exception; (b) open the door, decide per-surface; (c) revisit adapter-static entirely</td><td class="cell-blank">—</td></tr>
+    <tr><td>D02</td><td>1.1</td><td>Who runs the yearbook generator, and on what trigger?</td><td>(a) manual, on demand; (b) tied to the promotion event; (c) not yet decided</td><td class="cell-blank">—</td></tr>
+    <tr><td>D03</td><td>1.2</td><td>Is deferring the result-roster/login-gate portrait work still right, or is it time to schedule it?</td><td>(a) schedule now; (b) keep deferred; (c) drop the scope</td><td class="cell-blank">—</td></tr>
+    <tr><td>D04</td><td>2.2</td><td>Should the two role-check paths (client <span class="mono">app_metadata.role</span> vs. server <span class="mono">app_role</span> claim) be unified?</td><td>(a) unify to one; (b) keep both, document the split; (c) undecided</td><td class="cell-blank">—</td></tr>
+    <tr><td>D05</td><td>2.5</td><td>Is dashboard-only admin promotion (no in-app UI) the permanent mechanism?</td><td>(a) fine at this scale; (b) needs a real UI; (c) undecided</td><td class="cell-blank">—</td></tr>
+    <tr><td>D06</td><td>2.4</td><td>Attribution (<span class="mono">created_by</span>/<span class="mono">updated_by</span>) was decided as wanted "now" but hasn't been found built anywhere. Build it?</td><td>(a) yes, prioritize; (b) intentionally deprioritized — revise the earlier decision; (c) exists somewhere not yet found</td><td class="cell-blank">—</td></tr>
+    <tr><td>D07</td><td>2.1</td><td>Has <span class="mono">run_promotion()</span> actually been executed for 2026/2027?</td><td>(a) yes, confirmed; (b) no, not yet; (c) unsure — check <span class="mono">promotion_already_run()</span> directly</td><td class="cell-blank">—</td></tr>
+    <tr><td>D08</td><td>2.1</td><td>Is "all staff and students fully accounted for" — the stated precondition for the real per-teacher login cutover — met now?</td><td>(a) yes; (b) not yet; (c) needs a concrete checklist, the phrase alone isn't operational</td><td class="cell-blank">—</td></tr>
+    <tr><td>D09</td><td>2</td><td>Is <span class="mono">staff_type</span> (part-time/full-time/corps-member) permanently informational, or should it eventually gate something?</td><td>(a) permanent, informational only; (b) meant to gate something — specify; (c) undecided</td><td class="cell-blank">—</td></tr>
+    <tr><td>D10</td><td>2.3</td><td>Is the current per-page client-side session-check pattern (no <span class="mono">hooks.server.ts</span> anywhere) acceptable permanently?</td><td>(a) keep it, matches the app's style; (b) consolidate into a real SSR guard layer; (c) undecided, revisit at a natural pause</td><td class="cell-blank">—</td></tr>
+    <tr><td>D11</td><td>3.1</td><td>What's the actual plan and timeline to populate the report pipeline with the real, currently-enrolled student body?</td><td>(a) a real push starting now; (b) waiting on something else first — name it; (c) not yet planned</td><td class="cell-blank">—</td></tr>
+    <tr><td>D12</td><td>3.2</td><td>Status of the result-checker code generation/WhatsApp-distribution tool?</td><td>(a) ready; (b) in progress; (c) not started</td><td class="cell-blank">—</td></tr>
+    <tr><td>D13</td><td>II</td><td>Is there a written doctrine meant to govern Tendercare, the way <span class="mono">BUILD-DOCTRINE.md</span> governs GrantApp?</td><td>(a) yes — point to it; (b) no — Tendercare runs on stated different principles; (c) not yet decided; localize <span class="mono">BUILD-DOCTRINE.md</span> now</td><td class="cell-blank">—</td></tr>
+    <tr><td>D14</td><td>II</td><td>If a doctrine is ruled in D13, what's the priority order when its values conflict?</td><td>A ranked order like GrantApp's R1&#8211;R4; a Tendercare-specific ranking; informal judgment per case</td><td class="cell-blank">—</td></tr>
+    <tr><td>D15</td><td>Close</td><td>Should this manual become the standing read-first document for future sessions on these repos?</td><td>(a) yes, reference it from <span class="mono">INVARIANTS.md</span>; (b) keep the current multi-document setup, this is redundant; (c) merge everything into one document</td><td class="cell-blank">—</td></tr>
+    <tr><td>D16</td><td>Close</td><td>Is the current multi-agent coordination mechanism (<span class="mono">pausa.md</span>, <span class="mono">mid-project-course-correct/</span>) sufficient?</td><td>(a) sufficient as-is; (b) needs a structured register instead of narrative logs; (c) needs both</td><td class="cell-blank">—</td></tr>
+    <tr><td>D17</td><td>VII</td><td>A Supabase backup mechanism was deferred to agent judgment and has not been built. Pick one now?</td><td>(a) Supabase point-in-time recovery, if the plan supports it; (b) a scheduled export/dump; (c) still lower priority than D06&#8211;D12</td><td class="cell-blank">—</td></tr>
+    <tr><td>D18</td><td>VII</td><td>The "fold any list over 7 items into a dropdown" rule — has it been checked against the admin analytics/staff pages as real data has grown?</td><td>(a) still fine; (b) needs a pass; (c) unknown, not checked in this manual</td><td class="cell-blank">—</td></tr>
+  </table>
+
+  <div class="part-question">
+    <span class="q-label">Part IV Question</span>
+    <p>Would you rather rule this register in row order, or grouped — Chapter&nbsp;3's data-population questions first (D07, D11, D12), since they block real use regardless of how everything else is ruled, then Chapter&nbsp;2's architecture questions, then the cross-cutting ones last?</p>
+  </div>
+
+  <hr class="dbl">
+
+  <h2 class="part">Part V &middot; Roadmap</h2>
+  <h1 class="part-title">What a Staged Close-Out Looks Like From Here</h1>
+
+  <p>September&nbsp;1 has already passed, so this isn't a before-the-deadline roadmap — it's a close-the-loop-this-term one.</p>
+
+  <table>
+    <caption>Proposed stages</caption>
+    <tr><th>Stage</th><th>Entry</th><th>Exit</th><th>Blocked on</th></tr>
+    <tr><td>G1 &middot; Auth confirmed</td><td>Hook enabled (done, per your confirmation)</td><td>A fresh login tested on a real staff and a real admin account; <span class="mono">run_promotion()</span> attempted and its result known either way</td><td>D07</td></tr>
+    <tr><td>G2 &middot; Real data live</td><td>G1 passed</td><td>Real 2026/2027 roster and result data flowing through the pipeline, not 12 demo files</td><td>D11</td></tr>
+    <tr><td>G3 &middot; Results reachable</td><td>G2 passed</td><td>Result-checker codes generated and distributed for at least one real class</td><td>D12</td></tr>
+    <tr><td>G4 &middot; Cleanup</td><td>G3 passed</td><td>Attribution built or explicitly ruled out (D06); the two role-check paths unified or explicitly documented as intentional (D04)</td><td>D04, D06</td></tr>
+  </table>
+
+  <div class="part-question">
+    <span class="q-label">Part V Question</span>
+    <p>Is G1&#8211;G4 the right shape, or does real data (G2) actually need to come before or in parallel with the auth confirmation (G1), since they're genuinely independent tracks?</p>
+  </div>
+
+  <hr class="dbl">
+
+  <h2 class="part">Part VI &middot; Threat Model</h2>
+  <h1 class="part-title">What Was Actually Exposed, and For How Long</h1>
+
+  <div class="formula">threat = adversary + asset + attack + cost to adversary<br>control = mechanism that raises that cost above the asset's value</div>
+
+  <table>
+    <caption>Threats found or considered this session</caption>
+    <tr><th style="width:26px">ID</th><th>Adversary</th><th>Asset</th><th>Attack</th><th>Control</th><th>Status</th></tr>
+    <tr><td>T1</td><td>Any visitor, logged in or not</td><td>Staff roster, add/remove controls</td><td>Direct navigation to <span class="mono">/admin/staff</span></td><td>New session-check + admin-only write gate</td><td>Closed this session; unknown how long the window was actually open</td></tr>
+    <tr><td>T2</td><td>Logged-in staff (non-admin)</td><td>Staff add/remove actions</td><td>Reaching the write form via the same unguarded route</td><td>RLS always blocked the actual write; only the UI was unguarded</td><td>Was never a real data-loss risk — RLS held throughout</td></tr>
+    <tr><td>T3</td><td>Insider (a staff member with a grudge, or an honest mistake)</td><td>Any mutation — a score, a remark, a roster edit</td><td>No action is attributed to who made it</td><td>None found</td><td>Open — see D06</td></tr>
+    <tr><td>T4</td><td>A future agent session</td><td>Correct role-checking behavior</td><td>Editing one of the two role-check paths (2.2) without knowing the other exists</td><td>None beyond this manual now documenting both</td><td>Open — see D04</td></tr>
+    <tr><td>T5</td><td>Data loss — hardware, operator error, or a bad migration</td><td>All Supabase-held data</td><td>Any of the above</td><td>Unbuilt</td><td>Open — see D17</td></tr>
+  </table>
+
+  <div class="part-question">
+    <span class="q-label">Part VI Question</span>
+    <p>Given T1 was a real, if apparently unexploited, gap — is there any way to check whether it actually was reached by anyone other than staff, or is "unknown, now closed" the honest final answer?</p>
+  </div>
+
+  <hr class="dbl">
+
+  <h2 class="part">Part VII &middot; Operations</h2>
+  <h1 class="part-title">Runbooks and Risks That Don't Yet Exist in Writing</h1>
+
+  <table>
+    <caption>Runbooks needed</caption>
+    <tr><th style="width:30px">ID</th><th>Runbook</th><th>Trigger</th><th>Must state</th></tr>
+    <tr><td>RB1</td><td>Run promotion</td><td>September 1 each year</td><td>Who clicks the button, how to confirm <span class="mono">promotion_already_run()</span> first, what to check afterward</td></tr>
+    <tr><td>RB2</td><td>Grant a staff member admin</td><td>New admin needed</td><td>The actual Supabase dashboard steps, since no in-app path exists (D05)</td></tr>
+    <tr><td>RB3</td><td>Populate a new student's result data</td><td>New student, new term</td><td>The path from roster entry to a live, checkable transcript</td></tr>
+    <tr><td>RB4</td><td>Fresh-login recovery</td><td>A staff/admin account still reports permission errors</td><td>Logout, clear session, log back in — as a documented first step, not tribal knowledge</td></tr>
+  </table>
+
+  <table>
+    <caption>Risk register</caption>
+    <tr><th style="width:30px">ID</th><th>Risk</th><th>Likelihood</th><th>Impact</th><th>Mitigation</th></tr>
+    <tr><td>K1</td><td>Real student body absent from the result pipeline past the start of term</td><td>Certain, today</td><td>High</td><td>D11</td></tr>
+    <tr><td>K2</td><td>No mutation attribution despite a stated decision that it's wanted</td><td>Certain, today</td><td>Medium, rises with staff turnover</td><td>D06</td></tr>
+    <tr><td>K3</td><td>Two role-check paths silently diverging in a future change</td><td>Low today, rises over time</td><td>Medium</td><td>D04</td></tr>
+    <tr><td>K4</td><td>No backup mechanism</td><td>Low probability, unbounded impact if it happens</td><td>High</td><td>D17</td></tr>
+  </table>
+
+  <div class="part-question">
+    <span class="q-label">Part VII Question</span>
+    <p>Of RB1&#8211;RB4, which should be written first, and should they be checklists an agent or a non-technical admin could follow literally?</p>
+  </div>
+
+  <hr class="dbl">
+
+  <h2 class="part">Part VIII &middot; Agent Rules</h2>
+  <h1 class="part-title">Standing Instructions for Every Session</h1>
+
+  <div class="formula">agent session = read(manual) &rarr; read(register) &rarr; read(live files) &rarr; act &rarr; log</div>
+
+  <table>
+    <caption>Draft operating rules</caption>
+    <tr><th style="width:36px">ID</th><th>Rule</th></tr>
+    <tr><td>AR1</td><td>Read <span class="mono">INVARIANTS.md</span>, <span class="mono">SEPTEMBER-SESSION-WORKFLOW.md</span>, and this manual before writing code.</td></tr>
+    <tr><td>AR2</td><td>Verify a claim against the live file or live database before asserting it; a prior session's summary is not evidence.</td></tr>
+    <tr><td>AR3</td><td>Never fabricate content attributed to a real person — no invented quotes, bios, or ambitions.</td></tr>
+    <tr><td>AR4</td><td>Where a register row is unruled, ask; do not choose the plausible-looking option.</td></tr>
+    <tr><td>AR5</td><td>Log real findings in <span class="mono">pausa.md</span> or this manual's register — not only in chat.</td></tr>
+    <tr><td>AR6</td><td>Mark every claim in a report as verified-in-code, verified-live, or unverified.</td></tr>
+  </table>
+
+  <div class="part-question">
+    <span class="q-label">Part VIII Question</span>
+    <p>Should this file live at the repository root as <span class="mono">MANUAL.md</span> the way the reference document does for its own project, or stay in <span class="mono">mid-project-course-correct/</span> alongside the file that prompted it?</p>
+  </div>
+
+  <hr class="dbl">
+
+  <h2 class="part">Manual-Level Closing Questions</h2>
+  <h1 class="part-title">Not Chapter-Scoped — the Ones That Shape Everything Above</h1>
+  <p class="lede">These are the questions I believe actually determine the shape of the rest of the register, rather than let the manual trail off into detail.</p>
+
+  <div class="closing">
+    <span class="q-label">First</span>
+    <p>Is the real, current blocker to "the September&nbsp;1 refresh works" actually <em>auth</em> anymore — now that the hook chain is fixed and the admin gap is closed — or was auth always downstream of the bigger blocker, which is that the report pipeline still has twelve demo students and the real class of 2026/2027 isn't in it yet (D11)? If the second is true, everything in Parts&nbsp;II, VI, and VIII above is real but not urgent, and D11/D12 are the only two rows that actually matter this week.</p>
+  </div>
+
+  <div class="closing">
+    <span class="q-label">Second</span>
+    <p>Attribution (D06) was already decided once — "wanted now, driven by staff turnover" — and appears not to have been built. Is that a genuine gap this manual just found, or is there attribution logic somewhere none of the sessions behind this manual have looked, and the real issue is that nobody's checked?</p>
+  </div>
+
+  <div class="closing">
+    <span class="q-label">Third — and I think most important</span>
+    <p>This manual was written the same way the reference one that prompted it was: by re-reading actual files rather than trusting what earlier sessions said about them, specifically because the original complaint ("very broken") turned out to trace through three real bugs that had each been silently accumulating. Do you want every future session on these three repos to open the same way — read this manual and the Decision Register before writing code — and if so, should that be a standing instruction written down at the repository root, the way <span class="mono">INVARIANTS.md</span> already is, rather than something true only because it was discussed in one conversation?</p>
+  </div>
+
+  <div class="foot">The Tendercare Manual &bull; Mid-Project Technical &amp; Architectural Manual &bull; v1</div>
+
+</div>
+</body>
+</html>
