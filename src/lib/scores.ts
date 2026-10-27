@@ -187,6 +187,60 @@ export const scoreOutboxHandlers = {
 	saveScore: (payload: SaveScorePayload) => writeScoreLive(payload)
 };
 
+/** The single current term row, or null if none is marked current yet. */
+export async function getCurrentTerm(): Promise<{ id: string; academic_year: string; term_number: number } | null> {
+	const { data, error } = await supabase
+		.from('terms')
+		.select('id, academic_year, term_number')
+		.eq('is_current', true)
+		.maybeSingle();
+	if (error) throw error;
+	return data;
+}
+
+export interface SheetProgress {
+	filled: number;
+	total: number;
+	pct: number;
+}
+
+/**
+ * Real completion for one (subject, class, term) broadsheet — how many of
+ * that class's active students have at least one of CA/Exam entered. This
+ * is the live equivalent of the reference shells' localStorage-only
+ * progress bars: same shape (filled/total/pct) on the home dashboard, but
+ * counted from the real `scores` table rather than a per-device cache, so
+ * it reflects what's actually been entered regardless of which device or
+ * teacher entered it.
+ */
+export async function sheetProgress(
+	subjectId: string,
+	classId: string,
+	termId: string
+): Promise<SheetProgress> {
+	const { count: total, error: totalError } = await supabase
+		.from('students')
+		.select('id', { count: 'exact', head: true })
+		.eq('class_id', classId)
+		.eq('active', true);
+	if (totalError) throw totalError;
+
+	const { data: rows, error: rowsError } = await supabase
+		.from('scores')
+		.select('student_id, ca, exam, students!inner(class_id, active)')
+		.eq('subject_id', subjectId)
+		.eq('term_id', termId)
+		.eq('students.class_id', classId)
+		.eq('students.active', true);
+	if (rowsError) throw rowsError;
+
+	const filled = (rows ?? []).filter(
+		(r: any) => (r.ca !== null && r.ca !== undefined) || (r.exam !== null && r.exam !== undefined)
+	).length;
+	const totalCount = total ?? 0;
+	return { filled, total: totalCount, pct: totalCount > 0 ? Math.round((filled / totalCount) * 100) : 0 };
+}
+
 /**
  * Nigerian A1–F9 grading band, same boundaries used by the report-pipeline
  * generator (report-pipeline/generate.py's remark_for()) so a score's
