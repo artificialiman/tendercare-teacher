@@ -25,6 +25,7 @@
 		type Remark,
 		type ClassInfo
 	} from '$lib/roster';
+	import { getActiveStaffId, listMyClasses } from '$lib/teacherIdentity';
 	import ConfirmButton from '$lib/components/ConfirmButton.svelte';
 	import { supabase } from '$lib/supabase';
 	import Crest from '$lib/components/Crest.svelte';
@@ -102,7 +103,26 @@
 			goto('/login');
 			return;
 		}
+		const staffId = getActiveStaffId();
+		if (!staffId) {
+			goto('/');
+			return;
+		}
 		checkingSession = false;
+		if (classId) {
+			try {
+				const mine = await listMyClasses(staffId);
+				if (!mine.some((c) => c.id === classId)) {
+					error = "That class isn't assigned to you.";
+					loading = false;
+					return;
+				}
+			} catch (e) {
+				error = e instanceof Error ? e.message : 'Failed to verify your class';
+				loading = false;
+				return;
+			}
+		}
 		await load();
 	});
 
