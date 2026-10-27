@@ -2,18 +2,16 @@
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
 	import { supabase } from '$lib/supabase';
-	import { listSubjects, listClassesForSubject, type Subject, type ClassRow } from '$lib/scores';
+	import { getActiveStaffId, listMyAssignments, type Assignment } from '$lib/teacherIdentity';
 	import Crest from '$lib/components/Crest.svelte';
 
 	let checkingSession = $state(true);
 	let loading = $state(true);
 	let error = $state('');
 
-	let subjects = $state<Subject[]>([]);
+	let assignments = $state<Assignment[]>([]);
 	let selectedSubjectId = $state('');
-	let classesForSubject = $state<ClassRow[]>([]);
 	let selectedClassId = $state('');
-	let loadingClasses = $state(false);
 
 	onMount(async () => {
 		const {
@@ -23,29 +21,35 @@
 			goto('/login');
 			return;
 		}
+		const staffId = getActiveStaffId();
+		if (!staffId) {
+			goto('/');
+			return;
+		}
 		checkingSession = false;
 		try {
-			subjects = await listSubjects();
+			assignments = await listMyAssignments(staffId);
 		} catch (e) {
-			error = e instanceof Error ? e.message : 'Failed to load subjects';
+			error = e instanceof Error ? e.message : 'Failed to load your assignments';
 		} finally {
 			loading = false;
 		}
 	});
 
-	async function handleSubjectChange() {
+	// Only the subjects/classes this teacher is actually assigned to.
+	const subjects = $derived(
+		[...new Map(assignments.map((a) => [a.subject_id, a.subject_name])).entries()].map(
+			([id, name]) => ({ id, name })
+		)
+	);
+	const classesForSubject = $derived(
+		assignments
+			.filter((a) => a.subject_id === selectedSubjectId)
+			.map((a) => ({ id: a.class_id, label: a.class_label }))
+	);
+
+	function handleSubjectChange() {
 		selectedClassId = '';
-		classesForSubject = [];
-		if (!selectedSubjectId) return;
-		loadingClasses = true;
-		error = '';
-		try {
-			classesForSubject = await listClassesForSubject(selectedSubjectId);
-		} catch (e) {
-			error = e instanceof Error ? e.message : 'Failed to load classes';
-		} finally {
-			loadingClasses = false;
-		}
 	}
 
 	function openSheet() {
@@ -53,9 +57,7 @@
 		goto(`/score/sheet?subject=${selectedSubjectId}&class=${encodeURIComponent(selectedClassId)}`);
 	}
 
-	const selectedSubjectName = $derived(
-		subjects.find((s) => s.id === selectedSubjectId)?.name ?? ''
-	);
+	const selectedSubjectName = $derived(subjects.find((s) => s.id === selectedSubjectId)?.name ?? '');
 </script>
 
 <svelte:head>
@@ -106,10 +108,10 @@
 						id="classSelect"
 						class="styled-select"
 						bind:value={selectedClassId}
-						disabled={!selectedSubjectId || loadingClasses}
+						disabled={!selectedSubjectId}
 					>
 						<option value="">
-							{loadingClasses ? 'Loading…' : 'Select a class'}
+							Select a class
 						</option>
 						{#each classesForSubject as c (c.id)}
 							<option value={c.id}>{c.label}</option>
@@ -120,8 +122,10 @@
 					Open sheet
 				</button>
 			</div>
-			{#if selectedSubjectId && !loadingClasses && classesForSubject.length === 0}
-				<p class="empty-note">No classes are set up for {selectedSubjectName} yet.</p>
+			{#if !loading && subjects.length === 0 && !error}
+				<p class="empty-note">No subject-class assignments on file for you yet — ask admin to assign them.</p>
+			{:else if selectedSubjectId && classesForSubject.length === 0}
+				<p class="empty-note">No classes assigned to you for {selectedSubjectName}.</p>
 			{/if}
 		{/if}
 	</div>
