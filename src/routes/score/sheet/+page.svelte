@@ -5,6 +5,7 @@
 	import { supabase } from '$lib/supabase';
 	import { listRoster, getCurrentTermId, type Student } from '$lib/roster';
 	import { listScores, saveScore, nigerianGrade, type ScoreEntry } from '$lib/scores';
+	import { getActiveStaffId, listMyAssignments, type Assignment } from '$lib/teacherIdentity';
 	import Crest from '$lib/components/Crest.svelte';
 
 	const subjectId = page.url.searchParams.get('subject') ?? '';
@@ -28,6 +29,10 @@
 	let termId = $state<string | null>(null);
 	let termLabel = $state('');
 
+	// This teacher's other subjects in the same class — the always-visible
+	// subject rail, so scores can't silently go into the wrong subject.
+	let siblingAssignments = $state<Assignment[]>([]);
+
 	let students = $state<Student[]>([]);
 	let scoresByStudent = $state<Map<string, ScoreEntry>>(new Map());
 	let editValues = $state<Map<string, { ca: string; exam: string }>>(new Map());
@@ -43,10 +48,28 @@
 			goto('/login');
 			return;
 		}
+		const staffId = getActiveStaffId();
+		if (!staffId) {
+			goto('/');
+			return;
+		}
 		checkingSession = false;
 
 		if (!subjectId || !classId) {
 			error = 'Missing subject or class — go back and pick both.';
+			loading = false;
+			return;
+		}
+		try {
+			const mine = await listMyAssignments(staffId);
+			if (!mine.some((a) => a.subject_id === subjectId && a.class_id === classId)) {
+				error = "That subject and class isn't assigned to you.";
+				loading = false;
+				return;
+			}
+			siblingAssignments = mine.filter((a) => a.class_id === classId);
+		} catch (e) {
+			error = e instanceof Error ? e.message : 'Failed to verify your assignment';
 			loading = false;
 			return;
 		}
@@ -180,6 +203,19 @@
 		<a class="back-button" href="/score">&larr; Change assignment</a>
 	</header>
 
+	{#if siblingAssignments.length > 0}
+		<nav class="subject-rail" aria-label="Your subjects in this class">
+			{#each siblingAssignments as a (a.subject_id)}
+				<a
+					class="subject-chip"
+					class:is-active={a.subject_id === subjectId}
+					href={`/score/sheet?subject=${a.subject_id}&class=${encodeURIComponent(classId)}`}
+					data-sveltekit-reload>{a.subject_name}</a
+				>
+			{/each}
+		</nav>
+	{/if}
+
 	{#if error}
 		<div class="page-error" role="alert">{error}</div>
 	{/if}
@@ -285,6 +321,29 @@
 {/if}
 
 <style>
+	.subject-rail {
+		position: relative;
+		z-index: 1;
+		display: flex;
+		gap: var(--space-2);
+		flex-wrap: wrap;
+		margin-bottom: var(--space-5);
+	}
+	.subject-chip {
+		font-size: var(--text-xs);
+		font-weight: 600;
+		padding: 0.45rem 0.9rem;
+		border-radius: var(--radius-full);
+		background: var(--color-cream);
+		color: var(--color-ash-dark);
+		border: 1px solid var(--color-cream-deep);
+		text-decoration: none;
+	}
+	.subject-chip.is-active {
+		background: var(--color-purple);
+		color: var(--color-white);
+		border-color: var(--color-purple);
+	}
 	.session-check {
 		text-align: center;
 		padding: 4rem 1rem;
