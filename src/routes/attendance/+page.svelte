@@ -3,19 +3,12 @@
 	import { goto } from '$app/navigation';
 	import { supabase } from '$lib/supabase';
 	import Crest from '$lib/components/Crest.svelte';
-	import ConfirmButton from '$lib/components/ConfirmButton.svelte';
 	import { getActiveStaffId, listMyClasses } from '$lib/teacherIdentity';
-	import { runPromotion, checkPromotionAlreadyRun, type PromotionResult } from '$lib/roster';
 
 	let checkingSession = $state(true);
 	let loading = $state(true);
 	let error = $state('');
 	let classes = $state<{ id: string; label: string }[]>([]);
-
-	let running = $state(false);
-	let result = $state<PromotionResult | null>(null);
-	let promotionError = $state('');
-	let promotionAlreadyRun = $state(false);
 
 	onMount(async () => {
 		const {
@@ -38,35 +31,7 @@
 		} finally {
 			loading = false;
 		}
-		try {
-			promotionAlreadyRun = await checkPromotionAlreadyRun();
-		} catch {
-			// If this check itself fails, leave the button live -- the
-			// database-side guard in run_promotion() still refuses a
-			// second run regardless of what the UI shows.
-		}
 	});
-
-	async function handleRunPromotion() {
-		running = true;
-		promotionError = '';
-		result = null;
-		try {
-			result = await runPromotion();
-			promotionAlreadyRun = true;
-			const staffId = getActiveStaffId();
-			if (staffId) classes = await listMyClasses(staffId);
-		} catch (e) {
-			const message = e instanceof Error ? e.message : 'Promotion failed';
-			if (message.toLowerCase().includes('already been run')) {
-				promotionAlreadyRun = true;
-			} else {
-				promotionError = message;
-			}
-		} finally {
-			running = false;
-		}
-	}
 </script>
 
 <svelte:head>
@@ -93,39 +58,6 @@
 	{#if error}
 		<div class="page-error" role="alert">{error}</div>
 	{/if}
-
-	<div class="form-card promotion-card">
-		<h2>September 1st Promotion</h2>
-		<p class="promotion-note">
-			Advances every active, non-repeating student one level in their same arm/department,
-			graduates SS3, and moves JSS3 into an SS1 Unassigned holding class for department
-			assignment on the roster page. Whole roster, one shot — the three confirm steps below are
-			deliberate.
-		</p>
-		{#if promotionError}
-			<div class="page-error" role="alert">{promotionError}</div>
-		{/if}
-		{#if result}
-			<div class="promotion-result">
-				Promoted {result.promoted_count}, graduated {result.graduated_count}, {result.pending_assignment_count}
-				now pending department assignment.
-			</div>
-		{/if}
-		{#if promotionAlreadyRun}
-			<div class="promotion-done">
-				Already run for this cycle — the next run unlocks after next year's September 1st rollover.
-			</div>
-		{:else}
-			<ConfirmButton
-				label="Run September 1st Promotion"
-				confirmLabel="This moves the ENTIRE roster. Confirm?"
-				finalLabel="Yes — run it now"
-				variant="danger"
-				disabled={running}
-				onconfirm={handleRunPromotion}
-			/>
-		{/if}
-	</div>
 
 	<div class="form-card">
 		<h2>Choose a class</h2>
@@ -236,29 +168,6 @@
 		letter-spacing: var(--tracking-wide);
 		color: var(--color-purple);
 		margin: 0 0 var(--space-4);
-	}
-	.promotion-card {
-		border-color: var(--color-wine);
-		margin-bottom: var(--space-6);
-	}
-	.promotion-note {
-		font-size: var(--text-sm);
-		opacity: 0.65;
-		max-width: 65ch;
-		margin: 0 0 var(--space-4);
-	}
-	.promotion-result {
-		font-size: var(--text-sm);
-		background: var(--color-purple-ghost);
-		color: var(--color-purple-deep);
-		padding: var(--space-3) var(--space-4);
-		border-radius: var(--radius-md);
-		margin-bottom: var(--space-4);
-	}
-	.promotion-done {
-		font-size: var(--text-sm);
-		opacity: 0.65;
-		font-style: italic;
 	}
 	.loading-note {
 		opacity: 0.6;
