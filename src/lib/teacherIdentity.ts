@@ -118,3 +118,26 @@ export async function listMyAssignments(staffId: string): Promise<Assignment[]> 
 	}
 	return out;
 }
+
+export interface MyClass {
+	id: string;
+	label: string;
+	is_class_teacher: boolean;
+}
+
+/**
+ * Classes this staff member is attached to via staff_classes (0022), in the
+ * school's own sort order. Drives the attendance/roster pickers so a
+ * teacher only sees, and can only open, their own classes.
+ */
+export async function listMyClasses(staffId: string): Promise<MyClass[]> {
+	const { data, error } = await supabase
+		.from('staff_classes')
+		.select('class_id, is_class_teacher, classes(id, label, sort_order)')
+		.eq('staff_id', staffId);
+	if (error) throw error;
+	return ((data ?? []) as any[])
+		.filter((r) => r.classes)
+		.sort((a, b) => (a.classes.sort_order ?? 0) - (b.classes.sort_order ?? 0))
+		.map((r) => ({ id: r.classes.id, label: r.classes.label, is_class_teacher: r.is_class_teacher }));
+}

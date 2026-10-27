@@ -4,6 +4,7 @@
 	import { supabase } from '$lib/supabase';
 	import Crest from '$lib/components/Crest.svelte';
 	import ConfirmButton from '$lib/components/ConfirmButton.svelte';
+	import { getActiveStaffId, listMyClasses } from '$lib/teacherIdentity';
 	import { runPromotion, checkPromotionAlreadyRun, type PromotionResult } from '$lib/roster';
 
 	let checkingSession = $state(true);
@@ -24,13 +25,16 @@
 			goto('/login');
 			return;
 		}
+		const staffId = getActiveStaffId();
+		if (!staffId) {
+			goto('/');
+			return;
+		}
 		checkingSession = false;
 		try {
-			const { data, error: err } = await supabase.from('classes').select('id, label').order('sort_order');
-			if (err) throw err;
-			classes = data ?? [];
+			classes = await listMyClasses(staffId);
 		} catch (e) {
-			error = e instanceof Error ? e.message : 'Failed to load classes';
+			error = e instanceof Error ? e.message : 'Failed to load your classes';
 		} finally {
 			loading = false;
 		}
@@ -50,8 +54,8 @@
 		try {
 			result = await runPromotion();
 			promotionAlreadyRun = true;
-			const { data } = await supabase.from('classes').select('id, label').order('sort_order');
-			classes = data ?? [];
+			const staffId = getActiveStaffId();
+			if (staffId) classes = await listMyClasses(staffId);
 		} catch (e) {
 			const message = e instanceof Error ? e.message : 'Promotion failed';
 			if (message.toLowerCase().includes('already been run')) {
@@ -127,6 +131,8 @@
 		<h2>Choose a class</h2>
 		{#if loading}
 			<p class="loading-note">Loading classes…</p>
+		{:else if classes.length === 0 && !error}
+			<p class="loading-note">No classes assigned to you yet — ask admin to assign them.</p>
 		{:else}
 			<div class="class-tabs">
 				{#each classes as c (c.id)}
