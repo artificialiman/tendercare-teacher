@@ -41,21 +41,21 @@ alter table staff_classes enable row level security;
 -- to use the app at all).
 create policy "admin manages staff_subjects"
   on staff_subjects for all
-  using (auth.jwt() ->> 'role' = 'admin')
-  with check (auth.jwt() ->> 'role' = 'admin');
+  using (auth.jwt() ->> 'app_role' = 'admin')
+  with check (auth.jwt() ->> 'app_role' = 'admin');
 
 create policy "staff can view staff_subjects"
   on staff_subjects for select
-  using (auth.jwt() ->> 'role' in ('staff', 'admin'));
+  using (auth.jwt() ->> 'app_role' in ('staff', 'admin'));
 
 create policy "admin manages staff_classes"
   on staff_classes for all
-  using (auth.jwt() ->> 'role' = 'admin')
-  with check (auth.jwt() ->> 'role' = 'admin');
+  using (auth.jwt() ->> 'app_role' = 'admin')
+  with check (auth.jwt() ->> 'app_role' = 'admin');
 
 create policy "staff can view staff_classes"
   on staff_classes for select
-  using (auth.jwt() ->> 'role' in ('staff', 'admin'));
+  using (auth.jwt() ->> 'app_role' in ('staff', 'admin'));
 
 comment on table staff_subjects is
   'Which subjects a staff member teaches, school-wide (not per-class -- '
