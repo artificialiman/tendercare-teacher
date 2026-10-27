@@ -19,35 +19,6 @@ export interface ScoreEntry {
 }
 
 /**
- * Every subject in the school. No per-teacher filtering here — auth is
- * still the two shared staff/admin accounts (see login/+page.svelte's
- * comment), so there's no `staff_subjects` mapping to filter against yet.
- * Any signed-in staff account can enter scores for any subject/class.
- */
-export async function listSubjects(): Promise<Subject[]> {
-	const result = await readThroughCache('subjects:all', async () => {
-		const { data, error } = await supabase.from('subjects').select('id, name').order('name');
-		if (error) throw error;
-		return data as Subject[];
-	});
-	return result.data;
-}
-
-/** Classes that actually study a given subject, via class_subjects. */
-export async function listClassesForSubject(subjectId: string): Promise<ClassRow[]> {
-	const result = await readThroughCache(`classesForSubject:${subjectId}`, async () => {
-		const { data, error } = await supabase
-			.from('class_subjects')
-			.select('classes(id, label)')
-			.eq('subject_id', subjectId)
-			.order('class_id');
-		if (error) throw error;
-		return (data ?? []).map((r: any) => r.classes).filter(Boolean) as ClassRow[];
-	});
-	return result.data;
-}
-
-/**
  * Existing CA/Exam rows for a class's active roster, for one subject and
  * term. Students with no row yet simply haven't been scored — the sheet
  * fills those in as 0/blank rather than treating it as an error.
