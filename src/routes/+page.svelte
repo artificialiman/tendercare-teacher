@@ -1,94 +1,85 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { supabase } from '$lib/supabase';
 	import Crest from '$lib/components/Crest.svelte';
+	import { subjects, classes, classSubjects } from '$lib/teacherData';
 	import {
-		listActiveStaff,
-		getActiveStaff,
-		setActiveStaffId,
-		clearActiveStaffId,
+		getProfile,
+		saveProfile,
 		listMyAssignments,
-		type StaffMember,
+		type TeacherProfile,
 		type Assignment
 	} from '$lib/teacherIdentity';
 	import { getCurrentTerm, sheetProgress, type SheetProgress } from '$lib/scores';
 
+	// Everything here is read from data bundled with the app and from this
+	// device's own storage -- nothing is fetched.
 
-	// picker state (shown when no staff identity is picked yet)
-	let picking = $state(false);
-	let pickerStaff = $state<StaffMember[]>([]);
-	let pickerError = $state('');
-
-	// dashboard state (shown once a staff identity is picked)
-	let activeStaff = $state<StaffMember | null>(null);
+	let ready = $state(false);
+	let setup = $state(false); // true while the teacher is choosing subjects/classes
+	let profile = $state<TeacherProfile | null>(null);
 	let assignments = $state<Assignment[]>([]);
 	let progressByAssignment = $state<Map<string, SheetProgress>>(new Map());
 	let termLabel = $state('');
-	let loadingDashboard = $state(true);
-	let dashboardError = $state('');
+
+	// setup form state
+	let formName = $state('');
+	let formSubjects = $state<string[]>([]);
+	let formClasses = $state<string[]>([]);
+	let formClassTeacher = $state<string[]>([]);
+	let formError = $state('');
 
 	onMount(async () => {
-		await loadIdentity();
+		const term = await getCurrentTerm();
+		termLabel = term ? `${term.academic_year} · Term ${term.term_number}` : 'No current term set';
+		profile = getProfile();
+		if (!profile || (profile.subjectIds.length === 0 && profile.classIds.length === 0)) {
+			setup = true;
+		} else {
+			await loadDashboard();
+		}
+		ready = true;
 	});
 
-	async function loadIdentity() {
-		try {
-			const staff = await getActiveStaff();
-			if (!staff) {
-				picking = true;
-				pickerStaff = await listActiveStaff();
-				return;
-			}
-			activeStaff = staff;
-			await loadDashboard(staff.id);
-		} catch (e) {
-			pickerError = e instanceof Error ? e.message : 'Failed to load staff list';
-			picking = true;
+	async function loadDashboard() {
+		assignments = listMyAssignments();
+		const term = await getCurrentTerm();
+		const entries = await Promise.all(
+			assignments.map(async (a) => {
+				const p = term ? await sheetProgress(a.subject_id, a.class_id, term.id) : { filled: 0, total: 0, pct: 0 };
+				return [`${a.subject_id}:${a.class_id}`, p] as const;
+			})
+		);
+		progressByAssignment = new Map(entries);
+	}
+
+	function startEdit() {
+		formName = profile?.name ?? '';
+		formSubjects = [...(profile?.subjectIds ?? [])];
+		formClasses = [...(profile?.classIds ?? [])];
+		formClassTeacher = [...(profile?.classTeacherIds ?? [])];
+		formError = '';
+		setup = true;
+	}
+
+	async function saveSetup() {
+		if (formSubjects.length === 0 && formClasses.length === 0) {
+			formError = 'Pick at least one subject or class.';
+			return;
 		}
+		saveProfile({ name: formName, subjectIds: formSubjects, classIds: formClasses, classTeacherIds: formClassTeacher });
+		profile = getProfile();
+		setup = false;
+		await loadDashboard();
 	}
 
-	async function pick(staff: StaffMember) {
-		setActiveStaffId(staff.id);
-		activeStaff = staff;
-		picking = false;
-		await loadDashboard(staff.id);
-	}
-
-	function switchTeacher() {
-		clearActiveStaffId();
-		activeStaff = null;
-		assignments = [];
-		progressByAssignment = new Map();
-		loadIdentity();
-	}
-
-	async function loadDashboard(staffId: string) {
-		loadingDashboard = true;
-		dashboardError = '';
-		try {
-			const term = await getCurrentTerm();
-			termLabel = term ? `${term.academic_year} · Term ${term.term_number}` : 'No current term set';
-
-			assignments = await listMyAssignments(staffId);
-
-			if (term && assignments.length > 0) {
-				const entries = await Promise.all(
-					assignments.map(async (a) => {
-						const p = await sheetProgress(a.subject_id, a.class_id, term.id);
-						return [`${a.subject_id}:${a.class_id}`, p] as const;
-					})
-				);
-				progressByAssignment = new Map(entries);
-			}
-		} catch (e) {
-			dashboardError =
-				e instanceof Error
-					? e.message
-					: 'Failed to load assignments — staff_subjects/staff_classes may not exist on this project yet.';
-		} finally {
-			loadingDashboard = false;
-		}
-	}
+	// A subject the chosen classes never study would give an empty sheet list; say so.
+	const unusedSubjects = $derived(
+		formClasses.length === 0
+			? []
+			: formSubjects.filter(
+					(sid) => !classSubjects.some((cs) => cs.subject_id === sid && formClasses.includes(cs.class_id))
+				)
+	);
 
 	const inProgress = $derived(
 		assignments
@@ -101,35 +92,60 @@
 	<title>Tendercare Teacher</title>
 </svelte:head>
 
-{#if picking}
+{#if !ready}
+	<div class="landing"><p class="progress-empty">Opening…</p></div>
+{:else if setup}
 	<div class="landing">
 		<Crest class="landing-watermark" size="min(70vw, 640px)" />
 		<header class="landing-header">
 			<Crest class="landing-crest" size="3.5rem" />
 			<h1>Tendercare Teacher</h1>
-			<p>Pick your name to open your dashboard.</p>
+			<p>Tell the app what you teach. This stays on this device.</p>
 		</header>
-		{#if pickerError}
-			<div class="page-error" role="alert">{pickerError}</div>
-		{/if}
-		<div class="teacher-picker">
-			{#each pickerStaff as s (s.id)}
-				<button class="teacher-picker-btn" onclick={() => pick(s)}>
-					<span>
-						<span class="teacher-picker-name">{s.full_name}</span><br />
-						<span class="teacher-picker-role"
-							>{s.staff_type.replace('_', '-')}{s.is_class_teacher ? ' · Class teacher' : ''}</span
-						>
-					</span>
-					<span class="teacher-picker-arrow">&rarr;</span>
-				</button>
-			{/each}
-			{#if pickerStaff.length === 0 && !pickerError}
-				<p class="progress-empty">No active staff on file yet — ask admin to add you.</p>
+		<form class="setup-form" onsubmit={(e) => { e.preventDefault(); saveSetup(); }}>
+			<label class="setup-field">
+				<span>Your name (optional)</span>
+				<input type="text" bind:value={formName} placeholder="e.g. Mr. Adeyemi" />
+			</label>
+
+			<fieldset class="setup-group">
+				<legend>Your subjects</legend>
+				<div class="setup-checks">
+					{#each subjects as s (s.id)}
+						<label class="setup-check"><input type="checkbox" value={s.id} bind:group={formSubjects} />{s.name}</label>
+					{/each}
+				</div>
+			</fieldset>
+
+			<fieldset class="setup-group">
+				<legend>Your classes <small>(tick "class teacher" where it applies)</small></legend>
+				<div class="setup-checks">
+					{#each classes as c (c.id)}
+						<div class="setup-class">
+							<label class="setup-check"><input type="checkbox" value={c.id} bind:group={formClasses} />{c.label}</label>
+							{#if formClasses.includes(c.id)}
+								<label class="setup-check setup-ct"><input type="checkbox" value={c.id} bind:group={formClassTeacher} />class teacher</label>
+							{/if}
+						</div>
+					{/each}
+				</div>
+			</fieldset>
+
+			{#if unusedSubjects.length > 0}
+				<p class="setup-note">
+					Not studied in any class you picked, so no sheet will appear for:
+					{unusedSubjects.map((id) => subjects.find((s) => s.id === id)?.name).join(', ')}.
+				</p>
 			{/if}
-		</div>
+			{#if formError}<div class="page-error" role="alert">{formError}</div>{/if}
+
+			<div class="setup-actions">
+				<button type="submit" class="setup-save">Save and open dashboard</button>
+				{#if profile}<button type="button" class="shell-switch" onclick={() => (setup = false)}>Cancel</button>{/if}
+			</div>
+		</form>
 	</div>
-{:else if activeStaff}
+{:else}
 	<div class="dashboard">
 		<Crest class="dashboard-watermark" size="min(60vw, 560px)" />
 
@@ -142,23 +158,19 @@
 				</div>
 			</div>
 			<div class="shell-right">
-				<span class="shell-role-pill">{activeStaff.full_name}</span>
-				<button class="shell-switch" onclick={switchTeacher}>Switch</button>
+				{#if profile?.name}<span class="shell-role-pill">{profile.name}</span>{/if}
+				<button class="shell-switch" onclick={startEdit}>Edit</button>
 			</div>
 		</div>
 
 		<section class="welcome-section">
-			<h1>Welcome back, {activeStaff.full_name}</h1>
+			<h1>Welcome back{profile?.name ? `, ${profile.name}` : ''}</h1>
 			<p>
-				{assignments.length} subject-class assignment{assignments.length === 1 ? '' : 's'}{activeStaff.is_class_teacher
+				{assignments.length} subject-class assignment{assignments.length === 1 ? '' : 's'}{(profile?.classTeacherIds.length ?? 0) > 0
 					? ' · Class teacher'
 					: ''}.
 			</p>
 		</section>
-
-		{#if dashboardError}
-			<div class="page-error" role="alert">{dashboardError}</div>
-		{/if}
 
 		<div class="mode-grid">
 			<a class="mode-card" href="/attendance">
@@ -175,13 +187,18 @@
 					>Open a subject-class broadsheet. CA + Exam auto-totals, live row/column highlight.</span
 				>
 			</a>
+			<a class="mode-card" href="/broadsheet">
+				<span class="mode-card-icon">📊</span>
+				<span class="mode-card-title">Broadsheet</span>
+				<span class="mode-card-desc"
+					>Read-only view of every subject you are concerned with, class by class.</span
+				>
+			</a>
 		</div>
 
 		<p class="section-label">Broadsheets in progress</p>
 		<div class="progress-list">
-			{#if loadingDashboard}
-				<p class="progress-empty">Loading…</p>
-			{:else if inProgress.length === 0}
+			{#if inProgress.length === 0}
 				<p class="progress-empty">Nothing started yet — open Score Entry to begin a sheet.</p>
 			{:else}
 				{#each inProgress as { a, p } (a.subject_id + a.class_id)}
@@ -251,44 +268,6 @@
 		opacity: 0.7;
 		font-size: var(--text-sm);
 		margin: 0;
-	}
-	.teacher-picker {
-		position: relative;
-		z-index: 1;
-		width: 100%;
-		max-width: 480px;
-		display: flex;
-		flex-direction: column;
-		gap: var(--space-2);
-	}
-	.teacher-picker-btn {
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		gap: var(--space-3);
-		background: var(--color-white);
-		border: 1px solid var(--color-cream-deep);
-		border-radius: var(--radius-md);
-		padding: 0.85rem 1.1rem;
-		text-align: left;
-		cursor: pointer;
-	}
-	.teacher-picker-btn:hover {
-		border-color: var(--color-purple-light);
-	}
-	.teacher-picker-name {
-		font-family: var(--font-serif);
-		font-weight: 600;
-		font-size: var(--text-md);
-		color: var(--color-ink);
-	}
-	.teacher-picker-role {
-		font-size: var(--text-xs);
-		color: var(--color-ash-dark);
-	}
-	.teacher-picker-arrow {
-		color: var(--color-purple-light);
-		font-size: var(--text-lg);
 	}
 
 	.dashboard {
@@ -526,5 +505,79 @@
 		font-weight: 600;
 		color: var(--color-purple-deep);
 		flex-shrink: 0;
+	}
+	.setup-form {
+		position: relative;
+		z-index: 1;
+		width: 100%;
+		max-width: 46rem;
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-5);
+	}
+	.setup-field {
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-2);
+		font-weight: 600;
+	}
+	.setup-field input {
+		padding: var(--space-3);
+		border: 1px solid var(--color-purple-light);
+		border-radius: var(--radius-md);
+		font: inherit;
+	}
+	.setup-group {
+		border: 1px solid var(--color-purple-light);
+		border-radius: var(--radius-md);
+		padding: var(--space-4);
+		background: #fff;
+	}
+	.setup-group legend {
+		font-weight: 700;
+		padding: 0 var(--space-2);
+	}
+	.setup-group small {
+		font-weight: 400;
+		opacity: 0.7;
+	}
+	.setup-checks {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(11rem, 1fr));
+		gap: var(--space-2) var(--space-4);
+	}
+	.setup-check {
+		display: flex;
+		align-items: center;
+		gap: var(--space-2);
+		font-size: 0.95rem;
+	}
+	.setup-class {
+		display: flex;
+		flex-direction: column;
+	}
+	.setup-ct {
+		margin-left: var(--space-6);
+		font-size: 0.8rem;
+		opacity: 0.8;
+	}
+	.setup-note {
+		font-size: 0.9rem;
+		opacity: 0.85;
+	}
+	.setup-actions {
+		display: flex;
+		gap: var(--space-3);
+		align-items: center;
+	}
+	.setup-save {
+		padding: var(--space-3) var(--space-5);
+		background: var(--color-purple-deep);
+		color: #fff;
+		border: none;
+		border-radius: var(--radius-md);
+		font: inherit;
+		font-weight: 700;
+		cursor: pointer;
 	}
 </style>

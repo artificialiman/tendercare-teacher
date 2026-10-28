@@ -1,68 +1,67 @@
-import { supabase } from '$lib/supabase';
+// ============================================================================
+// Who is using this device, and what they teach. Nothing is fetched: the
+// school's real classes and subjects are hardcoded in teacherData.ts, and the
+// teacher ticks their own subjects/classes once. That choice is kept in this
+// browser's localStorage, and every "my classes" / "my assignments" list in
+// the app is derived from it.
+//
+// There is no staff list or admin-made assignment data to read yet (the live
+// project has no staff rows). When real auth and admin assignments arrive,
+// this file is the one place that changes -- the pages only call the
+// functions below.
+// ============================================================================
 
-/**
- * A lightweight "which teacher am I" layer.
- *
- * There is no sign-in while open access is on (0023_temporary_open_access.sql,
- * midterm exams week): staff and the tech team open the app directly, and the
- * URL is shared only with staff and agents. Real per-teacher Supabase Auth
- * accounts come after the exams (staged in staff.auth_user_id /
- * is_active_staff(), 0013).
- *
- * This picks a real row from the `staff` table (no password, same pattern as
- * the no-gate.html / tendercare-teacher.html reference shells' name picker)
- * and remembers it locally, purely for display and for scoping the
- * subject/class pickers -- never for authorization.
- */
+import { subjects, classes, classSubjects } from './teacherData';
 
-const LS_KEY = 'tc_active_staff_id';
+const KEY = 'tc_teacher_profile';
 
-export interface StaffMember {
-	id: string;
-	full_name: string;
-	staff_type: 'part_time' | 'full_time' | 'corps_member';
-	is_class_teacher: boolean;
+export interface TeacherProfile {
+	name: string;
+	subjectIds: string[];
+	classIds: string[];
+	/** Classes (a subset of classIds) this teacher is the class teacher of. */
+	classTeacherIds: string[];
 }
 
-export function getActiveStaffId(): string | null {
-	return localStorage.getItem(LS_KEY);
-}
-
-export function setActiveStaffId(id: string): void {
-	localStorage.setItem(LS_KEY, id);
-}
-
-export function clearActiveStaffId(): void {
-	localStorage.removeItem(LS_KEY);
-}
-
-/** Every active staff row, for the name-picker list. */
-export async function listActiveStaff(): Promise<StaffMember[]> {
-	const { data, error } = await supabase
-		.from('staff')
-		.select('id, full_name, staff_type, is_class_teacher')
-		.eq('active', true)
-		.order('full_name');
-	if (error) throw error;
-	return (data ?? []) as StaffMember[];
-}
-
-/** The currently-picked staff row, or null if none picked yet or it's gone (deactivated, deleted). */
-export async function getActiveStaff(): Promise<StaffMember | null> {
-	const id = getActiveStaffId();
-	if (!id) return null;
-	const { data, error } = await supabase
-		.from('staff')
-		.select('id, full_name, staff_type, is_class_teacher')
-		.eq('id', id)
-		.eq('active', true)
-		.maybeSingle();
-	if (error) throw error;
-	if (!data) {
-		clearActiveStaffId();
+export function getProfile(): TeacherProfile | null {
+	if (typeof localStorage === 'undefined') return null;
+	try {
+		const raw = localStorage.getItem(KEY);
+		if (!raw) return null;
+		const p = JSON.parse(raw) as TeacherProfile;
+		const validSubjects = new Set(subjects.map((s) => s.id));
+		const validClasses = new Set(classes.map((c) => c.id));
+		return {
+			name: p.name ?? '',
+			subjectIds: (p.subjectIds ?? []).filter((id) => validSubjects.has(id)),
+			classIds: (p.classIds ?? []).filter((id) => validClasses.has(id)),
+			classTeacherIds: (p.classTeacherIds ?? []).filter((id) => validClasses.has(id))
+		};
+	} catch {
 		return null;
 	}
-	return data as StaffMember;
+}
+
+export function saveProfile(p: TeacherProfile): void {
+	const classTeacherIds = p.classTeacherIds.filter((id) => p.classIds.includes(id));
+	localStorage.setItem(KEY, JSON.stringify({ ...p, name: p.name.trim(), classTeacherIds }));
+}
+
+/** A class this teacher just created becomes one of their own classes. */
+export function addClassToProfile(classId: string): void {
+	const p = getProfile();
+	if (!p || p.classIds.includes(classId)) return;
+	saveProfile({ ...p, classIds: [...p.classIds, classId] });
+}
+
+export function clearProfile(): void {
+	localStorage.removeItem(KEY);
+}
+
+/** Truthy once the teacher has set up their subjects/classes on this device. */
+export function getActiveStaffId(): string | null {
+	const p = getProfile();
+	return p && (p.subjectIds.length > 0 || p.classIds.length > 0) ? 'this-device' : null;
 }
 
 export interface Assignment {
@@ -72,45 +71,29 @@ export interface Assignment {
 	class_label: string;
 }
 
-/**
- * Real (subject, class) pairs this staff member can open a score sheet
- * for -- the join staff_subjects x staff_classes x class_subjects
- * described in 0022's comment. Requires that migration to be applied to
- * the live project; until then this throws a clear "missing table" error
- * rather than silently returning an empty/fabricated list, same honest-
- * failure pattern as NOTES.md's #/feed and #/access-code.
- */
-export async function listMyAssignments(staffId: string): Promise<Assignment[]> {
-	const [subjectsRes, classesRes] = await Promise.all([
-		supabase
-			.from('staff_subjects')
-			.select('subject_id, subjects(id, name)')
-			.eq('staff_id', staffId),
-		supabase.from('staff_classes').select('class_id, classes(id, label)').eq('staff_id', staffId)
-	]);
-	if (subjectsRes.error) throw subjectsRes.error;
-	if (classesRes.error) throw classesRes.error;
-
-	const myClassIds = new Set((classesRes.data ?? []).map((r: any) => r.class_id));
-	const mySubjects = (subjectsRes.data ?? []) as any[];
-	if (mySubjects.length === 0 || myClassIds.size === 0) return [];
-
-	const subjectIds = mySubjects.map((r) => r.subject_id);
-	const { data: csRows, error: csError } = await supabase
-		.from('class_subjects')
-		.select('subject_id, classes(id, label)')
-		.in('subject_id', subjectIds);
-	if (csError) throw csError;
-
+/** Every (subject, class) pair this teacher can open a score sheet for. */
+export function listMyAssignments(_staffId?: string): Assignment[] {
+	const p = getProfile();
+	if (!p) return [];
+	const mySubjects = new Set(p.subjectIds);
+	const myClasses = new Set(p.classIds);
+	const subjectName = new Map(subjects.map((s) => [s.id, s.name]));
+	const classRec = new Map(classes.map((c) => [c.id, c]));
 	const out: Assignment[] = [];
-	for (const row of csRows ?? []) {
-		const cls = (row as any).classes;
-		if (!cls || !myClassIds.has(cls.id)) continue;
-		const subj = mySubjects.find((s) => s.subject_id === (row as any).subject_id)?.subjects;
-		if (!subj) continue;
-		out.push({ subject_id: subj.id, subject_name: subj.name, class_id: cls.id, class_label: cls.label });
+	for (const cs of classSubjects) {
+		if (!mySubjects.has(cs.subject_id) || !myClasses.has(cs.class_id)) continue;
+		out.push({
+			subject_id: cs.subject_id,
+			subject_name: subjectName.get(cs.subject_id)!,
+			class_id: cs.class_id,
+			class_label: classRec.get(cs.class_id)!.label
+		});
 	}
-	return out;
+	return out.sort(
+		(a, b) =>
+			(classRec.get(a.class_id)!.sort_order - classRec.get(b.class_id)!.sort_order) ||
+			a.subject_name.localeCompare(b.subject_name)
+	);
 }
 
 export interface MyClass {
@@ -119,19 +102,27 @@ export interface MyClass {
 	is_class_teacher: boolean;
 }
 
+/** The classes this teacher is attached to, in school order. */
+export function listMyClasses(_staffId?: string): MyClass[] {
+	const p = getProfile();
+	if (!p) return [];
+	return classes
+		.filter((c) => p.classIds.includes(c.id))
+		.sort((a, b) => a.sort_order - b.sort_order)
+		.map((c) => ({ id: c.id, label: c.label, is_class_teacher: p.classTeacherIds.includes(c.id) }));
+}
+
 /**
- * Classes this staff member is attached to via staff_classes (0022), in the
- * school's own sort order. Drives the attendance/roster pickers so a
- * teacher only sees, and can only open, their own classes.
+ * What the read-only broadsheet shows: for each of the teacher's classes, the
+ * subjects to include. In a class they are class teacher of, that is every
+ * subject the class studies; elsewhere, only their own subjects.
  */
-export async function listMyClasses(staffId: string): Promise<MyClass[]> {
-	const { data, error } = await supabase
-		.from('staff_classes')
-		.select('class_id, is_class_teacher, classes(id, label, sort_order)')
-		.eq('staff_id', staffId);
-	if (error) throw error;
-	return ((data ?? []) as any[])
-		.filter((r) => r.classes)
-		.sort((a, b) => (a.classes.sort_order ?? 0) - (b.classes.sort_order ?? 0))
-		.map((r) => ({ id: r.classes.id, label: r.classes.label, is_class_teacher: r.is_class_teacher }));
+export function broadsheetScope(): { classId: string; label: string; subjectIds: string[] }[] {
+	const p = getProfile();
+	if (!p) return [];
+	return listMyClasses().map((c) => {
+		const studied = classSubjects.filter((cs) => cs.class_id === c.id).map((cs) => cs.subject_id);
+		const subjectIds = c.is_class_teacher ? studied : studied.filter((id) => p.subjectIds.includes(id));
+		return { classId: c.id, label: c.label, subjectIds };
+	});
 }

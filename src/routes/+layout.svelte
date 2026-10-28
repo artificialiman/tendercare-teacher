@@ -1,7 +1,6 @@
 <script lang="ts">
 	import '$lib/styles/tendercare.css';
 	import favicon from '$lib/assets/favicon.svg';
-	import OfflineBanner from '$lib/components/OfflineBanner.svelte';
 	import { onMount } from 'svelte';
 
 	let { children } = $props();
@@ -23,5 +22,4 @@
 	<meta name="theme-color" content="#3A1A5C" />
 </svelte:head>
 
-<OfflineBanner />
 {@render children()}

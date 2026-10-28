@@ -1,0 +1,30 @@
+{
+  "_about": "Changes found in the one Supabase project reachable from my connector (name: tenderexam, created 2026-08-26) beyond supabase/seed/001: one added student and 2025/2026 terms with Term 3 current. Checked 2026-10-28 by read-only queries; the other 376 students matched the seed exactly (md5), class/subject counts matched, scores table empty. CAUTION: that project is PRE-promotion (no 2026 intake, no alumni, SS3 still enrolled), while supabase/seed/003 says the real school has already run the September 2026 promotion and admitted 58 JSS1 students. So this file is a stale picture of the real state until it is refreshed from the production database. To refresh: export students/terms from production, edit this file (or point the generator at the export), run scripts/generate_teacher_data.py.",
+  "students_added": [
+    [
+      "TCH-2025-377",
+      "Ilo Joseph",
+      "SS1 Actuarial"
+    ]
+  ],
+  "terms": [
+    {
+      "id": "2025-2026-T1",
+      "academic_year": "2025/2026",
+      "term_number": 1,
+      "is_current": false
+    },
+    {
+      "id": "2025-2026-T2",
+      "academic_year": "2025/2026",
+      "term_number": 2,
+      "is_current": false
+    },
+    {
+      "id": "2025-2026-T3",
+      "academic_year": "2025/2026",
+      "term_number": 3,
+      "is_current": true
+    }
+  ]
+}

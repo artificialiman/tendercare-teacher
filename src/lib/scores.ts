@@ -1,6 +1,10 @@
-import { supabase } from '$lib/supabase';
-import { readThroughCache, enqueueWrite, isOnline, cacheRead, cacheWrite } from '$lib/offline';
-import { get } from 'svelte/store';
+import { subjects, classes, classSubjects, scores, students, terms, currentTerm } from './teacherData';
+import { persist } from './localState';
+import type { Student } from './roster';
+
+// Plain functions over the hardcoded data in teacherData.ts, with changes
+// saved on this device by localState.ts. No network, no cache, no outbox: a
+// score typed here is in memory and in localStorage before the call returns.
 
 export interface Subject {
 	id: string;
@@ -18,83 +22,27 @@ export interface ScoreEntry {
 	exam: number | null;
 }
 
-/**
- * Existing CA/Exam rows for a class's active roster, for one subject and
- * term. Students with no row yet simply haven't been scored — the sheet
- * fills those in as 0/blank rather than treating it as an error.
- */
-/**
- * Existing CA/Exam rows for a class's active roster, for one subject and
- * term. Students with no row yet simply haven't been scored — the sheet
- * fills those in as 0/blank rather than treating it as an error.
- *
- * Cached per-student (not as one batch blob), so a single offline
- * saveScore() can patch exactly the one entry it affects (see below)
- * without invalidating every other student's cached score in the same
- * class.
- */
+/** Default maximums for the sheet and broadsheet; the score sheet lets a teacher change them. */
+export const DEFAULT_MAX_CA = 30;
+export const DEFAULT_MAX_EXAM = 70;
+
+/** CA/exam scores for a set of students in one subject and term. */
 export async function listScores(
 	studentIds: string[],
 	subjectId: string,
 	termId: string
 ): Promise<Map<string, ScoreEntry>> {
-	if (studentIds.length === 0) return new Map();
-
-	const cacheKey = (id: string) => `score:${subjectId}:${termId}:${id}`;
-	let rows: ScoreEntry[] | null = null;
-
-	try {
-		const { data, error } = await Promise.race([
-			supabase
-				.from('scores')
-				.select('student_id, ca, exam')
-				.eq('subject_id', subjectId)
-				.eq('term_id', termId)
-				.in('student_id', studentIds),
-			new Promise<never>((_, reject) =>
-				setTimeout(() => reject(new Error('offline-timeout')), 6000)
-			)
-		]);
-		if (error) throw error;
-		rows = (data ?? []) as ScoreEntry[];
-
-		const byId = new Map(rows.map((r) => [r.student_id, r]));
-		for (const id of studentIds) {
-			// Cache an explicit null for "confirmed no score yet", distinct
-			// from "never fetched", so a later offline read doesn't show a
-			// stale value from some earlier, now-superseded cache entry.
-			await cacheWrite(cacheKey(id), byId.get(id) ?? null);
-		}
-	} catch {
-		rows = [];
-		for (const id of studentIds) {
-			const cached = await cacheRead<ScoreEntry | null>(cacheKey(id));
-			if (cached && cached.data) rows.push(cached.data);
+	const wanted = new Set(studentIds);
+	const map = new Map<string, ScoreEntry>();
+	for (const s of scores) {
+		if (s.subject_id === subjectId && s.term_id === termId && wanted.has(s.student_id)) {
+			map.set(s.student_id, { student_id: s.student_id, ca: s.ca, exam: s.exam });
 		}
 	}
-
-	const map = new Map<string, ScoreEntry>();
-	for (const row of rows) map.set(row.student_id, row);
 	return map;
 }
 
-/**
- * Write one student's CA and/or Exam for a subject/term. Upsert on the
- * table's (student_id, subject_id, term_id) unique constraint — the same
- * shape as every other write in this app (see roster.ts), one round trip
- * per save rather than a delete-then-insert. This shape is exactly why
- * it's safe to queue offline: replaying the same upsert twice (e.g. if a
- * sync gets interrupted partway) lands on the same final value, never a
- * duplicate row.
- *
- * If the live write fails (offline, or the connection drops mid-request),
- * this queues it instead of throwing, and optimistically patches the
- * local per-student cache so the sheet reflects the change immediately —
- * the same student re-opened offline shows what was just typed, not the
- * old synced value. get(isOnline) is checked first purely to skip the
- * live attempt entirely when we already know we're offline, rather than
- * waiting out the timeout every time.
- */
+/** Saves one field (CA or exam) for one student, creating the row if needed. */
 export async function saveScore(
 	studentId: string,
 	subjectId: string,
@@ -102,68 +50,20 @@ export async function saveScore(
 	field: 'ca' | 'exam',
 	value: number
 ): Promise<void> {
-	const payload = { studentId, subjectId, termId, field, value };
-
-	if (get(isOnline)) {
-		try {
-			await writeScoreLive(payload);
-			return;
-		} catch {
-			// fall through to queue
-		}
+	const existing = scores.find(
+		(s) => s.student_id === studentId && s.subject_id === subjectId && s.term_id === termId
+	);
+	if (existing) {
+		existing[field] = value;
+	} else {
+		scores.push({ student_id: studentId, subject_id: subjectId, term_id: termId, ca: null, exam: null, [field]: value });
 	}
-
-	await enqueueWrite('saveScore', payload);
-	const cacheKey = `score:${subjectId}:${termId}:${studentId}`;
-	const existing = await cacheRead<ScoreEntry | null>(cacheKey);
-	const merged: ScoreEntry = {
-		student_id: studentId,
-		ca: existing?.data?.ca ?? null,
-		exam: existing?.data?.exam ?? null,
-		[field]: value
-	} as ScoreEntry;
-	await cacheWrite(cacheKey, merged);
+	persist();
 }
 
-interface SaveScorePayload {
-	studentId: string;
-	subjectId: string;
-	termId: string;
-	field: 'ca' | 'exam';
-	value: number;
-}
-
-async function writeScoreLive(payload: SaveScorePayload): Promise<void> {
-	const { error } = await supabase
-		.from('scores')
-		.upsert(
-			{
-				student_id: payload.studentId,
-				subject_id: payload.subjectId,
-				term_id: payload.termId,
-				[payload.field]: payload.value,
-				entered_by: null,
-				updated_at: new Date().toISOString()
-			},
-			{ onConflict: 'student_id,subject_id,term_id' }
-		);
-	if (error) throw error;
-}
-
-/** Registered for offline.ts's flushOutbox() to replay queued score saves. */
-export const scoreOutboxHandlers = {
-	saveScore: (payload: SaveScorePayload) => writeScoreLive(payload)
-};
-
-/** The single current term row, or null if none is marked current yet. */
+/** The term every sheet is being filled for. */
 export async function getCurrentTerm(): Promise<{ id: string; academic_year: string; term_number: number } | null> {
-	const { data, error } = await supabase
-		.from('terms')
-		.select('id, academic_year, term_number')
-		.eq('is_current', true)
-		.maybeSingle();
-	if (error) throw error;
-	return data;
+	return currentTerm ?? null;
 }
 
 export interface SheetProgress {
@@ -172,45 +72,83 @@ export interface SheetProgress {
 	pct: number;
 }
 
-/**
- * Real completion for one (subject, class, term) broadsheet — how many of
- * that class's active students have at least one of CA/Exam entered. This
- * is the live equivalent of the reference shells' localStorage-only
- * progress bars: same shape (filled/total/pct) on the home dashboard, but
- * counted from the real `scores` table rather than a per-device cache, so
- * it reflects what's actually been entered regardless of which device or
- * teacher entered it.
- */
-export async function sheetProgress(
-	subjectId: string,
-	classId: string,
-	termId: string
-): Promise<SheetProgress> {
-	const { count: total, error: totalError } = await supabase
-		.from('students')
-		.select('id', { count: 'exact', head: true })
-		.eq('class_id', classId)
-		.eq('active', true);
-	if (totalError) throw totalError;
+/** How much of one subject's sheet for one class is filled in for a term. */
+export async function sheetProgress(subjectId: string, classId: string, termId: string): Promise<SheetProgress> {
+	const classStudents = new Set(students.filter((s) => s.class_id === classId && s.active).map((s) => s.id));
+	let filled = 0;
+	for (const r of scores) {
+		if (r.subject_id !== subjectId || r.term_id !== termId || !classStudents.has(r.student_id)) continue;
+		if (r.ca !== null || r.exam !== null) filled++;
+	}
+	const total = classStudents.size;
+	return { filled, total, pct: total > 0 ? Math.round((filled / total) * 100) : 0 };
+}
 
-	const { data: rows, error: rowsError } = await supabase
-		.from('scores')
-		.select('student_id, ca, exam, students!inner(class_id, active)')
-		.eq('subject_id', subjectId)
-		.eq('term_id', termId)
-		.eq('students.class_id', classId)
-		.eq('students.active', true);
-	if (rowsError) throw rowsError;
+// ---------------------------------------------------------------------------
+// Broadsheet (read-only)
+// ---------------------------------------------------------------------------
 
-	const filled = (rows ?? []).filter(
-		(r: any) => (r.ca !== null && r.ca !== undefined) || (r.exam !== null && r.exam !== undefined)
-	).length;
-	const totalCount = total ?? 0;
-	return { filled, total: totalCount, pct: totalCount > 0 ? Math.round((filled / totalCount) * 100) : 0 };
+export interface BroadsheetCell {
+	ca: number | null;
+	exam: number | null;
+	total: number | null;
+}
+
+export interface BroadsheetRow {
+	student: Student;
+	cells: Record<string, BroadsheetCell>; // by subject id
+	grandTotal: number;
+	scoredSubjects: number;
+}
+
+export interface Broadsheet {
+	classId: string;
+	subjects: Subject[];
+	rows: BroadsheetRow[];
 }
 
 /**
- * Nigerian A1–F9 grading band, same boundaries used by the report-pipeline
+ * Every active student in a class against the given subjects, for one term.
+ * Only subjects the class actually studies are included. Never writes.
+ */
+export function buildBroadsheet(classId: string, subjectIds: string[], termId: string): Broadsheet {
+	const studied = new Set(classSubjects.filter((cs) => cs.class_id === classId).map((cs) => cs.subject_id));
+	const cols = subjects.filter((s) => subjectIds.includes(s.id) && studied.has(s.id)).sort((a, b) => a.name.localeCompare(b.name));
+
+	const byKey = new Map<string, { ca: number | null; exam: number | null }>();
+	for (const r of scores) if (r.term_id === termId) byKey.set(`${r.student_id}:${r.subject_id}`, r);
+
+	const rows = students
+		.filter((s) => s.class_id === classId && s.active)
+		.sort((a, b) => a.full_name.localeCompare(b.full_name))
+		.map((student) => {
+			const cells: Record<string, BroadsheetCell> = {};
+			let grandTotal = 0;
+			let scoredSubjects = 0;
+			for (const sub of cols) {
+				const r = byKey.get(`${student.id}:${sub.id}`);
+				const ca = r?.ca ?? null;
+				const exam = r?.exam ?? null;
+				const total = ca === null && exam === null ? null : (ca ?? 0) + (exam ?? 0);
+				cells[sub.id] = { ca, exam, total };
+				if (total !== null) {
+					grandTotal += total;
+					scoredSubjects++;
+				}
+			}
+			return { student, cells, grandTotal, scoredSubjects };
+		});
+
+	return { classId, subjects: cols, rows };
+}
+
+/** All terms, newest first, for the broadsheet's term picker. */
+export function listTerms() {
+	return [...terms].sort((a, b) => b.id.localeCompare(a.id));
+}
+
+/**
+ * Nigerian A1-F9 grading band, same boundaries used by the report-pipeline
  * generator (report-pipeline/generate.py's remark_for()) so a score's
  * grade never disagrees between this sheet and the printed transcript.
  */

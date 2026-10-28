@@ -2,8 +2,8 @@
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
 	import { page } from '$app/state';
-	import { supabase } from '$lib/supabase';
 	import { listRoster, getCurrentTermId, type Student } from '$lib/roster';
+	import { subjects as allSubjects, classes as allClasses, terms } from '$lib/teacherData';
 	import { listScores, saveScore, nigerianGrade, type ScoreEntry } from '$lib/scores';
 	import { getActiveStaffId, listMyAssignments, type Assignment } from '$lib/teacherIdentity';
 	import Crest from '$lib/components/Crest.svelte';
@@ -71,18 +71,15 @@
 		loading = true;
 		error = '';
 		try {
-			const [{ data: subj }, { data: cls }, roster, tId, term] = await Promise.all([
-				supabase.from('subjects').select('name').eq('id', subjectId).maybeSingle(),
-				supabase.from('classes').select('label').eq('id', classId).maybeSingle(),
-				listRoster(classId),
-				getCurrentTermId(),
-				supabase.from('terms').select('academic_year, term_number').eq('is_current', true).maybeSingle()
-			]);
+			const [roster, tId] = await Promise.all([listRoster(classId), getCurrentTermId()]);
+			const subj = allSubjects.find((x) => x.id === subjectId);
+			const cls = allClasses.find((x) => x.id === classId);
+			const term = terms.find((t) => t.is_current);
 			subjectName = subj?.name ?? subjectId;
 			classLabel = cls?.label ?? classId;
 			students = roster.filter((s) => s.active);
 			termId = tId;
-			termLabel = term.data ? `${term.data.academic_year} · Term ${term.data.term_number}` : '';
+			termLabel = term ? `${term.academic_year} · Term ${term.term_number}` : '';
 
 			if (termId) {
 				scoresByStudent = await listScores(

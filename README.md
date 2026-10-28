@@ -3,6 +3,29 @@
 Staff dashboard for Tendercare Comprehensive College — broadsheets, score
 entry, and the **single source of truth for the student roster**.
 
+## Current state: hardcoded data, no sign-in, no network calls
+
+The teacher app does not fetch anything. The school's real classes, subjects,
+class-subject links, roster (377 students as of the 2025/26 snapshot)
+and terms are compiled into the app by `scripts/generate_teacher_data.py`
+(output: `src/lib/teacherData.ts`). Sources: `supabase/seed/001_roster_*.sql`
+and `scripts/snapshot/live_admin_snapshot.json` (what was found in the Supabase
+project reachable at the time -- note it is pre-promotion; see the file's
+`_about`). Re-run the script after either changes.
+
+- **Who I am:** the teacher ticks their subjects and classes once on the home
+  page; that is kept in this browser (`src/lib/teacherIdentity.ts`). There is
+  no staff list or admin-made assignment data yet, so nothing is guessed.
+- **What teachers can do:** enter CA/exam scores for their subject-class sheets,
+  add/remove/transfer students between arms, add arms, and open a read-only
+  **Broadsheet** of every subject they are concerned with (all subjects in a
+  class they are class teacher of; otherwise only their own).
+- **Changes stay on the device** (`src/lib/localState.ts`, localStorage). They
+  are not sent anywhere; syncing to the admin database arrives with real auth.
+- **Admin** (staff, assignments, promotion, intake, analytics) lives in the
+  separate `tendercare-admin` app.
+- `supabase/` is kept as the reference schema for when a backend returns.
+
 One of three independently-deployable apps in the Tendercare Svelte
 migration:
 
@@ -124,13 +147,6 @@ staff authentication/login, and the actual Supabase project provisioning
 (blocked on connecting a real project — nothing here has been run against
 live data yet).
 
-## Status: no sign-in (midterm exams week)
-The shared staff/admin sign-in is removed so staff and the tech team can work
-freely this week; the URL is shared only with staff and agents. Database access
-for the public key is controlled by one switch -- migration
-`0023_temporary_open_access.sql` (apply after `0021` and `0022`). When real auth
-lands, turn it off:
-
-    update public.app_settings set value = 'false'::jsonb where key = 'open_access';
-
-Rollback script: `supabase/rollback/0023_rollback_open_access.sql`.
+## Status: no sign-in
+There is no sign-in and no Supabase client in this app. Real auth is to be
+added later, together with a way to sync the changes saved on each device.

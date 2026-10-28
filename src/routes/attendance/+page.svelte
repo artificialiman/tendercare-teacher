@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
-	import { supabase } from '$lib/supabase';
 	import Crest from '$lib/components/Crest.svelte';
 	import { getActiveStaffId, listMyClasses } from '$lib/teacherIdentity';
 

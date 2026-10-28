@@ -25,9 +25,8 @@
 		type Remark,
 		type ClassInfo
 	} from '$lib/roster';
-	import { getActiveStaffId, listMyClasses } from '$lib/teacherIdentity';
+	import { getActiveStaffId, listMyClasses, addClassToProfile } from '$lib/teacherIdentity';
 	import ConfirmButton from '$lib/components/ConfirmButton.svelte';
-	import { supabase } from '$lib/supabase';
 	import Crest from '$lib/components/Crest.svelte';
 
 	const classId = page.url.searchParams.get('class') ?? '';
@@ -197,7 +196,8 @@
 		addingClass = true;
 		error = '';
 		try {
-			await addClass(newArmStage, newArmLevel, newArmValue.trim());
+			const created = await addClass(newArmStage, newArmLevel, newArmValue.trim());
+			addClassToProfile(created.id);
 			newArmValue = '';
 			showAddClass = false;
 			await load();
