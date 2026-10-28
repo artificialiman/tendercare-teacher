@@ -1,0 +1,28 @@
+{
+  "student_id": "TCH-2026-043",
+  "full_name": "Oyesiji Prosper",
+  "class_arm": "JSS1B",
+  "entry_year": "2026/2027",
+  "access_code_hint": "12345678",
+  "years": [
+    {
+      "academic_year": "2026/2027",
+      "class_at_time": "JSS1B",
+      "is_current": true,
+      "terms": [
+        {
+          "term_name": "First",
+          "digitized": false
+        },
+        {
+          "term_name": "Second",
+          "digitized": false
+        },
+        {
+          "term_name": "Third",
+          "digitized": false
+        }
+      ]
+    }
+  ]
+}
