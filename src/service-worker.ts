@@ -7,7 +7,7 @@ import { build, files, version } from '$service-worker';
 
 // ============================================================================
 // App-shell precaching only -- the actual data (roster/classes/scores) is
-// cached separately in IndexedDB (offline.ts), not intercepted here. This
+// cached separately in IndexedDB, not intercepted here. This
 // worker's one job is making sure the app itself (JS/CSS/fonts/crest) loads
 // with zero connectivity, per doctrine 2.1/10.5 (a page that doesn't need a
 // live round-trip should never require one just to load its own shell).
@@ -38,7 +38,7 @@ sw.addEventListener('activate', (event) => {
 
 // Cache-first for the precached shell assets; everything else (Supabase
 // calls, anything not in ASSETS) passes straight through to the network
-// untouched -- offline.ts's IndexedDB cache handles data-level fallback,
+// untouched -- data is bundled with the app, so there is no data-level fallback to handle,
 // this worker never intercepts or fabricates a data response.
 sw.addEventListener('fetch', (event) => {
 	if (event.request.method !== 'GET') return;

@@ -1,63 +1,25 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
-	import { goto } from '$app/navigation';
-	import { supabase } from '$lib/supabase';
 	import Crest from '$lib/components/Crest.svelte';
+	import { students, classes, currentTerm } from '$lib/teacherData';
 
-	let checkingSession = $state(true);
-	let userRole = $state<string | null>(null);
-
-	let activeStudents = $state(0);
-	let classCount = $state(0);
-	let repeatingCount = $state(0);
-	let currentTermLabel = $state<string | null>(null);
-	let loadingStats = $state(true);
-
-	onMount(async () => {
-		const {
-			data: { session }
-		} = await supabase.auth.getSession();
-		if (!session) {
-			goto('/login');
-			return;
-		}
-		userRole = (session.user?.app_metadata?.role as string) ?? null;
-		checkingSession = false;
-		await loadStats();
-	});
-
-	async function loadStats() {
-		loadingStats = true;
-		const [studentsRes, classesRes, repeatingRes, termRes] = await Promise.all([
-			supabase.from('students').select('id', { count: 'exact', head: true }).eq('active', true),
-			supabase.from('classes').select('id', { count: 'exact', head: true }),
-			supabase.from('students').select('id', { count: 'exact', head: true }).eq('repeating', true),
-			supabase.from('terms').select('academic_year, term_number').eq('is_current', true).maybeSingle()
-		]);
-		activeStudents = studentsRes.count ?? 0;
-		classCount = classesRes.count ?? 0;
-		repeatingCount = repeatingRes.count ?? 0;
-		currentTermLabel = termRes.data
-			? `${termRes.data.academic_year} · Term ${termRes.data.term_number}`
-			: null;
-		loadingStats = false;
-	}
+	// Read straight from the hardcoded data -- no session, no fetch.
+	const activeStudents = students.filter((s) => s.active).length;
+	const classCount = classes.length;
+	const repeatingCount = students.filter((s) => s.repeating).length;
+	const currentTermLabel = `${currentTerm.academic_year} · Term ${currentTerm.term_number}`;
 </script>
 
 <svelte:head>
 	<title>Tendercare Staff Dashboard</title>
 </svelte:head>
 
-{#if checkingSession}
-	<p class="session-check">Checking session…</p>
-{:else}
 <div class="dashboard">
 	<Crest class="dashboard-watermark" />
 
 	<header class="dashboard-header">
 		<Crest class="dashboard-crest" size="2.75rem" />
 		<div>
-			<h1>Welcome back{userRole ? `, ${userRole}` : ''}.</h1>
+			<h1>Welcome back.</h1>
 			<p>Roster, records, and results for Tendercare Comprehensive College.</p>
 		</div>
 	</header>
@@ -65,19 +27,19 @@
 	<div class="stats-grid">
 		<div class="stat-card">
 			<span class="stat-label">Active Students</span>
-			<span class="stat-value">{loadingStats ? '—' : activeStudents}</span>
+			<span class="stat-value">{activeStudents}</span>
 		</div>
 		<div class="stat-card">
 			<span class="stat-label">Classes</span>
-			<span class="stat-value">{loadingStats ? '—' : classCount}</span>
+			<span class="stat-value">{classCount}</span>
 		</div>
 		<div class="stat-card">
 			<span class="stat-label">Current Term</span>
-			<span class="stat-value stat-value--text">{loadingStats ? '—' : (currentTermLabel ?? 'Not set')}</span>
+			<span class="stat-value stat-value--text">{currentTermLabel}</span>
 		</div>
 		<div class="stat-card">
 			<span class="stat-label">Repeating</span>
-			<span class="stat-value">{loadingStats ? '—' : repeatingCount}</span>
+			<span class="stat-value">{repeatingCount}</span>
 		</div>
 	</div>
 
@@ -94,12 +56,6 @@
 			<p>Enter CA and Exam scores per subject, per class.</p>
 		</a>
 
-		<a href="/admin" class="feature-card feature-card--live">
-			<span class="feature-icon">📊</span>
-			<h3>Admin</h3>
-			<p>Staff, roles, and analytics — enrollment, averages, feed activity, alumni tracking.</p>
-		</a>
-
 		<div class="feature-card feature-card--soon" aria-disabled="true">
 			<span class="feature-icon">📚</span>
 			<h3>Lesson Notes &amp; Materials</h3>
@@ -108,15 +64,8 @@
 		</div>
 	</div>
 </div>
-{/if}
 
 <style>
-	.session-check {
-		text-align: center;
-		padding: 4rem 1rem;
-		opacity: 0.6;
-		font-family: var(--font-sans);
-	}
 	.dashboard {
 		position: relative;
 		overflow: hidden;

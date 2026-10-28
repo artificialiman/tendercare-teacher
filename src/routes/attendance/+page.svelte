@@ -1,12 +1,9 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { goto } from '$app/navigation';
-	import { supabase } from '$lib/supabase';
 	import Crest from '$lib/components/Crest.svelte';
 	import ConfirmButton from '$lib/components/ConfirmButton.svelte';
-	import { runPromotion, checkPromotionAlreadyRun, type PromotionResult } from '$lib/roster';
+	import { runPromotion, checkPromotionAlreadyRun, listClasses, type PromotionResult } from '$lib/roster';
 
-	let checkingSession = $state(true);
 	let loading = $state(true);
 	let error = $state('');
 	let classes = $state<{ id: string; label: string }[]>([]);
@@ -17,18 +14,8 @@
 	let promotionAlreadyRun = $state(false);
 
 	onMount(async () => {
-		const {
-			data: { session }
-		} = await supabase.auth.getSession();
-		if (!session) {
-			goto('/login');
-			return;
-		}
-		checkingSession = false;
 		try {
-			const { data, error: err } = await supabase.from('classes').select('id, label').order('sort_order');
-			if (err) throw err;
-			classes = data ?? [];
+			classes = await listClasses();
 		} catch (e) {
 			error = e instanceof Error ? e.message : 'Failed to load classes';
 		} finally {
@@ -50,8 +37,7 @@
 		try {
 			result = await runPromotion();
 			promotionAlreadyRun = true;
-			const { data } = await supabase.from('classes').select('id, label').order('sort_order');
-			classes = data ?? [];
+			classes = await listClasses();
 		} catch (e) {
 			const message = e instanceof Error ? e.message : 'Promotion failed';
 			if (message.toLowerCase().includes('already been run')) {
@@ -69,9 +55,6 @@
 	<title>Attendance & Bio Edit — Tendercare Teacher Dashboard</title>
 </svelte:head>
 
-{#if checkingSession}
-	<p class="session-check">Checking session…</p>
-{:else}
 <div class="attendance-page">
 	<Crest class="attendance-watermark" />
 
@@ -136,15 +119,8 @@
 		{/if}
 	</div>
 </div>
-{/if}
 
 <style>
-	.session-check {
-		text-align: center;
-		padding: 4rem 1rem;
-		opacity: 0.6;
-		font-family: var(--font-sans);
-	}
 	.attendance-page {
 		position: relative;
 		overflow: hidden;

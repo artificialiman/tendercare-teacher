@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { goto } from '$app/navigation';
 	import { page } from '$app/state';
 	import {
 		listRoster,
@@ -26,12 +25,10 @@
 		type ClassInfo
 	} from '$lib/roster';
 	import ConfirmButton from '$lib/components/ConfirmButton.svelte';
-	import { supabase } from '$lib/supabase';
 	import Crest from '$lib/components/Crest.svelte';
 
 	const classId = page.url.searchParams.get('class') ?? '';
 
-	let checkingSession = $state(true);
 	let loading = $state(true);
 	let error = $state('');
 
@@ -95,14 +92,6 @@
 	}
 
 	onMount(async () => {
-		const {
-			data: { session }
-		} = await supabase.auth.getSession();
-		if (!session) {
-			goto('/login');
-			return;
-		}
-		checkingSession = false;
 		await load();
 	});
 
@@ -293,9 +282,7 @@
 	<title>{classLabel || 'Attendance & Bio Edit'} — Tendercare Teacher Dashboard</title>
 </svelte:head>
 
-{#if checkingSession}
-	<p class="session-check">Checking session…</p>
-{:else if !classId}
+{#if !classId}
 	<div class="roster-page">
 		<div class="page-error" role="alert">Pick a class first.</div>
 		<a class="back-button" href="/attendance">&larr; Choose a class</a>
@@ -563,12 +550,6 @@
 {/if}
 
 <style>
-	.session-check {
-		text-align: center;
-		padding: 4rem 1rem;
-		opacity: 0.6;
-		font-family: var(--font-sans);
-	}
 	.roster-page {
 		position: relative;
 		overflow: hidden;

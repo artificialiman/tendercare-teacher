@@ -1,5 +1,13 @@
-import { supabase } from '$lib/supabase';
-import { readThroughCache } from '$lib/offline';
+import { students, classes, remarks, currentTerm, type ClassRecord, type RemarkRecord } from './teacherData';
+
+// ============================================================================
+// Plain operations on the hardcoded arrays in teacherData.ts. Same function
+// names/signatures as when this talked to Supabase, so roster/+page.svelte
+// and every other caller needed no changes beyond dropping the auth check --
+// but there's no database underneath this anymore, no RLS, no RPC, no
+// network. A reload resets everything, same as teacherData.ts's comment
+// says. Real persistence returns when a real backend does.
+// ============================================================================
 
 export interface Student {
 	id: string;
@@ -20,193 +28,113 @@ export interface NewStudentInput {
 	class_id: string;
 }
 
-/**
- * Add a student to the roster. This is the ONLY write path that creates a
- * student anywhere in the suite — tendercare-web and tendercare-portal have
- * no write access to this table at all (enforced by RLS, not just by
- * omission in their UI). The new student is immediately visible to every
- * other app on their next read, since there's no separate copy to update.
- *
- * Calls the create_student() Postgres function (0004_atomic_student_id.sql)
- * rather than reading the current max ID and inserting as two separate
- * round trips — that older approach raced when two staff added a student
- * at close to the same moment. The ID allocation and the insert now happen
- * inside a single database transaction, so concurrent calls genuinely
- * serialize instead of computing the same "next" ID.
- */
+function nextStudentId(): string {
+	return `TCH-TMP-${String(students.length + 1).padStart(3, '0')}`;
+}
+
+/** Add a student to the roster. */
 export async function addStudent(input: NewStudentInput): Promise<Student> {
-	const { data, error } = await supabase.rpc('create_student', {
-		p_full_name: input.full_name,
-		p_class_id: input.class_id
-	});
-	if (error) throw error;
-	return data as Student;
+	const student: Student = {
+		id: nextStudentId(),
+		full_name: input.full_name,
+		class_id: input.class_id,
+		active: true,
+		created_at: new Date().toISOString(),
+		deleted_at: null,
+		repeating: false,
+		repeat_assigned_at: null,
+		repeat_pardoned_at: null,
+		portrait_url: null,
+		bio: null
+	};
+	students.push(student);
+	return student;
 }
 
-/**
- * Remove a student from the roster (soft delete — see the long comment in
- * 0001_core_schema.sql for why). This is the single action that makes a
- * student disappear from the teacher dashboard, the result/transcript
- * portal, the student directory, and the feed — all in one write, because
- * every one of those reads `students` with `active = true`.
- */
+function findStudent(id: string): Student {
+	const s = students.find((s) => s.id === id);
+	if (!s) throw new Error(`No such student: ${id}`);
+	return s;
+}
+
+/** Remove a student from the roster (soft delete -- sets active=false). */
 export async function removeStudent(id: string): Promise<void> {
-	const {
-		data: { user }
-	} = await supabase.auth.getUser();
-	const { error } = await supabase
-		.from('students')
-		.update({ active: false, deleted_at: new Date().toISOString(), deleted_by: user?.id ?? null })
-		.eq('id', id);
-	if (error) throw error;
+	const s = findStudent(id);
+	s.active = false;
+	s.deleted_at = new Date().toISOString();
 }
 
-/** Undo a soft delete — puts the student back on every app's roster. */
+/** Undo a soft delete. */
 export async function restoreStudent(id: string): Promise<void> {
-	const { error } = await supabase
-		.from('students')
-		.update({ active: true, deleted_at: null, deleted_by: null })
-		.eq('id', id);
-	if (error) throw error;
+	const s = findStudent(id);
+	s.active = true;
+	s.deleted_at = null;
 }
 
-/**
- * Permanently erase a student — a real hard delete. This is deliberately a
- * separate, more clearly-labeled action from removeStudent(), because unlike
- * a soft delete it cascades through ON DELETE CASCADE to scores, remarks,
- * portal_credentials, feed_comments, and feed_likes — actual academic
- * history is gone, not just hidden. Reserved for genuine mistakes (duplicate
- * entry, wrong school), not routine "student left" removals.
- */
+/** Permanently erase a student -- a real hard delete, cascades to scores/remarks. */
 export async function permanentlyEraseStudent(id: string): Promise<void> {
-	const { error } = await supabase.from('students').delete().eq('id', id);
-	if (error) throw error;
+	const idx = students.findIndex((s) => s.id === id);
+	if (idx === -1) return;
+	students.splice(idx, 1);
 }
 
-/**
- * Every student on the roster (or one class's, if `classId` is given).
- * Read-through cached (offline.ts): a live fetch refreshes the cache on
- * success; a dropped connection falls back to whatever was last fetched,
- * so the roster is still viewable offline, just possibly stale.
- */
+/** Every student on the roster (or one class's, if `classId` is given). */
 export async function listRoster(classId?: string): Promise<Student[]> {
-	const key = `roster:${classId ?? 'all'}`;
-	const result = await readThroughCache(key, async () => {
-		let query = supabase.from('students').select('*').order('id');
-		if (classId) query = query.eq('class_id', classId);
-		const { data, error } = await query;
-		if (error) throw error;
-		return data as Student[];
-	});
-	return result.data;
+	return classId ? students.filter((s) => s.class_id === classId) : [...students];
 }
 
-/**
- * Assign a student to repeat their current class. The September 1st
- * promotion job checks `repeating` and skips advancing this student --
- * see the promotion function's own comment for how it consults this.
- * repeat_assigned_at is set once and never cleared by a pardon, so the
- * history survives even after the flag is turned back off.
- */
+/** Assign a student to repeat their current class. */
 export async function assignRepeat(id: string): Promise<void> {
-	const { error } = await supabase
-		.from('students')
-		.update({ repeating: true, repeat_assigned_at: new Date().toISOString() })
-		.eq('id', id);
-	if (error) throw error;
+	const s = findStudent(id);
+	s.repeating = true;
+	s.repeat_assigned_at = new Date().toISOString();
 }
 
-/**
- * Reverse a repeat assignment. Deliberately does NOT clear
- * repeat_assigned_at -- "was this student ever held back" should stay
- * answerable after a pardon, only "are they currently held back" flips.
- */
+/** Reverse a repeat assignment. Deliberately leaves repeat_assigned_at set. */
 export async function pardonRepeat(id: string): Promise<void> {
-	const { error } = await supabase
-		.from('students')
-		.update({ repeating: false, repeat_pardoned_at: new Date().toISOString() })
-		.eq('id', id);
-	if (error) throw error;
+	const s = findStudent(id);
+	s.repeating = false;
+	s.repeat_pardoned_at = new Date().toISOString();
 }
 
-/**
- * Set or clear a student's portrait link. A link, not an upload -- see
- * the column comment in 0005_repeat_pardon_portrait.sql. Passing null
- * or an empty string clears it back to "no portrait set".
- */
+/** Set or clear a student's portrait link. */
 export async function setPortraitUrl(id: string, url: string | null): Promise<void> {
-	const { error } = await supabase
-		.from('students')
-		.update({ portrait_url: url?.trim() || null })
-		.eq('id', id);
-	if (error) throw error;
+	const s = findStudent(id);
+	s.portrait_url = url?.trim() || null;
 }
 
-/**
- * Set or clear a student's bio (invariant #2). Free text, teacher-
- * editable -- unlike remarks (see listRemarksForTerm below), which are
- * auto-assigned by a trigger and deliberately have no write path here,
- * bio is exactly the field remarks used to be before that changed:
- * staff type it in directly. The `bio` column has existed on
- * `students` since 0008_alumni_id_recycling.sql; this is the first
- * write path for it.
- */
+/** Set or clear a student's bio. */
 export async function setBio(id: string, bio: string | null): Promise<void> {
-	const { error } = await supabase
-		.from('students')
-		.update({ bio: bio?.trim() || null })
-		.eq('id', id);
-	if (error) throw error;
+	const s = findStudent(id);
+	s.bio = bio?.trim() || null;
 }
 
-export interface ClassInfo {
-	id: string;
-	label: string;
-	arm: string; // JSS arm letter ('A', 'B', ...) or SS department name ('Science', 'Actuarial', ...)
-	stage: 'JSS' | 'SS';
-	level: 1 | 2 | 3;
-	sort_order: number;
-}
+export type ClassInfo = ClassRecord;
 
-/**
- * Every class the school currently has, in tab order. Not hardcoded to "2
- * arms per junior level, 2 departments per senior level" -- that was seed
- * data, never a ceiling. Any junior level can end up with any number of
- * arms, any senior level with any number of departments; this always
- * reflects whatever actually exists in `classes` right now.
- */
+/** Every class the school currently has, in tab order. */
 export async function listClasses(): Promise<ClassInfo[]> {
-	const result = await readThroughCache('classes:all', async () => {
-		const { data, error } = await supabase
-			.from('classes')
-			.select('id, label, arm, stage, level, sort_order')
-			.order('sort_order');
-		if (error) throw error;
-		return data as ClassInfo[];
-	});
-	return result.data;
+	return [...classes].sort((a, b) => a.sort_order - b.sort_order);
 }
 
-/**
- * Adds a new arm (JSS) or department (SS) at a given level -- calls the
- * add_class() Postgres function (0011_extensible_classes.sql), which does
- * the id/label naming and the sort-order bookkeeping atomically so the new
- * class lands grouped with its siblings rather than always at the end.
- */
+/** Adds a new arm (JSS) or department (SS) at a given level. */
 export async function addClass(
 	stage: 'JSS' | 'SS',
 	level: 1 | 2 | 3,
 	arm: string,
 	label?: string
 ): Promise<ClassInfo> {
-	const { data, error } = await supabase.rpc('add_class', {
-		p_stage: stage,
-		p_level: level,
-		p_arm: arm.trim(),
-		p_label: label?.trim() || null
-	});
-	if (error) throw error;
-	return data as ClassInfo;
+	const id = `${stage}${level} ${arm.trim()}`;
+	const maxOrder = Math.max(0, ...classes.map((c) => c.sort_order));
+	const cls: ClassInfo = {
+		id,
+		label: label?.trim() || id,
+		arm: arm.trim(),
+		stage,
+		level,
+		sort_order: maxOrder + 1
+	};
+	classes.push(cls);
+	return cls;
 }
 
 /** True for the one level every junior arm eventually leaves through -- JSS3. */
@@ -214,37 +142,19 @@ export function isGraduatingJuniorClass(cls: ClassInfo): boolean {
 	return cls.stage === 'JSS' && cls.level === 3;
 }
 
-/**
- * True for the holding class run_promotion() (0012_run_promotion.sql)
- * drops former JSS3 students into -- 'SS1 Unassigned'. These students
- * haven't been given a department yet; the roster UI shows the
- * Science/Actuarial/Repeat/Remove assignment flow for them instead of the
- * ordinary switch-class button.
- */
+/** True for the holding class promoted JSS3 students land in before a department is picked. */
 export function isPendingAssignment(cls: ClassInfo): boolean {
 	return cls.stage === 'SS' && cls.level === 1 && cls.arm === 'Unassigned';
 }
 
-/**
- * Every SS1 class a JSS3 student could promote into -- however many
- * departments actually exist, not a fixed pair. Excludes the Unassigned
- * holding class itself, since that's not a real destination.
- */
-export function promotionTargets(classes: ClassInfo[]): ClassInfo[] {
-	return classes.filter((c) => c.stage === 'SS' && c.level === 1 && c.arm !== 'Unassigned');
+/** Every SS1 class a JSS3 student could promote into. */
+export function promotionTargets(classList: ClassInfo[]): ClassInfo[] {
+	return classList.filter((c) => c.stage === 'SS' && c.level === 1 && c.arm !== 'Unassigned');
 }
 
-/**
- * Every OTHER arm (JSS) or department (SS) at the same stage+level a
- * student could switch into -- could be one alternative (today's A/B or
- * Science/Actuarial split) or several, once a level has 3+ branches.
- * Works for junior arms and senior departments alike -- switching arms is
- * the same operation as switching departments, just one level down.
- * Excludes any Unassigned holding class -- that's an internal promotion
- * state, not somewhere a student gets manually switched into.
- */
-export function classSwitchTargets(current: ClassInfo, classes: ClassInfo[]): ClassInfo[] {
-	return classes.filter(
+/** Every OTHER arm/department at the same stage+level a student could switch into. */
+export function classSwitchTargets(current: ClassInfo, classList: ClassInfo[]): ClassInfo[] {
+	return classList.filter(
 		(c) =>
 			c.stage === current.stage &&
 			c.level === current.level &&
@@ -253,26 +163,17 @@ export function classSwitchTargets(current: ClassInfo, classes: ClassInfo[]): Cl
 	);
 }
 
-/**
- * Assigns a pending (post-promotion, Unassigned) student their department
- * -- the one piece of the JSS3->SS1 move that's never automatic.
- */
+/** Assigns a pending (post-promotion, Unassigned) student their department. */
 export async function assignDepartment(id: string, department: string): Promise<void> {
 	await moveStudentToClass(id, `SS1 ${department}`);
 }
 
-/**
- * A pending student whose department assignment turns out to actually be
- * "repeat JSS3" (e.g. a result came in after promotion already ran) --
- * moves them back to a specific JSS3 class and marks them repeating in
- * one step, rather than leaving them in limbo between two write calls.
- */
+/** A pending student sent back to repeat a specific JSS3 class. */
 export async function sendPendingToRepeatJSS3(id: string, jss3ClassId: string): Promise<void> {
-	const { error } = await supabase
-		.from('students')
-		.update({ class_id: jss3ClassId, repeating: true, repeat_assigned_at: new Date().toISOString() })
-		.eq('id', id);
-	if (error) throw error;
+	const s = findStudent(id);
+	s.class_id = jss3ClassId;
+	s.repeating = true;
+	s.repeat_assigned_at = new Date().toISOString();
 }
 
 export interface PromotionResult {
@@ -281,88 +182,68 @@ export interface PromotionResult {
 	pending_assignment_count: number;
 }
 
-/**
- * Runs the September 1st promotion job -- calls run_promotion()
- * (0012_run_promotion.sql). Whole-roster, one-shot, not something to
- * retry casually -- the caller (the attendance page) gates this behind
- * its own multi-step confirm before ever calling here.
- */
+let promotionRun = false;
+
+/** Runs the September 1st promotion job. Single-use per cycle, same as the real one. */
 export async function runPromotion(): Promise<PromotionResult> {
-	const { data, error } = await supabase.rpc('run_promotion');
-	if (error) throw error;
-	const row = (Array.isArray(data) ? data[0] : data) as PromotionResult;
-	return row;
+	if (promotionRun) {
+		throw new Error('Promotion has already been run for this cycle.');
+	}
+	let promoted = 0;
+	let graduated = 0;
+	let pending = 0;
+	for (const s of students) {
+		if (!s.active || s.repeating) continue;
+		const cls = classes.find((c) => c.id === s.class_id);
+		if (!cls) continue;
+		if (cls.stage === 'JSS' && cls.level < 3) {
+			const target = classes.find((c) => c.stage === 'JSS' && c.level === cls.level + 1 && c.arm === cls.arm);
+			if (target) {
+				s.class_id = target.id;
+				promoted++;
+			}
+		} else if (cls.stage === 'JSS' && cls.level === 3) {
+			s.class_id = 'SS1 Unassigned';
+			pending++;
+		} else if (cls.stage === 'SS' && cls.level < 3) {
+			const target = classes.find((c) => c.stage === 'SS' && c.level === cls.level + 1 && c.arm === cls.arm);
+			if (target) {
+				s.class_id = target.id;
+				promoted++;
+			}
+		} else if (cls.stage === 'SS' && cls.level === 3) {
+			s.active = false;
+			s.deleted_at = new Date().toISOString();
+			graduated++;
+		}
+	}
+	promotionRun = true;
+	return { promoted_count: promoted, graduated_count: graduated, pending_assignment_count: pending };
 }
 
-/**
- * Whether calling runPromotion() right now would be rejected because
- * this cycle's rollover already happened (0014_promotion_terms_rollover.sql
- * / 0015_guard_run_promotion_single_use.sql). The database itself refuses
- * a second run either way -- this just lets the UI retract the button
- * instead of waiting for staff to hit the error.
- */
+/** Whether calling runPromotion() right now would be rejected. */
 export async function checkPromotionAlreadyRun(): Promise<boolean> {
-	const { data, error } = await supabase.rpc('promotion_already_run');
-	if (error) throw error;
-	return Boolean(data);
+	return promotionRun;
 }
 
-/**
- * Moves a student to a different class -- used for both the JSS3->SS1
- * promotion (staff picks which SS1 department, since that's the one
- * branch point in an otherwise straight-line promotion path) and for a
- * senior student switching department after they've already been placed.
- * A student's id never changes here -- promotion/department changes are
- * always a class_id update, never an id event (id events are only ever
- * graduation + the one-year-later recycling, see 0008).
- */
+/** Moves a student to a different class. */
 export async function moveStudentToClass(id: string, newClassId: string): Promise<void> {
-	const { error } = await supabase.from('students').update({ class_id: newClassId }).eq('id', id);
-	if (error) throw error;
+	const s = findStudent(id);
+	s.class_id = newClassId;
 }
 
-export interface Remark {
-	student_id: string;
-	term_id: string;
-	teacher_remark: string | null;
-	principal_remark: string | null;
-	updated_at: string;
-}
+export type Remark = RemarkRecord;
 
-/**
- * The current term_id (terms.is_current = true). Used only to know
- * which term's remark to display -- there's no write path here
- * anymore. Remarks are auto-assigned by a trigger on the scores table
- * (0006_auto_remarks.sql) the moment a student's CA/Exam/Total are
- * complete for a term, computed from their average -- never typed by
- * staff. This file only reads what the trigger already wrote.
- */
+/** The current term's id. */
 export async function getCurrentTermId(): Promise<string | null> {
-	const { data, error } = await supabase.from('terms').select('id').eq('is_current', true).maybeSingle();
-	if (error) throw error;
-	return data?.id ?? null;
+	return currentTerm.id;
 }
 
-/**
- * Fetch remarks for every student in a class for the current term, in
- * one query rather than one per student -- keyed by student_id so the
- * roster UI can look each one up as it renders rows. A student with no
- * row here simply hasn't had their term completed yet (see the
- * migration's clear-on-incomplete behavior) -- that's a real, expected
- * state, not a loading gap.
- */
-export async function listRemarksForTerm(
-	studentIds: string[],
-	termId: string
-): Promise<Map<string, Remark>> {
-	if (studentIds.length === 0) return new Map();
-	const { data, error } = await supabase
-		.from('remarks')
-		.select('*')
-		.eq('term_id', termId)
-		.in('student_id', studentIds);
-	if (error) throw error;
+/** Remarks for a set of students for the current term. */
+export async function listRemarksForTerm(studentIds: string[], termId: string): Promise<Map<string, Remark>> {
 	const map = new Map<string, Remark>();
-	for (const r of (data ?? []) as Remark[]) map.set(r.student_id, r);
+	for (const r of remarks) {
+		if (r.term_id === termId && studentIds.includes(r.student_id)) map.set(r.student_id, r);
+	}
 	return map;
 }

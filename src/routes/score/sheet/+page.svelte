@@ -2,8 +2,8 @@
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
 	import { page } from '$app/state';
-	import { supabase } from '$lib/supabase';
 	import { listRoster, getCurrentTermId, type Student } from '$lib/roster';
+	import { subjects as allSubjects, classes as allClasses, terms } from '$lib/teacherData';
 	import { listScores, saveScore, nigerianGrade, type ScoreEntry } from '$lib/scores';
 	import Crest from '$lib/components/Crest.svelte';
 
@@ -20,7 +20,6 @@
 	let maxCA = $state(30);
 	let maxExam = $state(70);
 
-	let checkingSession = $state(true);
 	let loading = $state(true);
 	let error = $state('');
 	let subjectName = $state('');
@@ -36,14 +35,6 @@
 	let activeField = $state<'ca' | 'exam' | null>(null);
 
 	onMount(async () => {
-		const {
-			data: { session }
-		} = await supabase.auth.getSession();
-		if (!session) {
-			goto('/login');
-			return;
-		}
-		checkingSession = false;
 
 		if (!subjectId || !classId) {
 			error = 'Missing subject or class — go back and pick both.';
@@ -57,18 +48,15 @@
 		loading = true;
 		error = '';
 		try {
-			const [{ data: subj }, { data: cls }, roster, tId, term] = await Promise.all([
-				supabase.from('subjects').select('name').eq('id', subjectId).maybeSingle(),
-				supabase.from('classes').select('label').eq('id', classId).maybeSingle(),
-				listRoster(classId),
-				getCurrentTermId(),
-				supabase.from('terms').select('academic_year, term_number').eq('is_current', true).maybeSingle()
-			]);
+			const [roster, tId] = await Promise.all([listRoster(classId), getCurrentTermId()]);
+			const subj = allSubjects.find((x) => x.id === subjectId);
+			const cls = allClasses.find((x) => x.id === classId);
+			const term = terms.find((t) => t.is_current);
 			subjectName = subj?.name ?? subjectId;
 			classLabel = cls?.label ?? classId;
 			students = roster.filter((s) => s.active);
 			termId = tId;
-			termLabel = term.data ? `${term.data.academic_year} · Term ${term.data.term_number}` : '';
+			termLabel = term ? `${term.academic_year} · Term ${term.term_number}` : '';
 
 			if (termId) {
 				scoresByStudent = await listScores(
@@ -165,9 +153,6 @@
 	<title>{subjectName || 'Score Entry'} — {classLabel} — Tendercare Teacher Dashboard</title>
 </svelte:head>
 
-{#if checkingSession}
-	<p class="session-check">Checking session…</p>
-{:else}
 <div class="sheet-page">
 	<Crest class="sheet-watermark" />
 
@@ -282,15 +267,8 @@
 	<p class="autosave-note">Each field saves automatically when you move to the next one.</p>
 	{/if}
 </div>
-{/if}
 
 <style>
-	.session-check {
-		text-align: center;
-		padding: 4rem 1rem;
-		opacity: 0.6;
-		font-family: var(--font-sans);
-	}
 	.sheet-page {
 		position: relative;
 		overflow: hidden;
