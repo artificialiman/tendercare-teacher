@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """
 Regenerates src/lib/teacherData.ts from the real data:
-  supabase/seed/001_roster_2024_2025.sql   classes, subjects, class_subjects, students
+  scripts/roster/students.json              the canonical roster (active students) -- when present
+  supabase/seed/001_roster_2024_2025.sql   classes, subjects, class_subjects (and students, if no canonical)
   scripts/snapshot/live_admin_snapshot.json what admin changed in the live project
                                             since the seed (added students, current terms)
   supabase/seed/002_scores_asis.sql        old 2024/25 scores -- OFF by default, see below
@@ -84,6 +85,24 @@ for sid_, name_, class_ in snapshot['students_added']:
     if all(x[0] != sid_ for x in students):
         students.append([sid_, name_, class_])
 students.sort(key=lambda x: x[0])
+
+# The canonical roster (scripts/roster/students.json) wins when it exists: it is
+# the post-promotion, post-intake truth, maintained through apply_changes.py.
+# Classes any of its students sit in but the 001 seed lacks (the promotion's
+# 'SS1 Unassigned' holding class) are added with the same rule as add_class().
+canon = root / 'scripts/roster/students.json'
+if canon.exists():
+    sys.path.insert(0, str(root / 'scripts/roster'))
+    from common import load_roster, seed_classes
+    students = sorted(([s['id'], s['full_name'], s['class_id']]
+                       for s in load_roster()['students'] if s['status'] == 'active'), key=lambda x: x[0])
+    known = {c['id'] for c in classes}
+    for c in seed_classes():
+        if c['id'] not in known and any(x[2] == c['id'] for x in students):
+            classes.append(c)
+    missing = {x[2] for x in students} - {c['id'] for c in classes}
+    if missing:
+        sys.exit(f'students sit in classes that do not exist: {sorted(missing)}')
 student_ids = {s[0] for s in students}
 
 # --- terms + scores ----------------------------------------------------

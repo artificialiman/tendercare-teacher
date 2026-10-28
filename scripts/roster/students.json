@@ -1,0 +1,3529 @@
+{
+ "_about": "CANONICAL roster. Edit only via scripts/roster/apply_changes.py; regenerate every hardcoded copy with scripts/roster/publish.py. status: active | graduated | left. Legacy students (before the 2026/27 session) have null admission fields on purpose -- never inferred.",
+ "as_of": "2026-10-28",
+ "session": "2026/2027",
+ "students": [
+  {
+   "id": "TCH-2025-001",
+   "full_name": "Abraham Comfort Princess",
+   "class_id": "JSS2A",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-002",
+   "full_name": "Abraham Nanmwa",
+   "class_id": "JSS2A",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-003",
+   "full_name": "Adebanjo Anjola",
+   "class_id": "JSS2A",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-004",
+   "full_name": "Adegboye Adam",
+   "class_id": "JSS2A",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-005",
+   "full_name": "Ademola Daniel",
+   "class_id": "JSS2A",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-006",
+   "full_name": "Adeoye Ikimot",
+   "class_id": "JSS2A",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-007",
+   "full_name": "Adeyemi Olamide",
+   "class_id": "JSS2A",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-008",
+   "full_name": "Adiukwu Chimuanya",
+   "class_id": "JSS2A",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-009",
+   "full_name": "Ayegba Anthony",
+   "class_id": "JSS2A",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-010",
+   "full_name": "Chris Ukpah Rejoice",
+   "class_id": "JSS2A",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-011",
+   "full_name": "Ehigie Jeffrey",
+   "class_id": "JSS2A",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-012",
+   "full_name": "Enabulele Newton",
+   "class_id": "JSS2A",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-013",
+   "full_name": "Hamzat Alaba",
+   "class_id": "JSS2A",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-014",
+   "full_name": "Idowu Taiwo",
+   "class_id": "JSS2A",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-015",
+   "full_name": "Jackson Grace",
+   "class_id": "JSS2A",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-016",
+   "full_name": "Jimoh Sodiq",
+   "class_id": "JSS2A",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-017",
+   "full_name": "Mohammed Abdul-salam",
+   "class_id": "JSS2A",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-018",
+   "full_name": "Muritala Farhan",
+   "class_id": "JSS2A",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-019",
+   "full_name": "Obaoye Adeola Ruth",
+   "class_id": "JSS2A",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-020",
+   "full_name": "Oduwaye Abdul-salam",
+   "class_id": "JSS2A",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-021",
+   "full_name": "Ogunlana Aishat",
+   "class_id": "JSS2A",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-022",
+   "full_name": "Okwuabudike Michael",
+   "class_id": "JSS2A",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-023",
+   "full_name": "Olukoga Akorede",
+   "class_id": "JSS2A",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-024",
+   "full_name": "Oni Grace Oluwadarasimi",
+   "class_id": "JSS2A",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-025",
+   "full_name": "Otuole Innocent",
+   "class_id": "JSS2A",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-026",
+   "full_name": "Peter John",
+   "class_id": "JSS2A",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-027",
+   "full_name": "Rafiu Aishat",
+   "class_id": "JSS2A",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-028",
+   "full_name": "Soyode Emmanuel",
+   "class_id": "JSS2A",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-029",
+   "full_name": "Yusuf Al-meen",
+   "class_id": "JSS2A",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-030",
+   "full_name": "Adeniyi Nifemi",
+   "class_id": "JSS2B",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-031",
+   "full_name": "Adeniyi Basit",
+   "class_id": "JSS2B",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-032",
+   "full_name": "Adeyemi Modesire",
+   "class_id": "JSS2B",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-033",
+   "full_name": "Agbo Wonderful",
+   "class_id": "JSS2B",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-034",
+   "full_name": "Akeju Emmanuel",
+   "class_id": "JSS2B",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-035",
+   "full_name": "Akindutire Michael",
+   "class_id": "JSS2B",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-036",
+   "full_name": "Asuluka Obioma",
+   "class_id": "JSS2B",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-037",
+   "full_name": "Babarinde Testimony",
+   "class_id": "JSS2B",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-038",
+   "full_name": "Dada Ayodeji",
+   "class_id": "JSS2B",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-039",
+   "full_name": "Dickson Samson",
+   "class_id": "JSS2B",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-040",
+   "full_name": "Idowu Kehinde",
+   "class_id": "JSS2B",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-041",
+   "full_name": "Ikujuni Samuel",
+   "class_id": "JSS2B",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-042",
+   "full_name": "Irinyemi Halleluyah",
+   "class_id": "JSS2B",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-043",
+   "full_name": "Ishola Suliat",
+   "class_id": "JSS2B",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-044",
+   "full_name": "Jewoola Olamide",
+   "class_id": "JSS2B",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-045",
+   "full_name": "Jonathan Frednard",
+   "class_id": "JSS2B",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-046",
+   "full_name": "Makinde Tofunmi",
+   "class_id": "JSS2B",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-047",
+   "full_name": "Odulate Boluwatife",
+   "class_id": "JSS2B",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-048",
+   "full_name": "Okezueze Ifechukwu",
+   "class_id": "JSS2B",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-049",
+   "full_name": "Oni Fikayo",
+   "class_id": "JSS2B",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-050",
+   "full_name": "Onibodo Quadri",
+   "class_id": "JSS2B",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-051",
+   "full_name": "Owoade Praise",
+   "class_id": "JSS2B",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-052",
+   "full_name": "Oyeniran Michelle",
+   "class_id": "JSS2B",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-053",
+   "full_name": "Safiriyu Simisola",
+   "class_id": "JSS2B",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-054",
+   "full_name": "Sandy Enoch",
+   "class_id": "JSS2B",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-055",
+   "full_name": "Shokoya Imole",
+   "class_id": "JSS2B",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-056",
+   "full_name": "Tijani Anjolaoluwa",
+   "class_id": "JSS2B",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-057",
+   "full_name": "Ubi Richard Victoria",
+   "class_id": "JSS2B",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-058",
+   "full_name": "Yusuff Salamat Semilore",
+   "class_id": "JSS2B",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-059",
+   "full_name": "Abey Phoebe",
+   "class_id": "JSS3A",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-060",
+   "full_name": "Adeniyi Mubarak",
+   "class_id": "JSS3A",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-061",
+   "full_name": "Agbabiaka Ella",
+   "class_id": "JSS3A",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-062",
+   "full_name": "Alaka Faridat",
+   "class_id": "JSS3A",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-063",
+   "full_name": "Aramide Hikimot",
+   "class_id": "JSS3A",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-064",
+   "full_name": "Aremu Praise",
+   "class_id": "JSS3A",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-065",
+   "full_name": "Ayoade Flourish",
+   "class_id": "JSS3A",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-066",
+   "full_name": "Bakare Gabriel",
+   "class_id": "JSS3A",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-067",
+   "full_name": "Bamiro David",
+   "class_id": "JSS3A",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-068",
+   "full_name": "Biobaku Azraa",
+   "class_id": "JSS3A",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-069",
+   "full_name": "Boladale Esther",
+   "class_id": "JSS3A",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-070",
+   "full_name": "Edeniyi Ukharia",
+   "class_id": "JSS3A",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-071",
+   "full_name": "Falope Kikiope",
+   "class_id": "JSS3A",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-072",
+   "full_name": "Ida Wisdom",
+   "class_id": "JSS3A",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-073",
+   "full_name": "Mudashiru Abidat",
+   "class_id": "JSS3A",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-074",
+   "full_name": "Muh'awwal Alitorf",
+   "class_id": "JSS3A",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-075",
+   "full_name": "Musa Isaac",
+   "class_id": "JSS3A",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-076",
+   "full_name": "Neri Testimony",
+   "class_id": "JSS3A",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-077",
+   "full_name": "Obaoye Dorcas",
+   "class_id": "JSS3A",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-078",
+   "full_name": "Ogoyemi Josephine",
+   "class_id": "JSS3A",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-079",
+   "full_name": "Olowu Jamal",
+   "class_id": "JSS3A",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-080",
+   "full_name": "Olubiyi Godwin",
+   "class_id": "JSS3A",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-081",
+   "full_name": "Opeyemi Rosheedat",
+   "class_id": "JSS3A",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-082",
+   "full_name": "Oriabor Joy",
+   "class_id": "JSS3A",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-083",
+   "full_name": "Orukpe Daniel",
+   "class_id": "JSS3A",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-084",
+   "full_name": "Oyeboade Erioluwa",
+   "class_id": "JSS3A",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-085",
+   "full_name": "Oyediji Israel",
+   "class_id": "JSS3A",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-086",
+   "full_name": "Oyetunji Adejoke",
+   "class_id": "JSS3A",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-087",
+   "full_name": "Oyewole Daniel",
+   "class_id": "JSS3A",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-088",
+   "full_name": "Rafiu Rofiat",
+   "class_id": "JSS3A",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-089",
+   "full_name": "Raji Joshua",
+   "class_id": "JSS3A",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-090",
+   "full_name": "Tijani Olamiposi",
+   "class_id": "JSS3A",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-091",
+   "full_name": "Abolanle Nancy",
+   "class_id": "JSS3B",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-092",
+   "full_name": "Adeboyo Taiwo",
+   "class_id": "JSS3B",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-093",
+   "full_name": "Adeniran Isaac",
+   "class_id": "JSS3B",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-094",
+   "full_name": "Adesuyi Ademola",
+   "class_id": "JSS3B",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-095",
+   "full_name": "Akinade Darasimi",
+   "class_id": "JSS3B",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-096",
+   "full_name": "Akinola Abdulhamid",
+   "class_id": "JSS3B",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-097",
+   "full_name": "Alexander Chinaza",
+   "class_id": "JSS3B",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-098",
+   "full_name": "Balogun Muminat",
+   "class_id": "JSS3B",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-099",
+   "full_name": "Fagbola Oladerin Emmanualla",
+   "class_id": "JSS3B",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-100",
+   "full_name": "Ganiu Aliyat",
+   "class_id": "JSS3B",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-101",
+   "full_name": "Idris Faridat",
+   "class_id": "JSS3B",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-102",
+   "full_name": "Ikechukwu Miracle",
+   "class_id": "JSS3B",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-103",
+   "full_name": "Kamilu Saheed",
+   "class_id": "JSS3B",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-104",
+   "full_name": "Muritala Rokibat",
+   "class_id": "JSS3B",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-105",
+   "full_name": "Ochege Rhoda",
+   "class_id": "JSS3B",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-106",
+   "full_name": "Ojochegbe Linda",
+   "class_id": "JSS3B",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-107",
+   "full_name": "Olaniyi Mary",
+   "class_id": "JSS3B",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-108",
+   "full_name": "Olatunbosun Daniel",
+   "class_id": "JSS3B",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-109",
+   "full_name": "Ologunre Marvellous",
+   "class_id": "JSS3B",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-110",
+   "full_name": "Onifade Ayomide",
+   "class_id": "JSS3B",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-111",
+   "full_name": "Oseni Idayat",
+   "class_id": "JSS3B",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-112",
+   "full_name": "Sakiru John",
+   "class_id": "JSS3B",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-113",
+   "full_name": "Shofowora Nifemi",
+   "class_id": "JSS3B",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-114",
+   "full_name": "Suli Fridaus",
+   "class_id": "JSS3B",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-115",
+   "full_name": "Yakubu Moses",
+   "class_id": "JSS3B",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-116",
+   "full_name": "Abdul Rasheed Rodiat",
+   "class_id": "SS1 Unassigned",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-117",
+   "full_name": "Adebayo Dorcas",
+   "class_id": "SS1 Unassigned",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-118",
+   "full_name": "Adebayo Favour",
+   "class_id": "SS1 Unassigned",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-119",
+   "full_name": "Adeniyi Darasimi",
+   "class_id": "SS1 Unassigned",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-120",
+   "full_name": "Afolayan Joshua",
+   "class_id": "SS1 Unassigned",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-121",
+   "full_name": "Akanji Favour",
+   "class_id": "SS1 Unassigned",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-122",
+   "full_name": "Akinbiyi Glory",
+   "class_id": "SS1 Unassigned",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-123",
+   "full_name": "Amusat Khalilulahi O",
+   "class_id": "SS1 Unassigned",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-124",
+   "full_name": "Faruk Aransiola",
+   "class_id": "SS1 Unassigned",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-125",
+   "full_name": "Balogun Jomiloju",
+   "class_id": "SS1 Unassigned",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-126",
+   "full_name": "Emmanuel Ayowole",
+   "class_id": "SS1 Unassigned",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-127",
+   "full_name": "Emmanuel Maxwell",
+   "class_id": "SS1 Unassigned",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-128",
+   "full_name": "Emmanuel Priscilla",
+   "class_id": "SS1 Unassigned",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-129",
+   "full_name": "Fatuki Oluwanifemi",
+   "class_id": "SS1 Unassigned",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-130",
+   "full_name": "Folorunsho Precious",
+   "class_id": "SS1 Unassigned",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-131",
+   "full_name": "Garba Albarka",
+   "class_id": "SS1 Unassigned",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-132",
+   "full_name": "Ibhadore Godswill",
+   "class_id": "SS1 Unassigned",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-133",
+   "full_name": "Irinyemi Jomiloju Praise",
+   "class_id": "SS1 Unassigned",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-134",
+   "full_name": "Kolade Idera",
+   "class_id": "SS1 Unassigned",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-135",
+   "full_name": "Nanmwa Victor",
+   "class_id": "SS1 Unassigned",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-136",
+   "full_name": "Nathaniel David",
+   "class_id": "SS1 Unassigned",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-137",
+   "full_name": "Nelson Sonia C.C",
+   "class_id": "SS1 Unassigned",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-138",
+   "full_name": "Nyakos Nurudeen",
+   "class_id": "SS1 Unassigned",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-139",
+   "full_name": "Ogunlana Abdullahi",
+   "class_id": "SS1 Unassigned",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-140",
+   "full_name": "Okwuabudike Victoria",
+   "class_id": "SS1 Unassigned",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-141",
+   "full_name": "Olatunji Al-meen",
+   "class_id": "SS1 Unassigned",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-142",
+   "full_name": "Olowu Fausiyat",
+   "class_id": "SS1 Unassigned",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-143",
+   "full_name": "Oluborode True Vine",
+   "class_id": "SS1 Unassigned",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-144",
+   "full_name": "Oseni Abdulsamod",
+   "class_id": "SS1 Unassigned",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-145",
+   "full_name": "Owoyele Ramadan",
+   "class_id": "SS1 Unassigned",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-146",
+   "full_name": "Oyewole Israel",
+   "class_id": "SS1 Unassigned",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-147",
+   "full_name": "Salawudeen Fawas",
+   "class_id": "SS1 Unassigned",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-148",
+   "full_name": "Sunny Blessing",
+   "class_id": "SS1 Unassigned",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-149",
+   "full_name": "Waheed Aduragbemi",
+   "class_id": "SS1 Unassigned",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-150",
+   "full_name": "Wisdom Donald",
+   "class_id": "SS1 Unassigned",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-151",
+   "full_name": "Yusuf Taiwo",
+   "class_id": "SS1 Unassigned",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-152",
+   "full_name": "Yusuff Abdul Sattar",
+   "class_id": "SS1 Unassigned",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-153",
+   "full_name": "Abdul Razak Somod",
+   "class_id": "SS1 Unassigned",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-154",
+   "full_name": "Adebisi Aishat",
+   "class_id": "SS1 Unassigned",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-155",
+   "full_name": "Adebisi Ayomide",
+   "class_id": "SS1 Unassigned",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-156",
+   "full_name": "Adebisi Yusuf",
+   "class_id": "SS1 Unassigned",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-157",
+   "full_name": "Adeniyi Korede",
+   "class_id": "SS1 Unassigned",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-158",
+   "full_name": "Adewunmi Oluwademilade",
+   "class_id": "SS1 Unassigned",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-159",
+   "full_name": "Agbo Favour",
+   "class_id": "SS1 Unassigned",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-160",
+   "full_name": "Akinfe Christianah",
+   "class_id": "SS1 Unassigned",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-161",
+   "full_name": "Ambrose Emmanuella",
+   "class_id": "SS1 Unassigned",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-162",
+   "full_name": "Ariyo Moses",
+   "class_id": "SS1 Unassigned",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-163",
+   "full_name": "Ayoade Doris",
+   "class_id": "SS1 Unassigned",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-164",
+   "full_name": "Balogun Tobiloba",
+   "class_id": "SS1 Unassigned",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-165",
+   "full_name": "Enabulele Israel",
+   "class_id": "SS1 Unassigned",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-166",
+   "full_name": "Faluyi Israel",
+   "class_id": "SS1 Unassigned",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-167",
+   "full_name": "Folorunsho Alexander",
+   "class_id": "SS1 Unassigned",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-168",
+   "full_name": "Gabriel Peace",
+   "class_id": "SS1 Unassigned",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-169",
+   "full_name": "Lawal Esther",
+   "class_id": "SS1 Unassigned",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-170",
+   "full_name": "Medua Angel",
+   "class_id": "SS1 Unassigned",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-171",
+   "full_name": "Nyakos Naimat",
+   "class_id": "SS1 Unassigned",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-172",
+   "full_name": "Olajesu Kayode",
+   "class_id": "SS1 Unassigned",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-173",
+   "full_name": "Olasunkanmi Ayobami",
+   "class_id": "SS1 Unassigned",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-174",
+   "full_name": "Olukotun Feranmi",
+   "class_id": "SS1 Unassigned",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-175",
+   "full_name": "Onafowokan Ridwan",
+   "class_id": "SS1 Unassigned",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-176",
+   "full_name": "Opatimeyin David",
+   "class_id": "SS1 Unassigned",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-177",
+   "full_name": "Oyeniyi David",
+   "class_id": "SS1 Unassigned",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-178",
+   "full_name": "Popoola Aduragbemi",
+   "class_id": "SS1 Unassigned",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-179",
+   "full_name": "Rotimi Eniola",
+   "class_id": "SS1 Unassigned",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-180",
+   "full_name": "Samson Loveth",
+   "class_id": "SS1 Unassigned",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-181",
+   "full_name": "Samuel Zainab",
+   "class_id": "SS1 Unassigned",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-182",
+   "full_name": "Soyode Emmanuella",
+   "class_id": "SS1 Unassigned",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-183",
+   "full_name": "Uduakhomo Peace",
+   "class_id": "SS1 Unassigned",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-184",
+   "full_name": "Abdullateef Abdulsalam",
+   "class_id": "SS2 Science",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-185",
+   "full_name": "Abimbola Israel",
+   "class_id": "SS2 Science",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-186",
+   "full_name": "Adebayo Ayomide",
+   "class_id": "SS2 Science",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-187",
+   "full_name": "Adesalu Kamal",
+   "class_id": "SS2 Science",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-188",
+   "full_name": "Adeshina Fawaz",
+   "class_id": "SS2 Science",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-189",
+   "full_name": "Ajayi Aminat",
+   "class_id": "SS2 Science",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-190",
+   "full_name": "Ajewole Darasimi",
+   "class_id": "SS2 Science",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-191",
+   "full_name": "Ajibola Rodiat",
+   "class_id": "SS2 Science",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-192",
+   "full_name": "Akinyogha Taiwo",
+   "class_id": "SS2 Science",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-193",
+   "full_name": "Akoshile Hameedah",
+   "class_id": "SS2 Science",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-194",
+   "full_name": "Akpoveta Daniel",
+   "class_id": "SS2 Science",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-195",
+   "full_name": "Alexander Chukwu",
+   "class_id": "SS2 Science",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-196",
+   "full_name": "Amos Savior",
+   "class_id": "SS2 Science",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-197",
+   "full_name": "Ashaye Damola",
+   "class_id": "SS2 Science",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-198",
+   "full_name": "Ayangbola Dammilola",
+   "class_id": "SS2 Science",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-199",
+   "full_name": "Bakare Amirat",
+   "class_id": "SS2 Science",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-200",
+   "full_name": "Bakare Nifemi",
+   "class_id": "SS2 Science",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-201",
+   "full_name": "Balogun Momeen",
+   "class_id": "SS2 Science",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-202",
+   "full_name": "Bamidele Goodluck",
+   "class_id": "SS2 Science",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-203",
+   "full_name": "Chukwuemeka Favour",
+   "class_id": "SS2 Science",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-204",
+   "full_name": "Durosimi Abdullateef",
+   "class_id": "SS2 Science",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-205",
+   "full_name": "Emmanuel Godiva",
+   "class_id": "SS2 Science",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-206",
+   "full_name": "Fatai Muinat",
+   "class_id": "SS2 Science",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-207",
+   "full_name": "Folorunsho Elijah",
+   "class_id": "SS2 Science",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-208",
+   "full_name": "Hassanat",
+   "class_id": "SS2 Science",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-209",
+   "full_name": "Hilary Favour",
+   "class_id": "SS2 Science",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-210",
+   "full_name": "Jimoh Yewande",
+   "class_id": "SS2 Science",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-211",
+   "full_name": "Julius-Caleb Okenwan",
+   "class_id": "SS2 Science",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-212",
+   "full_name": "Lawal Promise",
+   "class_id": "SS2 Science",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-213",
+   "full_name": "Momoh Divine",
+   "class_id": "SS2 Science",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-214",
+   "full_name": "Musa Nimotallahi",
+   "class_id": "SS2 Science",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-215",
+   "full_name": "Ogbueje Nannette",
+   "class_id": "SS2 Science",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-216",
+   "full_name": "Ogbonna Joshua",
+   "class_id": "SS2 Science",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-217",
+   "full_name": "Ojo Precious",
+   "class_id": "SS2 Science",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-218",
+   "full_name": "Okebiyi Blessing",
+   "class_id": "SS2 Science",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-219",
+   "full_name": "Okebugwu Michael",
+   "class_id": "SS2 Science",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-220",
+   "full_name": "Oladipo Oluwabukola",
+   "class_id": "SS2 Science",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-221",
+   "full_name": "Olalere Halim",
+   "class_id": "SS2 Science",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-222",
+   "full_name": "Olaniyan Emmanuel",
+   "class_id": "SS2 Science",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-223",
+   "full_name": "Olubiyi Olamide",
+   "class_id": "SS2 Science",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-224",
+   "full_name": "Oluwatoyin Eniola",
+   "class_id": "SS2 Science",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-225",
+   "full_name": "Oni Ezekiel",
+   "class_id": "SS2 Science",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-226",
+   "full_name": "Onwuegbule Wisdom",
+   "class_id": "SS2 Science",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-227",
+   "full_name": "Opaje Teniola",
+   "class_id": "SS2 Science",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-228",
+   "full_name": "Opeyemi Michael",
+   "class_id": "SS2 Science",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-229",
+   "full_name": "Opeyemi Sultan",
+   "class_id": "SS2 Science",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-230",
+   "full_name": "Oyesanya Israel",
+   "class_id": "SS2 Science",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-231",
+   "full_name": "Samuel Benjamin",
+   "class_id": "SS2 Science",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-232",
+   "full_name": "Sanusi Farahat",
+   "class_id": "SS2 Science",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-233",
+   "full_name": "Sunday Isaac",
+   "class_id": "SS2 Science",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-234",
+   "full_name": "Abdulmateen saheed",
+   "class_id": "SS2 Actuarial",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-235",
+   "full_name": "Arekwen clement",
+   "class_id": "SS2 Actuarial",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-236",
+   "full_name": "Ekum honesty",
+   "class_id": "SS2 Actuarial",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-237",
+   "full_name": "Kehinde anjolaoluwa",
+   "class_id": "SS2 Actuarial",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-238",
+   "full_name": "Khalid lateef",
+   "class_id": "SS2 Actuarial",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-239",
+   "full_name": "Oche ojochegbe michael",
+   "class_id": "SS2 Actuarial",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-240",
+   "full_name": "Olajire anuoluwapo",
+   "class_id": "SS2 Actuarial",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-241",
+   "full_name": "Oni peter",
+   "class_id": "SS2 Actuarial",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-242",
+   "full_name": "Rafiu kehinde",
+   "class_id": "SS2 Actuarial",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-243",
+   "full_name": "Rafiu taiwo",
+   "class_id": "SS2 Actuarial",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-244",
+   "full_name": "Kolawole rereoluwa",
+   "class_id": "SS2 Actuarial",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-245",
+   "full_name": "James goodluck",
+   "class_id": "SS2 Actuarial",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-246",
+   "full_name": "Azeez malik",
+   "class_id": "SS2 Actuarial",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-247",
+   "full_name": "Aiwe Destiny",
+   "class_id": "SS2 Actuarial",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-248",
+   "full_name": "Friday Destiny",
+   "class_id": "SS2 Actuarial",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-249",
+   "full_name": "Akeju David",
+   "class_id": "SS2 Actuarial",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-250",
+   "full_name": "Mohammed fayade",
+   "class_id": "SS2 Actuarial",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-251",
+   "full_name": "Adeyemo ikimat",
+   "class_id": "SS2 Actuarial",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-252",
+   "full_name": "Ajayi fiyinfoluwa",
+   "class_id": "SS2 Actuarial",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-253",
+   "full_name": "Bello opeyemi",
+   "class_id": "SS2 Actuarial",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-254",
+   "full_name": "Falope oluwajomiloju",
+   "class_id": "SS2 Actuarial",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-255",
+   "full_name": "Fowowe Abigail",
+   "class_id": "SS2 Actuarial",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-256",
+   "full_name": "Idowu Amidat",
+   "class_id": "SS2 Actuarial",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-257",
+   "full_name": "Ikujuni Oluwasikemi",
+   "class_id": "SS2 Actuarial",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-258",
+   "full_name": "Livinus chioma",
+   "class_id": "SS2 Actuarial",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-259",
+   "full_name": "Olukoja omowunmi",
+   "class_id": "SS2 Actuarial",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-260",
+   "full_name": "Onojah Victoria",
+   "class_id": "SS2 Actuarial",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-261",
+   "full_name": "Tijani Aishat",
+   "class_id": "SS2 Actuarial",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-262",
+   "full_name": "Tujiki anuoluwapo",
+   "class_id": "SS2 Actuarial",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-263",
+   "full_name": "Idris mariam",
+   "class_id": "SS2 Actuarial",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-264",
+   "full_name": "Nosiru halimat",
+   "class_id": "SS2 Actuarial",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-265",
+   "full_name": "Adeyemi mariam",
+   "class_id": "SS2 Actuarial",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-266",
+   "full_name": "Akinyugha kehinde",
+   "class_id": "SS2 Actuarial",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-267",
+   "full_name": "Musa emmanuella",
+   "class_id": "SS2 Actuarial",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-268",
+   "full_name": "Awodiya Amazing-Grace",
+   "class_id": "SS2 Actuarial",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-269",
+   "full_name": "Ofonime Success",
+   "class_id": "SS2 Actuarial",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-270",
+   "full_name": "Abdullahi Malik",
+   "class_id": "SS3 Science",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-271",
+   "full_name": "Adeoye Rokeeb",
+   "class_id": "SS3 Science",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-272",
+   "full_name": "Adeyemi Adesewa",
+   "class_id": "SS3 Science",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-273",
+   "full_name": "Adeyemi Emmanuel",
+   "class_id": "SS3 Science",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-274",
+   "full_name": "Agbo Queen",
+   "class_id": "SS3 Science",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-275",
+   "full_name": "Akindutire Iretiola",
+   "class_id": "SS3 Science",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-276",
+   "full_name": "Alejo Samuel",
+   "class_id": "SS3 Science",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-277",
+   "full_name": "Babalola Rodiat",
+   "class_id": "SS3 Science",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-278",
+   "full_name": "Bakare Aliyat",
+   "class_id": "SS3 Science",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-279",
+   "full_name": "Eke Erica",
+   "class_id": "SS3 Science",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-280",
+   "full_name": "Emmanuel Annabel",
+   "class_id": "SS3 Science",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-281",
+   "full_name": "Enabulele Itohan",
+   "class_id": "SS3 Science",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-282",
+   "full_name": "Friday Godspower",
+   "class_id": "SS3 Science",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-283",
+   "full_name": "Igbenedion Folabomi",
+   "class_id": "SS3 Science",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-284",
+   "full_name": "Itama Daniel",
+   "class_id": "SS3 Science",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-285",
+   "full_name": "Jimoh Ganiyat",
+   "class_id": "SS3 Science",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-286",
+   "full_name": "Mohammed Awwal",
+   "class_id": "SS3 Science",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-287",
+   "full_name": "Mudashiru Usman",
+   "class_id": "SS3 Science",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-288",
+   "full_name": "Nelson Victor",
+   "class_id": "SS3 Science",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-289",
+   "full_name": "Oduola Olamide",
+   "class_id": "SS3 Science",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-290",
+   "full_name": "Okwabudike Mercy",
+   "class_id": "SS3 Science",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-291",
+   "full_name": "Olagbo Susan",
+   "class_id": "SS3 Science",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-292",
+   "full_name": "Olaniyi David",
+   "class_id": "SS3 Science",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-293",
+   "full_name": "Olushesi Basit",
+   "class_id": "SS3 Science",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-294",
+   "full_name": "Omotosho Faith",
+   "class_id": "SS3 Science",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-295",
+   "full_name": "Oyebanji Victoria",
+   "class_id": "SS3 Science",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-296",
+   "full_name": "Oyedeji Emmanuella",
+   "class_id": "SS3 Science",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-297",
+   "full_name": "Quadri Oluwadarasimi",
+   "class_id": "SS3 Science",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-298",
+   "full_name": "Sandy Karenapuch",
+   "class_id": "SS3 Science",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-299",
+   "full_name": "Sanyaolu Kehinde",
+   "class_id": "SS3 Science",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-300",
+   "full_name": "Sanyaolu Taiwo",
+   "class_id": "SS3 Science",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-301",
+   "full_name": "Sulaimon Alimoh",
+   "class_id": "SS3 Science",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-302",
+   "full_name": "Sunday Mary",
+   "class_id": "SS3 Science",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-303",
+   "full_name": "Abdulrazak Abdulrahman",
+   "class_id": "SS3 Actuarial",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-304",
+   "full_name": "Abdusalam Timileyin",
+   "class_id": "SS3 Actuarial",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-305",
+   "full_name": "Abisoye Gold",
+   "class_id": "SS3 Actuarial",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-306",
+   "full_name": "Adebayo Isaiah",
+   "class_id": "SS3 Actuarial",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-307",
+   "full_name": "Adeniyi Gbolahan",
+   "class_id": "SS3 Actuarial",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-308",
+   "full_name": "Adenola Darasimi",
+   "class_id": "SS3 Actuarial",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-309",
+   "full_name": "Agboola Daniel",
+   "class_id": "SS3 Actuarial",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-310",
+   "full_name": "Azeez Wazilat",
+   "class_id": "SS3 Actuarial",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-311",
+   "full_name": "Bakare Bolaji",
+   "class_id": "SS3 Actuarial",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-312",
+   "full_name": "Chukwu Samuel",
+   "class_id": "SS3 Actuarial",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-313",
+   "full_name": "Ebere Larry",
+   "class_id": "SS3 Actuarial",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-314",
+   "full_name": "Eduniyi Gideon",
+   "class_id": "SS3 Actuarial",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-315",
+   "full_name": "Ewenla Noah",
+   "class_id": "SS3 Actuarial",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-316",
+   "full_name": "Ibadore Miracle",
+   "class_id": "SS3 Actuarial",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-317",
+   "full_name": "Ipadeola Idris",
+   "class_id": "SS3 Actuarial",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-318",
+   "full_name": "Ipadeola Quadri",
+   "class_id": "SS3 Actuarial",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-319",
+   "full_name": "Jewoola Boluwatife",
+   "class_id": "SS3 Actuarial",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-320",
+   "full_name": "Lawal Gabriel",
+   "class_id": "SS3 Actuarial",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-321",
+   "full_name": "Mathew Glory",
+   "class_id": "SS3 Actuarial",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-322",
+   "full_name": "Njoh Ifeoma",
+   "class_id": "SS3 Actuarial",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-323",
+   "full_name": "Nwaeke Maryann",
+   "class_id": "SS3 Actuarial",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-324",
+   "full_name": "Ochege Sunday",
+   "class_id": "SS3 Actuarial",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-325",
+   "full_name": "Okarfor Ifeoma",
+   "class_id": "SS3 Actuarial",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-326",
+   "full_name": "Oladeji Ala-meen",
+   "class_id": "SS3 Actuarial",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-327",
+   "full_name": "Osiba Temiloluwa",
+   "class_id": "SS3 Actuarial",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-328",
+   "full_name": "Osunubi Gbolahan",
+   "class_id": "SS3 Actuarial",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-329",
+   "full_name": "Oyebode Precious",
+   "class_id": "SS3 Actuarial",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-330",
+   "full_name": "Peter Godwin",
+   "class_id": "SS3 Actuarial",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-331",
+   "full_name": "Shobowale Isaac",
+   "class_id": "SS3 Actuarial",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-332",
+   "full_name": "Shokoya Samuel",
+   "class_id": "SS3 Actuarial",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-333",
+   "full_name": "Sulaimon Aishat",
+   "class_id": "SS3 Actuarial",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-334",
+   "full_name": "Zulukadeen Rokeeb",
+   "class_id": "SS3 Actuarial",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2025-335",
+   "full_name": "Angel",
+   "class_id": "SS3 Science",
+   "status": "graduated",
+   "admitted_academic_year": null,
+   "admission_type": null,
+   "graduated_on": "2026-09-01"
+  },
+  {
+   "id": "TCH-2025-336",
+   "full_name": "Bamise",
+   "class_id": "SS3 Science",
+   "status": "graduated",
+   "admitted_academic_year": null,
+   "admission_type": null,
+   "graduated_on": "2026-09-01"
+  },
+  {
+   "id": "TCH-2025-337",
+   "full_name": "Bright",
+   "class_id": "SS3 Science",
+   "status": "graduated",
+   "admitted_academic_year": null,
+   "admission_type": null,
+   "graduated_on": "2026-09-01"
+  },
+  {
+   "id": "TCH-2025-338",
+   "full_name": "Dorcas",
+   "class_id": "SS3 Science",
+   "status": "graduated",
+   "admitted_academic_year": null,
+   "admission_type": null,
+   "graduated_on": "2026-09-01"
+  },
+  {
+   "id": "TCH-2025-339",
+   "full_name": "Enoch",
+   "class_id": "SS3 Science",
+   "status": "graduated",
+   "admitted_academic_year": null,
+   "admission_type": null,
+   "graduated_on": "2026-09-01"
+  },
+  {
+   "id": "TCH-2025-340",
+   "full_name": "Famous",
+   "class_id": "SS3 Science",
+   "status": "graduated",
+   "admitted_academic_year": null,
+   "admission_type": null,
+   "graduated_on": "2026-09-01"
+  },
+  {
+   "id": "TCH-2025-341",
+   "full_name": "Fauziyyah",
+   "class_id": "SS3 Science",
+   "status": "graduated",
+   "admitted_academic_year": null,
+   "admission_type": null,
+   "graduated_on": "2026-09-01"
+  },
+  {
+   "id": "TCH-2025-342",
+   "full_name": "Fawaz",
+   "class_id": "SS3 Science",
+   "status": "graduated",
+   "admitted_academic_year": null,
+   "admission_type": null,
+   "graduated_on": "2026-09-01"
+  },
+  {
+   "id": "TCH-2025-343",
+   "full_name": "Fiyin",
+   "class_id": "SS3 Science",
+   "status": "graduated",
+   "admitted_academic_year": null,
+   "admission_type": null,
+   "graduated_on": "2026-09-01"
+  },
+  {
+   "id": "TCH-2025-344",
+   "full_name": "Habitat",
+   "class_id": "SS3 Science",
+   "status": "graduated",
+   "admitted_academic_year": null,
+   "admission_type": null,
+   "graduated_on": "2026-09-01"
+  },
+  {
+   "id": "TCH-2025-345",
+   "full_name": "Kaosara",
+   "class_id": "SS3 Science",
+   "status": "graduated",
+   "admitted_academic_year": null,
+   "admission_type": null,
+   "graduated_on": "2026-09-01"
+  },
+  {
+   "id": "TCH-2025-346",
+   "full_name": "Khadija",
+   "class_id": "SS3 Science",
+   "status": "graduated",
+   "admitted_academic_year": null,
+   "admission_type": null,
+   "graduated_on": "2026-09-01"
+  },
+  {
+   "id": "TCH-2025-347",
+   "full_name": "Mercy",
+   "class_id": "SS3 Science",
+   "status": "graduated",
+   "admitted_academic_year": null,
+   "admission_type": null,
+   "graduated_on": "2026-09-01"
+  },
+  {
+   "id": "TCH-2025-348",
+   "full_name": "Michael",
+   "class_id": "SS3 Science",
+   "status": "graduated",
+   "admitted_academic_year": null,
+   "admission_type": null,
+   "graduated_on": "2026-09-01"
+  },
+  {
+   "id": "TCH-2025-349",
+   "full_name": "Moyin",
+   "class_id": "SS3 Science",
+   "status": "graduated",
+   "admitted_academic_year": null,
+   "admission_type": null,
+   "graduated_on": "2026-09-01"
+  },
+  {
+   "id": "TCH-2025-350",
+   "full_name": "Prosper",
+   "class_id": "SS3 Science",
+   "status": "graduated",
+   "admitted_academic_year": null,
+   "admission_type": null,
+   "graduated_on": "2026-09-01"
+  },
+  {
+   "id": "TCH-2025-351",
+   "full_name": "Rita",
+   "class_id": "SS3 Science",
+   "status": "graduated",
+   "admitted_academic_year": null,
+   "admission_type": null,
+   "graduated_on": "2026-09-01"
+  },
+  {
+   "id": "TCH-2025-352",
+   "full_name": "Rokibat",
+   "class_id": "SS3 Science",
+   "status": "graduated",
+   "admitted_academic_year": null,
+   "admission_type": null,
+   "graduated_on": "2026-09-01"
+  },
+  {
+   "id": "TCH-2025-353",
+   "full_name": "Samuel",
+   "class_id": "SS3 Science",
+   "status": "graduated",
+   "admitted_academic_year": null,
+   "admission_type": null,
+   "graduated_on": "2026-09-01"
+  },
+  {
+   "id": "TCH-2025-354",
+   "full_name": "Taiwo",
+   "class_id": "SS3 Science",
+   "status": "graduated",
+   "admitted_academic_year": null,
+   "admission_type": null,
+   "graduated_on": "2026-09-01"
+  },
+  {
+   "id": "TCH-2025-355",
+   "full_name": "Temi",
+   "class_id": "SS3 Science",
+   "status": "graduated",
+   "admitted_academic_year": null,
+   "admission_type": null,
+   "graduated_on": "2026-09-01"
+  },
+  {
+   "id": "TCH-2025-356",
+   "full_name": "Zainab",
+   "class_id": "SS3 Science",
+   "status": "graduated",
+   "admitted_academic_year": null,
+   "admission_type": null,
+   "graduated_on": "2026-09-01"
+  },
+  {
+   "id": "TCH-2025-357",
+   "full_name": "Abdul Majeed Quadri",
+   "class_id": "SS3 Actuarial",
+   "status": "graduated",
+   "admitted_academic_year": null,
+   "admission_type": null,
+   "graduated_on": "2026-09-01"
+  },
+  {
+   "id": "TCH-2025-358",
+   "full_name": "Abdul Razak Kehinde",
+   "class_id": "SS3 Actuarial",
+   "status": "graduated",
+   "admitted_academic_year": null,
+   "admission_type": null,
+   "graduated_on": "2026-09-01"
+  },
+  {
+   "id": "TCH-2025-359",
+   "full_name": "Abuh God's Power",
+   "class_id": "SS3 Actuarial",
+   "status": "graduated",
+   "admitted_academic_year": null,
+   "admission_type": null,
+   "graduated_on": "2026-09-01"
+  },
+  {
+   "id": "TCH-2025-360",
+   "full_name": "Adebayo David",
+   "class_id": "SS3 Actuarial",
+   "status": "graduated",
+   "admitted_academic_year": null,
+   "admission_type": null,
+   "graduated_on": "2026-09-01"
+  },
+  {
+   "id": "TCH-2025-361",
+   "full_name": "Adeniran Moses",
+   "class_id": "SS3 Actuarial",
+   "status": "graduated",
+   "admitted_academic_year": null,
+   "admission_type": null,
+   "graduated_on": "2026-09-01"
+  },
+  {
+   "id": "TCH-2025-362",
+   "full_name": "Adesanya Emmanuel",
+   "class_id": "SS3 Actuarial",
+   "status": "graduated",
+   "admitted_academic_year": null,
+   "admission_type": null,
+   "graduated_on": "2026-09-01"
+  },
+  {
+   "id": "TCH-2025-363",
+   "full_name": "Adisa Fathia",
+   "class_id": "SS3 Actuarial",
+   "status": "graduated",
+   "admitted_academic_year": null,
+   "admission_type": null,
+   "graduated_on": "2026-09-01"
+  },
+  {
+   "id": "TCH-2025-364",
+   "full_name": "Ajibola Roheemot",
+   "class_id": "SS3 Actuarial",
+   "status": "graduated",
+   "admitted_academic_year": null,
+   "admission_type": null,
+   "graduated_on": "2026-09-01"
+  },
+  {
+   "id": "TCH-2025-365",
+   "full_name": "Amos Wisdom",
+   "class_id": "SS3 Actuarial",
+   "status": "graduated",
+   "admitted_academic_year": null,
+   "admission_type": null,
+   "graduated_on": "2026-09-01"
+  },
+  {
+   "id": "TCH-2025-366",
+   "full_name": "Asiemor Divine",
+   "class_id": "SS3 Actuarial",
+   "status": "graduated",
+   "admitted_academic_year": null,
+   "admission_type": null,
+   "graduated_on": "2026-09-01"
+  },
+  {
+   "id": "TCH-2025-367",
+   "full_name": "Enemali Ojotoeba",
+   "class_id": "SS3 Actuarial",
+   "status": "graduated",
+   "admitted_academic_year": null,
+   "admission_type": null,
+   "graduated_on": "2026-09-01"
+  },
+  {
+   "id": "TCH-2025-368",
+   "full_name": "Falope Darasimi",
+   "class_id": "SS3 Actuarial",
+   "status": "graduated",
+   "admitted_academic_year": null,
+   "admission_type": null,
+   "graduated_on": "2026-09-01"
+  },
+  {
+   "id": "TCH-2025-369",
+   "full_name": "Famakinwa Akorede",
+   "class_id": "SS3 Actuarial",
+   "status": "graduated",
+   "admitted_academic_year": null,
+   "admission_type": null,
+   "graduated_on": "2026-09-01"
+  },
+  {
+   "id": "TCH-2025-370",
+   "full_name": "Folorunsho Petra",
+   "class_id": "SS3 Actuarial",
+   "status": "graduated",
+   "admitted_academic_year": null,
+   "admission_type": null,
+   "graduated_on": "2026-09-01"
+  },
+  {
+   "id": "TCH-2025-371",
+   "full_name": "Muritala Rashidat",
+   "class_id": "SS3 Actuarial",
+   "status": "graduated",
+   "admitted_academic_year": null,
+   "admission_type": null,
+   "graduated_on": "2026-09-01"
+  },
+  {
+   "id": "TCH-2025-372",
+   "full_name": "Olalere Aishat",
+   "class_id": "SS3 Actuarial",
+   "status": "graduated",
+   "admitted_academic_year": null,
+   "admission_type": null,
+   "graduated_on": "2026-09-01"
+  },
+  {
+   "id": "TCH-2025-373",
+   "full_name": "Oyekan Emmanuel",
+   "class_id": "SS3 Actuarial",
+   "status": "graduated",
+   "admitted_academic_year": null,
+   "admission_type": null,
+   "graduated_on": "2026-09-01"
+  },
+  {
+   "id": "TCH-2025-374",
+   "full_name": "Sowole Azeem",
+   "class_id": "SS3 Actuarial",
+   "status": "graduated",
+   "admitted_academic_year": null,
+   "admission_type": null,
+   "graduated_on": "2026-09-01"
+  },
+  {
+   "id": "TCH-2025-375",
+   "full_name": "Tujiki David",
+   "class_id": "SS3 Actuarial",
+   "status": "graduated",
+   "admitted_academic_year": null,
+   "admission_type": null,
+   "graduated_on": "2026-09-01"
+  },
+  {
+   "id": "TCH-2025-376",
+   "full_name": "Yakubu Happiness",
+   "class_id": "SS3 Actuarial",
+   "status": "graduated",
+   "admitted_academic_year": null,
+   "admission_type": null,
+   "graduated_on": "2026-09-01"
+  },
+  {
+   "id": "TCH-2025-377",
+   "full_name": "Ilo Joseph",
+   "class_id": "SS2 Actuarial",
+   "status": "active",
+   "admitted_academic_year": null,
+   "admission_type": null
+  },
+  {
+   "id": "TCH-2026-001",
+   "full_name": "Abraham Babayemi",
+   "class_id": "JSS1A",
+   "status": "active",
+   "admitted_academic_year": "2026/2027",
+   "admission_type": "intake"
+  },
+  {
+   "id": "TCH-2026-002",
+   "full_name": "Aduloju Favour",
+   "class_id": "JSS1A",
+   "status": "active",
+   "admitted_academic_year": "2026/2027",
+   "admission_type": "intake"
+  },
+  {
+   "id": "TCH-2026-003",
+   "full_name": "Afuwape Tomiwa",
+   "class_id": "JSS1A",
+   "status": "active",
+   "admitted_academic_year": "2026/2027",
+   "admission_type": "intake"
+  },
+  {
+   "id": "TCH-2026-004",
+   "full_name": "Aniebo Onyekachi",
+   "class_id": "JSS1A",
+   "status": "active",
+   "admitted_academic_year": "2026/2027",
+   "admission_type": "intake"
+  },
+  {
+   "id": "TCH-2026-005",
+   "full_name": "Atunde Praise",
+   "class_id": "JSS1A",
+   "status": "active",
+   "admitted_academic_year": "2026/2027",
+   "admission_type": "intake"
+  },
+  {
+   "id": "TCH-2026-006",
+   "full_name": "Awotoye Anthony",
+   "class_id": "JSS1A",
+   "status": "active",
+   "admitted_academic_year": "2026/2027",
+   "admission_type": "intake"
+  },
+  {
+   "id": "TCH-2026-007",
+   "full_name": "Benson Ezekiel",
+   "class_id": "JSS1A",
+   "status": "active",
+   "admitted_academic_year": "2026/2027",
+   "admission_type": "intake"
+  },
+  {
+   "id": "TCH-2026-008",
+   "full_name": "Folorunsho Boluwatif",
+   "class_id": "JSS1A",
+   "status": "active",
+   "admitted_academic_year": "2026/2027",
+   "admission_type": "intake"
+  },
+  {
+   "id": "TCH-2026-009",
+   "full_name": "Joseph Matthew",
+   "class_id": "JSS1A",
+   "status": "active",
+   "admitted_academic_year": "2026/2027",
+   "admission_type": "intake"
+  },
+  {
+   "id": "TCH-2026-010",
+   "full_name": "Mustapha Ibrahim",
+   "class_id": "JSS1A",
+   "status": "active",
+   "admitted_academic_year": "2026/2027",
+   "admission_type": "intake"
+  },
+  {
+   "id": "TCH-2026-011",
+   "full_name": "Odusanya Semilore",
+   "class_id": "JSS1A",
+   "status": "active",
+   "admitted_academic_year": "2026/2027",
+   "admission_type": "intake"
+  },
+  {
+   "id": "TCH-2026-012",
+   "full_name": "Olalere Habeeb",
+   "class_id": "JSS1A",
+   "status": "active",
+   "admitted_academic_year": "2026/2027",
+   "admission_type": "intake"
+  },
+  {
+   "id": "TCH-2026-013",
+   "full_name": "Paulinus Godwin",
+   "class_id": "JSS1A",
+   "status": "active",
+   "admitted_academic_year": "2026/2027",
+   "admission_type": "intake"
+  },
+  {
+   "id": "TCH-2026-014",
+   "full_name": "Samuel Divine",
+   "class_id": "JSS1A",
+   "status": "active",
+   "admitted_academic_year": "2026/2027",
+   "admission_type": "intake"
+  },
+  {
+   "id": "TCH-2026-015",
+   "full_name": "Tiamyu Elijah",
+   "class_id": "JSS1A",
+   "status": "active",
+   "admitted_academic_year": "2026/2027",
+   "admission_type": "intake"
+  },
+  {
+   "id": "TCH-2026-016",
+   "full_name": "Lateef Mubaraq",
+   "class_id": "JSS1A",
+   "status": "active",
+   "admitted_academic_year": "2026/2027",
+   "admission_type": "intake"
+  },
+  {
+   "id": "TCH-2026-017",
+   "full_name": "Amirat Abdulrahman",
+   "class_id": "JSS1A",
+   "status": "active",
+   "admitted_academic_year": "2026/2027",
+   "admission_type": "intake"
+  },
+  {
+   "id": "TCH-2026-018",
+   "full_name": "Adeboye Imisi",
+   "class_id": "JSS1A",
+   "status": "active",
+   "admitted_academic_year": "2026/2027",
+   "admission_type": "intake"
+  },
+  {
+   "id": "TCH-2026-019",
+   "full_name": "Adeyemo Waliat",
+   "class_id": "JSS1A",
+   "status": "active",
+   "admitted_academic_year": "2026/2027",
+   "admission_type": "intake"
+  },
+  {
+   "id": "TCH-2026-020",
+   "full_name": "Adeboye Waliat",
+   "class_id": "JSS1A",
+   "status": "active",
+   "admitted_academic_year": "2026/2027",
+   "admission_type": "intake"
+  },
+  {
+   "id": "TCH-2026-021",
+   "full_name": "Precious Nehmat",
+   "class_id": "JSS1A",
+   "status": "active",
+   "admitted_academic_year": "2026/2027",
+   "admission_type": "intake"
+  },
+  {
+   "id": "TCH-2026-022",
+   "full_name": "James Cherish",
+   "class_id": "JSS1A",
+   "status": "active",
+   "admitted_academic_year": "2026/2027",
+   "admission_type": "intake"
+  },
+  {
+   "id": "TCH-2026-023",
+   "full_name": "Mmaduabuchi Cynthia",
+   "class_id": "JSS1A",
+   "status": "active",
+   "admitted_academic_year": "2026/2027",
+   "admission_type": "intake"
+  },
+  {
+   "id": "TCH-2026-024",
+   "full_name": "Ologunore Favour",
+   "class_id": "JSS1A",
+   "status": "active",
+   "admitted_academic_year": "2026/2027",
+   "admission_type": "intake"
+  },
+  {
+   "id": "TCH-2026-025",
+   "full_name": "Owolewa Seun",
+   "class_id": "JSS1A",
+   "status": "active",
+   "admitted_academic_year": "2026/2027",
+   "admission_type": "intake"
+  },
+  {
+   "id": "TCH-2026-026",
+   "full_name": "Oyebanji Oluwatobiloba",
+   "class_id": "JSS1A",
+   "status": "active",
+   "admitted_academic_year": "2026/2027",
+   "admission_type": "intake"
+  },
+  {
+   "id": "TCH-2026-027",
+   "full_name": "Oyewole Temiloluwa",
+   "class_id": "JSS1A",
+   "status": "active",
+   "admitted_academic_year": "2026/2027",
+   "admission_type": "intake"
+  },
+  {
+   "id": "TCH-2026-028",
+   "full_name": "Sulaimon Amirat",
+   "class_id": "JSS1A",
+   "status": "active",
+   "admitted_academic_year": "2026/2027",
+   "admission_type": "intake"
+  },
+  {
+   "id": "TCH-2026-029",
+   "full_name": "Sunny Grace",
+   "class_id": "JSS1A",
+   "status": "active",
+   "admitted_academic_year": "2026/2027",
+   "admission_type": "intake"
+  },
+  {
+   "id": "TCH-2026-030",
+   "full_name": "Abdulmojeed Aliamin",
+   "class_id": "JSS1B",
+   "status": "active",
+   "admitted_academic_year": "2026/2027",
+   "admission_type": "intake"
+  },
+  {
+   "id": "TCH-2026-031",
+   "full_name": "Awodiya David Oluwadamilola",
+   "class_id": "JSS1B",
+   "status": "active",
+   "admitted_academic_year": "2026/2027",
+   "admission_type": "intake"
+  },
+  {
+   "id": "TCH-2026-032",
+   "full_name": "Alexander Chibuzor",
+   "class_id": "JSS1B",
+   "status": "active",
+   "admitted_academic_year": "2026/2027",
+   "admission_type": "intake"
+  },
+  {
+   "id": "TCH-2026-033",
+   "full_name": "Amos Owen",
+   "class_id": "JSS1B",
+   "status": "active",
+   "admitted_academic_year": "2026/2027",
+   "admission_type": "intake"
+  },
+  {
+   "id": "TCH-2026-034",
+   "full_name": "Elumezie Goodluck",
+   "class_id": "JSS1B",
+   "status": "active",
+   "admitted_academic_year": "2026/2027",
+   "admission_type": "intake"
+  },
+  {
+   "id": "TCH-2026-035",
+   "full_name": "Idowu Samson",
+   "class_id": "JSS1B",
+   "status": "active",
+   "admitted_academic_year": "2026/2027",
+   "admission_type": "intake"
+  },
+  {
+   "id": "TCH-2026-036",
+   "full_name": "Lateef Malik",
+   "class_id": "JSS1B",
+   "status": "active",
+   "admitted_academic_year": "2026/2027",
+   "admission_type": "intake"
+  },
+  {
+   "id": "TCH-2026-037",
+   "full_name": "Ajayi Inioluwa",
+   "class_id": "JSS1B",
+   "status": "active",
+   "admitted_academic_year": "2026/2027",
+   "admission_type": "intake"
+  },
+  {
+   "id": "TCH-2026-038",
+   "full_name": "Oluwaseun Samuel",
+   "class_id": "JSS1B",
+   "status": "active",
+   "admitted_academic_year": "2026/2027",
+   "admission_type": "intake"
+  },
+  {
+   "id": "TCH-2026-039",
+   "full_name": "Okezuoeze Kamsi",
+   "class_id": "JSS1B",
+   "status": "active",
+   "admitted_academic_year": "2026/2027",
+   "admission_type": "intake"
+  },
+  {
+   "id": "TCH-2026-040",
+   "full_name": "Olowu Faruq",
+   "class_id": "JSS1B",
+   "status": "active",
+   "admitted_academic_year": "2026/2027",
+   "admission_type": "intake"
+  },
+  {
+   "id": "TCH-2026-041",
+   "full_name": "Yusuf Abdulwahab",
+   "class_id": "JSS1B",
+   "status": "active",
+   "admitted_academic_year": "2026/2027",
+   "admission_type": "intake"
+  },
+  {
+   "id": "TCH-2026-042",
+   "full_name": "Olusola James",
+   "class_id": "JSS1B",
+   "status": "active",
+   "admitted_academic_year": "2026/2027",
+   "admission_type": "intake"
+  },
+  {
+   "id": "TCH-2026-043",
+   "full_name": "Oyesiji Prosper",
+   "class_id": "JSS1B",
+   "status": "active",
+   "admitted_academic_year": "2026/2027",
+   "admission_type": "intake"
+  },
+  {
+   "id": "TCH-2026-044",
+   "full_name": "Bakare Bamidele",
+   "class_id": "JSS1B",
+   "status": "active",
+   "admitted_academic_year": "2026/2027",
+   "admission_type": "intake"
+  },
+  {
+   "id": "TCH-2026-045",
+   "full_name": "Akeem Aishat",
+   "class_id": "JSS1B",
+   "status": "active",
+   "admitted_academic_year": "2026/2027",
+   "admission_type": "intake"
+  },
+  {
+   "id": "TCH-2026-046",
+   "full_name": "Ajibola Aishat",
+   "class_id": "JSS1B",
+   "status": "active",
+   "admitted_academic_year": "2026/2027",
+   "admission_type": "intake"
+  },
+  {
+   "id": "TCH-2026-047",
+   "full_name": "Abdulganiu Misturah",
+   "class_id": "JSS1B",
+   "status": "active",
+   "admitted_academic_year": "2026/2027",
+   "admission_type": "intake"
+  },
+  {
+   "id": "TCH-2026-048",
+   "full_name": "Famakinwa Hannah",
+   "class_id": "JSS1B",
+   "status": "active",
+   "admitted_academic_year": "2026/2027",
+   "admission_type": "intake"
+  },
+  {
+   "id": "TCH-2026-049",
+   "full_name": "Hassan Jazeelat",
+   "class_id": "JSS1B",
+   "status": "active",
+   "admitted_academic_year": "2026/2027",
+   "admission_type": "intake"
+  },
+  {
+   "id": "TCH-2026-050",
+   "full_name": "Jimoh Abidat",
+   "class_id": "JSS1B",
+   "status": "active",
+   "admitted_academic_year": "2026/2027",
+   "admission_type": "intake"
+  },
+  {
+   "id": "TCH-2026-051",
+   "full_name": "Law Egbueje Kendra",
+   "class_id": "JSS1B",
+   "status": "active",
+   "admitted_academic_year": "2026/2027",
+   "admission_type": "intake"
+  },
+  {
+   "id": "TCH-2026-052",
+   "full_name": "Olumide Sharon",
+   "class_id": "JSS1B",
+   "status": "active",
+   "admitted_academic_year": "2026/2027",
+   "admission_type": "intake"
+  },
+  {
+   "id": "TCH-2026-053",
+   "full_name": "Okebiyi Phoebe",
+   "class_id": "JSS1B",
+   "status": "active",
+   "admitted_academic_year": "2026/2027",
+   "admission_type": "intake"
+  },
+  {
+   "id": "TCH-2026-054",
+   "full_name": "Obaoye Dasola",
+   "class_id": "JSS1B",
+   "status": "active",
+   "admitted_academic_year": "2026/2027",
+   "admission_type": "intake"
+  },
+  {
+   "id": "TCH-2026-055",
+   "full_name": "Oyebode Mercy",
+   "class_id": "JSS1B",
+   "status": "active",
+   "admitted_academic_year": "2026/2027",
+   "admission_type": "intake"
+  },
+  {
+   "id": "TCH-2026-056",
+   "full_name": "Shobowalw Faith",
+   "class_id": "JSS1B",
+   "status": "active",
+   "admitted_academic_year": "2026/2027",
+   "admission_type": "intake"
+  },
+  {
+   "id": "TCH-2026-057",
+   "full_name": "Sanni Arafat",
+   "class_id": "JSS1B",
+   "status": "active",
+   "admitted_academic_year": "2026/2027",
+   "admission_type": "intake"
+  },
+  {
+   "id": "TCH-2026-058",
+   "full_name": "Toki Abigail",
+   "class_id": "JSS1B",
+   "status": "active",
+   "admitted_academic_year": "2026/2027",
+   "admission_type": "intake"
+  }
+ ]
+}
