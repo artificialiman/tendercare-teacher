@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { goto } from '$app/navigation';
 	import { supabase } from '$lib/supabase';
 	import Crest from '$lib/components/Crest.svelte';
 	import {
@@ -14,7 +13,6 @@
 	} from '$lib/teacherIdentity';
 	import { getCurrentTerm, sheetProgress, type SheetProgress } from '$lib/scores';
 
-	let checkingSession = $state(true);
 
 	// picker state (shown when no staff identity is picked yet)
 	let picking = $state(false);
@@ -30,14 +28,6 @@
 	let dashboardError = $state('');
 
 	onMount(async () => {
-		const {
-			data: { session }
-		} = await supabase.auth.getSession();
-		if (!session) {
-			goto('/login');
-			return;
-		}
-		checkingSession = false;
 		await loadIdentity();
 	});
 
@@ -111,9 +101,7 @@
 	<title>Tendercare Teacher</title>
 </svelte:head>
 
-{#if checkingSession}
-	<p class="session-check">Checking session…</p>
-{:else if picking}
+{#if picking}
 	<div class="landing">
 		<Crest class="landing-watermark" size="min(70vw, 640px)" />
 		<header class="landing-header">
@@ -218,12 +206,6 @@
 {/if}
 
 <style>
-	.session-check {
-		text-align: center;
-		padding: 4rem 1rem;
-		opacity: 0.6;
-		font-family: var(--font-sans);
-	}
 
 	.landing {
 		position: relative;

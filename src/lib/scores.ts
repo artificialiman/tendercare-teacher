@@ -134,9 +134,6 @@ interface SaveScorePayload {
 }
 
 async function writeScoreLive(payload: SaveScorePayload): Promise<void> {
-	const {
-		data: { user }
-	} = await supabase.auth.getUser();
 	const { error } = await supabase
 		.from('scores')
 		.upsert(
@@ -145,7 +142,7 @@ async function writeScoreLive(payload: SaveScorePayload): Promise<void> {
 				subject_id: payload.subjectId,
 				term_id: payload.termId,
 				[payload.field]: payload.value,
-				entered_by: user?.id ?? null,
+				entered_by: null,
 				updated_at: new Date().toISOString()
 			},
 			{ onConflict: 'student_id,subject_id,term_id' }

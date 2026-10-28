@@ -5,25 +5,16 @@
 	import Crest from '$lib/components/Crest.svelte';
 	import { getActiveStaffId, listMyClasses } from '$lib/teacherIdentity';
 
-	let checkingSession = $state(true);
 	let loading = $state(true);
 	let error = $state('');
 	let classes = $state<{ id: string; label: string }[]>([]);
 
 	onMount(async () => {
-		const {
-			data: { session }
-		} = await supabase.auth.getSession();
-		if (!session) {
-			goto('/login');
-			return;
-		}
 		const staffId = getActiveStaffId();
 		if (!staffId) {
 			goto('/');
 			return;
 		}
-		checkingSession = false;
 		try {
 			classes = await listMyClasses(staffId);
 		} catch (e) {
@@ -38,9 +29,6 @@
 	<title>Attendance & Bio Edit — Tendercare Teacher Dashboard</title>
 </svelte:head>
 
-{#if checkingSession}
-	<p class="session-check">Checking session…</p>
-{:else}
 <div class="attendance-page">
 	<Crest class="attendance-watermark" />
 
@@ -74,15 +62,8 @@
 		{/if}
 	</div>
 </div>
-{/if}
 
 <style>
-	.session-check {
-		text-align: center;
-		padding: 4rem 1rem;
-		opacity: 0.6;
-		font-family: var(--font-sans);
-	}
 	.attendance-page {
 		position: relative;
 		overflow: hidden;

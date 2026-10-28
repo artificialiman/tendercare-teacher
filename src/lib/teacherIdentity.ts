@@ -1,24 +1,18 @@
 import { supabase } from '$lib/supabase';
 
 /**
- * A lightweight "which teacher am I" layer, separate from Supabase Auth.
+ * A lightweight "which teacher am I" layer.
  *
- * The existing shared staff/admin sign-in (0003_staff_auth_roles.sql,
- * wired in login/+page.svelte) is unchanged and still gates every real
- * write through RLS -- this does not replace it or weaken it. Real
- * per-teacher Supabase Auth accounts are deliberately deferred (staged in
- * staff.auth_user_id / is_active_staff(), 0013) until they're actually
- * needed, by direct instruction.
+ * There is no sign-in while open access is on (0023_temporary_open_access.sql,
+ * midterm exams week): staff and the tech team open the app directly, and the
+ * URL is shared only with staff and agents. Real per-teacher Supabase Auth
+ * accounts come after the exams (staged in staff.auth_user_id /
+ * is_active_staff(), 0013).
  *
- * What's missing in the meantime is purely a UX problem: once signed in
- * with the shared account, the app has no idea which real person is
- * sitting at the keyboard, so every picker has had to show the whole
- * school. This picks a real row from the `staff` table (no password, same
- * pattern as the no-gate.html / tendercare-teacher.html reference shells'
- * name picker) and remembers it locally, purely for display and for
- * scoping the subject/class pickers -- never for authorization. Nothing
- * here is sent to the server as a credential; a write's actual permission
- * still comes entirely from the shared session's JWT role claim.
+ * This picks a real row from the `staff` table (no password, same pattern as
+ * the no-gate.html / tendercare-teacher.html reference shells' name picker)
+ * and remembers it locally, purely for display and for scoping the
+ * subject/class pickers -- never for authorization.
  */
 
 const LS_KEY = 'tc_active_staff_id';

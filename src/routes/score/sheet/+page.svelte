@@ -21,7 +21,6 @@
 	let maxCA = $state(30);
 	let maxExam = $state(70);
 
-	let checkingSession = $state(true);
 	let loading = $state(true);
 	let error = $state('');
 	let subjectName = $state('');
@@ -41,19 +40,11 @@
 	let activeField = $state<'ca' | 'exam' | null>(null);
 
 	onMount(async () => {
-		const {
-			data: { session }
-		} = await supabase.auth.getSession();
-		if (!session) {
-			goto('/login');
-			return;
-		}
 		const staffId = getActiveStaffId();
 		if (!staffId) {
 			goto('/');
 			return;
 		}
-		checkingSession = false;
 
 		if (!subjectId || !classId) {
 			error = 'Missing subject or class — go back and pick both.';
@@ -188,9 +179,6 @@
 	<title>{subjectName || 'Score Entry'} — {classLabel} — Tendercare Teacher Dashboard</title>
 </svelte:head>
 
-{#if checkingSession}
-	<p class="session-check">Checking session…</p>
-{:else}
 <div class="sheet-page">
 	<Crest class="sheet-watermark" />
 
@@ -318,7 +306,6 @@
 	<p class="autosave-note">Each field saves automatically when you move to the next one.</p>
 	{/if}
 </div>
-{/if}
 
 <style>
 	.subject-rail {
@@ -343,12 +330,6 @@
 		background: var(--color-purple);
 		color: var(--color-white);
 		border-color: var(--color-purple);
-	}
-	.session-check {
-		text-align: center;
-		padding: 4rem 1rem;
-		opacity: 0.6;
-		font-family: var(--font-sans);
 	}
 	.sheet-page {
 		position: relative;

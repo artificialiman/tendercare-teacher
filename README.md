@@ -123,3 +123,14 @@ rebuilt against the real data model rather than ported from that file),
 staff authentication/login, and the actual Supabase project provisioning
 (blocked on connecting a real project — nothing here has been run against
 live data yet).
+
+## Status: no sign-in (midterm exams week)
+The shared staff/admin sign-in is removed so staff and the tech team can work
+freely this week; the URL is shared only with staff and agents. Database access
+for the public key is controlled by one switch -- migration
+`0023_temporary_open_access.sql` (apply after `0021` and `0022`). When real auth
+lands, turn it off:
+
+    update public.app_settings set value = 'false'::jsonb where key = 'open_access';
+
+Rollback script: `supabase/rollback/0023_rollback_open_access.sql`.

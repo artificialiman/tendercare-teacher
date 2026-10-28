@@ -32,7 +32,6 @@
 
 	const classId = page.url.searchParams.get('class') ?? '';
 
-	let checkingSession = $state(true);
 	let loading = $state(true);
 	let error = $state('');
 
@@ -96,19 +95,11 @@
 	}
 
 	onMount(async () => {
-		const {
-			data: { session }
-		} = await supabase.auth.getSession();
-		if (!session) {
-			goto('/login');
-			return;
-		}
 		const staffId = getActiveStaffId();
 		if (!staffId) {
 			goto('/');
 			return;
 		}
-		checkingSession = false;
 		if (classId) {
 			try {
 				const mine = await listMyClasses(staffId);
@@ -313,9 +304,7 @@
 	<title>{classLabel || 'Attendance & Bio Edit'} — Tendercare Teacher Dashboard</title>
 </svelte:head>
 
-{#if checkingSession}
-	<p class="session-check">Checking session…</p>
-{:else if !classId}
+{#if !classId}
 	<div class="roster-page">
 		<div class="page-error" role="alert">Pick a class first.</div>
 		<a class="back-button" href="/attendance">&larr; Choose a class</a>
@@ -583,12 +572,6 @@
 {/if}
 
 <style>
-	.session-check {
-		text-align: center;
-		padding: 4rem 1rem;
-		opacity: 0.6;
-		font-family: var(--font-sans);
-	}
 	.roster-page {
 		position: relative;
 		overflow: hidden;

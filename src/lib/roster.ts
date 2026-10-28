@@ -51,12 +51,9 @@ export async function addStudent(input: NewStudentInput): Promise<Student> {
  * every one of those reads `students` with `active = true`.
  */
 export async function removeStudent(id: string): Promise<void> {
-	const {
-		data: { user }
-	} = await supabase.auth.getUser();
 	const { error } = await supabase
 		.from('students')
-		.update({ active: false, deleted_at: new Date().toISOString(), deleted_by: user?.id ?? null })
+		.update({ active: false, deleted_at: new Date().toISOString(), deleted_by: null })
 		.eq('id', id);
 	if (error) throw error;
 }

@@ -5,7 +5,6 @@
 	import { getActiveStaffId, listMyAssignments, type Assignment } from '$lib/teacherIdentity';
 	import Crest from '$lib/components/Crest.svelte';
 
-	let checkingSession = $state(true);
 	let loading = $state(true);
 	let error = $state('');
 
@@ -14,19 +13,11 @@
 	let selectedClassId = $state('');
 
 	onMount(async () => {
-		const {
-			data: { session }
-		} = await supabase.auth.getSession();
-		if (!session) {
-			goto('/login');
-			return;
-		}
 		const staffId = getActiveStaffId();
 		if (!staffId) {
 			goto('/');
 			return;
 		}
-		checkingSession = false;
 		try {
 			assignments = await listMyAssignments(staffId);
 		} catch (e) {
@@ -64,9 +55,6 @@
 	<title>Score Entry — Tendercare Teacher Dashboard</title>
 </svelte:head>
 
-{#if checkingSession}
-	<p class="session-check">Checking session…</p>
-{:else}
 <div class="score-picker-page">
 	<Crest class="picker-watermark" />
 
@@ -130,15 +118,8 @@
 		{/if}
 	</div>
 </div>
-{/if}
 
 <style>
-	.session-check {
-		text-align: center;
-		padding: 4rem 1rem;
-		opacity: 0.6;
-		font-family: var(--font-sans);
-	}
 	.score-picker-page {
 		position: relative;
 		overflow: hidden;
