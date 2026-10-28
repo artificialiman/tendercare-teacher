@@ -53,8 +53,6 @@ def step_portal(portal, doc, order, dry):
     active.sort(key=lambda s: (order[s["class_id"]], s["id"]))
     target = portal / "src/lib/students.ts"
     text = target.read_text(encoding="utf-8")
-    start = text.index("export const STUDENTS")
-    head_end = text.index("[", start) + 1
     body = "".join('\t{ id: %s, full_name: %s, class_id: %s },\n' % (
         json.dumps(s["id"]), json.dumps(s["full_name"], ensure_ascii=False), json.dumps(s["class_id"]))
         for s in active)
@@ -72,7 +70,8 @@ def step_portal(portal, doc, order, dry):
         "// ============================================================================\n\n"
         "export interface DirectoryEntry {\n\tid: string;\n\tfull_name: string;\n\tclass_id: string;\n}\n\n"
     )
-    new = header + text[start:head_end].replace("export const STUDENTS", "export const STUDENTS") + "\n" + body + "];\n"
+    new = header + "export const STUDENTS: readonly DirectoryEntry[] = [\n" + body + "];\n"
+    assert new.count("{ id:") == len(active), "portal file would not match the roster"
     old_ids = set(re.findall(r'id:\s*"(TCH-\d{4}-\d+)"', text))
     print(f"portal:   {len(active)} students ({len(set(s['id'] for s in active) - old_ids)} new, "
           f"{len(old_ids - set(s['id'] for s in active))} removed)")
