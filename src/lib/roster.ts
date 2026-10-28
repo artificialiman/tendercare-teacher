@@ -14,7 +14,6 @@ export interface Student {
 	full_name: string;
 	class_id: string;
 	active: boolean;
-	created_at: string;
 	deleted_at: string | null;
 	repeating: boolean;
 	repeat_assigned_at: string | null;
@@ -28,8 +27,10 @@ export interface NewStudentInput {
 	class_id: string;
 }
 
+// Same TCH-<year>-<NNN> shape as the real roster; next number after the highest in use.
 function nextStudentId(): string {
-	return `TCH-TMP-${String(students.length + 1).padStart(3, '0')}`;
+	const max = Math.max(0, ...students.map((s) => Number(s.id.slice(-3))));
+	return `TCH-2025-${String(max + 1).padStart(3, '0')}`;
 }
 
 /** Add a student to the roster. */
@@ -39,7 +40,6 @@ export async function addStudent(input: NewStudentInput): Promise<Student> {
 		full_name: input.full_name,
 		class_id: input.class_id,
 		active: true,
-		created_at: new Date().toISOString(),
 		deleted_at: null,
 		repeating: false,
 		repeat_assigned_at: null,
