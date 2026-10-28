@@ -25,7 +25,9 @@ import json, re, sys
 from pathlib import Path
 
 INCLUDE_SEED_SCORES = False  # the live project holds no scores; 2024/25 rows only add bundle weight
-CURRENT_TERM_ID = None       # None -> use the term marked current in the live snapshot
+CURRENT_TERM_ID = '2026-2027-T1'  # the session now running (promotion + JSS1 intake already done).
+                             # None -> use whatever the live snapshot marks current (stale: 2025/2026 T3).
+                             # If the id is not in the snapshot it is created from its own name (YYYY-YYYY-Tn).
 SUBJECT_ALIASES: dict[str, str] = {
     # Unambiguous abbreviations/spellings of a subject on the clean list.
     'Math': 'Mathematics', 'Maths': 'Mathematics', 'MATHS': 'Mathematics',
@@ -108,6 +110,11 @@ student_ids = {s[0] for s in students}
 # --- terms + scores ----------------------------------------------------
 terms = [dict(t) for t in snapshot['terms']]
 if CURRENT_TERM_ID:
+    if not any(t['id'] == CURRENT_TERM_ID for t in terms):
+        m = re.fullmatch(r'(\d{4})-(\d{4})-T([123])', CURRENT_TERM_ID)
+        if not m:
+            sys.exit(f'CURRENT_TERM_ID {CURRENT_TERM_ID!r} is not of the form YYYY-YYYY-T1|T2|T3')
+        terms.append(dict(id=CURRENT_TERM_ID, academic_year=f'{m[1]}/{m[2]}', term_number=int(m[3]), is_current=False))
     for t in terms:
         t['is_current'] = (t['id'] == CURRENT_TERM_ID)
 if sum(t['is_current'] for t in terms) != 1:

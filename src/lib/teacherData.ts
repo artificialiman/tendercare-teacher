@@ -31,9 +31,9 @@ export interface TermRecord { id: string; academic_year: string; term_number: nu
 
 // Changes whenever the baseline below changes; localState.ts uses it to decide
 // whether a device's saved roster edits still sit on top of the same baseline.
-export const DATA_VERSION = '1c6c3e0f16';
+export const DATA_VERSION = '0c174c2354';
 
-export const terms: TermRecord[] = [{"id":"2025-2026-T1","academic_year":"2025/2026","term_number":1,"is_current":false},{"id":"2025-2026-T2","academic_year":"2025/2026","term_number":2,"is_current":false},{"id":"2025-2026-T3","academic_year":"2025/2026","term_number":3,"is_current":true}];
+export const terms: TermRecord[] = [{"id":"2025-2026-T1","academic_year":"2025/2026","term_number":1,"is_current":false},{"id":"2025-2026-T2","academic_year":"2025/2026","term_number":2,"is_current":false},{"id":"2025-2026-T3","academic_year":"2025/2026","term_number":3,"is_current":false},{"id":"2026-2027-T1","academic_year":"2026/2027","term_number":1,"is_current":true}];
 export const currentTerm: TermRecord = terms.find((t) => t.is_current)!;
 
 export const classes: ClassRecord[] = [{"id":"JSS1A","label":"JSS1A","arm":"A","stage":"JSS","level":1,"sort_order":1},{"id":"JSS1B","label":"JSS1B","arm":"B","stage":"JSS","level":1,"sort_order":2},{"id":"JSS2A","label":"JSS2A","arm":"A","stage":"JSS","level":2,"sort_order":3},{"id":"JSS2B","label":"JSS2B","arm":"B","stage":"JSS","level":2,"sort_order":4},{"id":"JSS3A","label":"JSS3A","arm":"A","stage":"JSS","level":3,"sort_order":5},{"id":"JSS3B","label":"JSS3B","arm":"B","stage":"JSS","level":3,"sort_order":6},{"id":"SS1 Science","label":"SS1 Sci","arm":"Science","stage":"SS","level":1,"sort_order":7},{"id":"SS1 Actuarial","label":"SS1 Act","arm":"Actuarial","stage":"SS","level":1,"sort_order":8},{"id":"SS2 Science","label":"SS2 Sci","arm":"Science","stage":"SS","level":2,"sort_order":9},{"id":"SS2 Actuarial","label":"SS2 Act","arm":"Actuarial","stage":"SS","level":2,"sort_order":10},{"id":"SS3 Science","label":"SS3 Sci","arm":"Science","stage":"SS","level":3,"sort_order":11},{"id":"SS3 Actuarial","label":"SS3 Act","arm":"Actuarial","stage":"SS","level":3,"sort_order":12},{"id":"SS1 Unassigned","label":"SS1 New","arm":"Unassigned","stage":"SS","level":1,"sort_order":13}];
