@@ -6,3 +6,6 @@ build
 .env.*
 !.env.example
 vite.config.ts.timestamp-*
+
+__pycache__/
+*.pyc
