@@ -14,7 +14,12 @@ export default defineConfig({
 			// adapter-auto only supports some environments, see https://svelte.dev/docs/kit/adapter-auto for a list.
 			// If your environment is not supported, or you settled on a specific environment, switch out the adapter.
 			// See https://svelte.dev/docs/kit/adapters for more information about adapters.
-			adapter: adapter()
+			adapter: adapter(),
+
+			// Absolute asset paths (/_app/...) instead of relative ones, so the HTML
+			// shell is the same document at every URL. The service worker relies on
+			// that: it can serve one cached shell for any address when offline.
+			paths: { relative: false }
 		})
 	]
 });
