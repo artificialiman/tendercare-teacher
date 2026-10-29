@@ -9,11 +9,11 @@ The teacher app does not fetch anything. The school's real classes, subjects,
 class-subject links, roster and terms are compiled into the app by
 `scripts/generate_teacher_data.py` (output: `src/lib/teacherData.ts`):
 
-- **Roster:** `scripts/snapshot/roster_2026_2027.json` -- the 2026/27 session
-  after the September 2026 promotion (393 students: 334 promoted, the 58-student
-  JSS1 intake, and one late joiner). 68 JSS3 leavers sit in **SS1 New** until a
-  teacher assigns their department. Copied from the portal's directory; the file
-  records its source and the two adjustments made.
+- **Roster:** `scripts/roster/students.json` -- the one canonical roster (edited only
+  through `scripts/roster/apply_changes.py`, published everywhere by
+  `scripts/roster/publish.py`). The app bundles the 393 active students of the
+  2026/27 session: promotion applied, the 58-student JSS1 intake, and one late
+  joiner. 68 JSS3 leavers sit in **SS1 New** until a teacher assigns their department.
 - **Terms:** `scripts/snapshot/live_admin_snapshot.json` -- 2026/2027 Term 1 is current.
 - **Classes, subjects, class-subject links:** `supabase/seed/001_roster_2024_2025.sql`,
   plus the SS1 New holding class that the promotion creates.
@@ -155,6 +155,38 @@ staff authentication/login, and the actual Supabase project provisioning
 (blocked on connecting a real project — nothing here has been run against
 live data yet).
 
+## How a roster change reaches every app (no database involved)
+
+One canonical file holds the roster: `scripts/roster/students.json` (post-
+promotion, post-intake; statuses `active | graduated | left`). Nothing else is
+edited by hand. When assigned staff change the student list:
+
+1. **Staff prepare the change** in the admin app (*Add Students* downloads a
+   `roster-change-YYYY-MM-DD.json`; moves/removals use the same format).
+2. **Tech team applies it:** `python3 scripts/roster/apply_changes.py change.json`
+   -- validates everything, assigns gap-free IDs, all-or-nothing, archives the
+   file in `scripts/roster/applied/`.
+3. **Publish:** `python3 scripts/roster/publish.py --portal ../tendercare-portal
+   --web ../tendercare-web --admin ../tendercare-admin` hardcodes the result
+   into every app: the teacher app's data, the report-pipeline skeletons, the
+   portal's student directory, the portal's frozen graduate reports, the web
+   alumni archive, and the admin app's class list. It is idempotent.
+4. Commit each repo and let it deploy. No server watches for changes.
+
+`scripts/intake/` and `scripts/snapshot/` are the inputs the canonical file
+was bootstrapped from (`bootstrap_students.py`, one-time).
+
+Heads-up: a new teacher-app build changes `DATA_VERSION`, so each device drops
+its *saved roster edits* (scores are always kept) -- by design in
+`localState.ts`. Publish roster changes before teachers make their own.
+
+Not yet in the canonical file: the current term (the app still says
+2025/2026 Term 3) and class-subject links for `SS1 Unassigned` (students wait
+there for a department).
+
 ## Status: no sign-in
 There is no sign-in and no Supabase client in this app. Real auth is to be
 added later, together with a way to sync the changes saved on each device.
+`supabase/migrations/0021`-`0023` (admission tracking + bulk intake, staff
+assignments, and a switchable open-access policy) are written but **not
+applied**; they are for when a database comes back. Nothing above needs them.
