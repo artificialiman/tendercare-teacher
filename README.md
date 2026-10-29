@@ -126,6 +126,67 @@ supabase db push        # or run the migrations/ and seed/ SQL files directly
                          # in the Supabase SQL editor, in numeric order
 ```
 
+## Working offline, and getting scores off the phone
+
+The app needs a connection once, to install itself. After that it opens and works
+with none: every address loads from a copy stored on the phone (`src/service-worker.ts`),
+the data is compiled in, and what a teacher types is saved on the phone.
+
+**What is stored where (all in the browser, nothing sent anywhere)**
+
+| Record | Holds | Survives a rebuild? |
+|---|---|---|
+| `tc_score_edits` | only the scores typed on this phone: student, subject, term, CA/Exam, and the time each field was typed | yes -- independent of the data version |
+| `tc_local_state` | roster / class / remark changes made on this phone | no -- dropped when the shipped data changes (`DATA_VERSION`) |
+| `…_bak` | the previous version of each record, used if the current one is unreadable | |
+| `…_corrupt` | a record that could not be read, kept aside (never overwritten) | |
+
+Every save is read back and compared; a failed one (storage full, browser blocking
+storage, a write silently dropped) is shown to the teacher, on the sheet and on the
+dashboard, instead of being assumed to have worked. The browser is also asked to
+treat the storage as persistent so it is not cleared under space pressure.
+
+**Updates never swap the app under an open tab.** A new version downloads in the
+background and waits; it starts the next time every tab of the app has been closed.
+Only the very first install takes over at once. Deploying during exam week is
+therefore safe for people mid-entry -- but also means a fix reaches a phone only after
+the app has been closed and reopened.
+
+**Handing scores in.** The dashboard's *On this device* card makes a **scores file**
+(JSON: this phone's typed scores, with the student and subject name next to each id,
+and a checksum). *Send scores file* opens the phone's share sheet (WhatsApp, email,
+Bluetooth); *Save a copy* downloads it; *Restore from a file* merges one back in
+(newest-typed value wins per field, nothing is ever deleted -- also how a wiped or
+replaced phone is recovered).
+
+**Merging the files at the school** (no server, same route as roster changes):
+
+```
+python3 scripts/scores/ingest.py received/*.json     # validate + merge; prints a report
+python3 scripts/generate_teacher_data.py             # bundle the merged scores
+# commit + deploy
+```
+
+`ingest.py` refuses a damaged file whole; rejects entries whose student id is not on
+the roster, whose name disagrees with the roster, or whose score is not 0-100; warns
+when a student has changed class; merges per field newest-typed-wins; and lists every
+conflict (same field typed differently on two phones) for a person to look at. It is
+safe to run twice. Output: `scripts/scores/term_scores/<term>.json` (the school's
+record), `applied/` (the files received), `reports/` (what happened). After the next
+build, every phone receives the merged scores; a phone's own typing overrides them
+only if it was typed later.
+
+**The current term** is set by `CURRENT_TERM_ID` in `scripts/generate_teacher_data.py`
+(now `2026-2027-T1`). Scores are filed under it -- change it at the start of each term.
+
+**Tests**
+
+```
+npx tsx scripts/tests/local_state_test.mts       # device storage: failures, corruption, merge (10)
+python3 scripts/tests/scores_ingest_test.py      # the school-side merge (10)
+npm run build && python3 scripts/tests/browser_test.py   # real Chromium: offline, sheet, scores file (35)
+```
+
 ## Stack
 
 - SvelteKit 2 (Svelte 5, runes) + TypeScript
