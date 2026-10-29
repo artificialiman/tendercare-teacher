@@ -4,7 +4,8 @@
 	import { page } from '$app/state';
 	import { listRoster, getCurrentTermId, type Student } from '$lib/roster';
 	import { subjects as allSubjects, classes as allClasses, terms } from '$lib/teacherData';
-	import { listScores, saveScore, nigerianGrade, type ScoreEntry } from '$lib/scores';
+	import { listScores, saveScore, saveScores, nigerianGrade, type ScoreEntry } from '$lib/scores';
+	import { saveStatus, requestPersistentStorage } from '$lib/localState';
 	import { getActiveStaffId, listMyAssignments, type Assignment } from '$lib/teacherIdentity';
 	import Crest from '$lib/components/Crest.svelte';
 
@@ -12,14 +13,34 @@
 	const classId = page.url.searchParams.get('class') ?? '';
 
 	/**
-	 * Max marks are editable per sheet, not stored anywhere -- there's no
-	 * column for it in `scores` or `subjects`. Defaults match the
-	 * manual-shell reference (30 CA / 70 Exam), not an invented 40/60.
-	 * Changing them here only affects how this session grades/displays;
-	 * it doesn't rewrite any already-saved CA/Exam numbers.
+	 * Max marks are editable and remembered on this device (one setting for all
+	 * sheets here), so a teacher doesn't have to re-enter them every time and
+	 * two sheets on one phone can't quietly disagree. They are not stored with
+	 * the scores. Defaults match the manual-shell reference (30 CA / 70 Exam).
+	 * Changing them never rewrites a saved score; any saved score above a new
+	 * maximum is marked in red so it can be corrected.
 	 */
-	let maxCA = $state(30);
-	let maxExam = $state(70);
+	const MAX_KEY = 'tc_sheet_max';
+	function savedMax(): { ca: number; exam: number } {
+		try {
+			const m = JSON.parse(localStorage.getItem(MAX_KEY) ?? 'null');
+			if (m && m.ca > 0 && m.exam > 0) return { ca: Number(m.ca), exam: Number(m.exam) };
+		} catch {
+			/* use the defaults */
+		}
+		return { ca: 30, exam: 70 };
+	}
+	const initialMax = savedMax();
+	let maxCA = $state(initialMax.ca);
+	let maxExam = $state(initialMax.exam);
+	$effect(() => {
+		if (!(maxCA > 0) || !(maxExam > 0)) return;
+		try {
+			localStorage.setItem(MAX_KEY, JSON.stringify({ ca: maxCA, exam: maxExam }));
+		} catch {
+			/* remembering the maximums is a convenience only */
+		}
+	});
 
 	let loading = $state(true);
 	let error = $state('');
@@ -36,6 +57,8 @@
 	let scoresByStudent = $state<Map<string, ScoreEntry>>(new Map());
 	let editValues = $state<Map<string, { ca: string; exam: string }>>(new Map());
 	let savingCell = $state<string | null>(null); // `${studentId}:${field}`
+	// Cells whose typed value was refused (not a number, negative, or above the max).
+	let refusedCells = $state<Set<string>>(new Set());
 	let activeRow = $state<number | null>(null);
 	let activeField = $state<'ca' | 'exam' | null>(null);
 
@@ -65,6 +88,7 @@
 			return;
 		}
 		await load();
+		void requestPersistentStorage();
 	});
 
 	async function load() {
@@ -107,36 +131,62 @@
 		}
 	}
 
+	const maxFor = (field: 'ca' | 'exam') => (field === 'ca' ? maxCA : maxExam);
+
+	/** Typed text that cannot be saved as it stands: not a number, negative, or above the maximum. */
+	function isInvalid(studentId: string, field: 'ca' | 'exam'): boolean {
+		const raw = editValues.get(studentId)?.[field] ?? '';
+		if (raw === '') return false;
+		const n = Number(raw);
+		return Number.isNaN(n) || n < 0 || n > maxFor(field);
+	}
+
 	function totalFor(studentId: string): number | null {
 		const v = editValues.get(studentId);
 		if (!v) return null;
+		if (isInvalid(studentId, 'ca') || isInvalid(studentId, 'exam')) return null;
 		const ca = v.ca === '' ? null : Number(v.ca);
 		const exam = v.exam === '' ? null : Number(v.exam);
-		if (ca === null || exam === null || Number.isNaN(ca) || Number.isNaN(exam)) return null;
+		if (ca === null || exam === null) return null;
 		return ca + exam;
+	}
+
+	function markRefused(key: string, refused: boolean) {
+		const next = new Set(refusedCells);
+		refused ? next.add(key) : next.delete(key);
+		refusedCells = next;
 	}
 
 	async function handleBlur(studentId: string, field: 'ca' | 'exam') {
 		if (!termId) return;
 		const v = editValues.get(studentId);
 		if (!v) return;
-		const raw = v[field];
-		if (raw === '') return;
-		const max = field === 'ca' ? maxCA : maxExam;
-		let num = Number(raw);
-		if (Number.isNaN(num)) return;
-		if (num < 0) num = 0;
-		if (num > max) num = max;
-		v[field] = String(num);
-		editValues.set(studentId, { ...v });
-		editValues = new Map(editValues);
+		const raw = v[field].trim();
+		const key = `${studentId}:${field}`;
+		const label = field === 'ca' ? 'CA' : 'Exam';
+		const who = students.find((x) => x.id === studentId)?.full_name ?? studentId;
+		const saved = scoresByStudent.get(studentId)?.[field] ?? null;
 
-		savingCell = `${studentId}:${field}`;
-		error = '';
+		// Never change what was typed: a value that can't be saved is flagged for
+		// the teacher to correct, not silently clamped to something else.
+		if (raw !== '' && isInvalid(studentId, field)) {
+			markRefused(key, true);
+			error = `${who}: ${label} must be a number from 0 to ${maxFor(field)}. Not saved.`;
+			return;
+		}
+		markRefused(key, false);
+		if (error.startsWith(`${who}:`)) error = '';
+
+		// An empty cell means "no score" -- saved as a real blank, so deleting a
+		// wrong score really removes it (it used to reappear on reload).
+		const value = raw === '' ? null : Number(raw);
+		if (value === saved) return; // nothing changed
+
+		savingCell = key;
 		try {
-			await saveScore(studentId, subjectId, termId, field, num);
+			await saveScore(studentId, subjectId, termId, field, value);
 			const existing = scoresByStudent.get(studentId) ?? { student_id: studentId, ca: null, exam: null };
-			scoresByStudent.set(studentId, { ...existing, [field]: num });
+			scoresByStudent.set(studentId, { ...existing, [field]: value });
 			scoresByStudent = new Map(scoresByStudent);
 		} catch (e) {
 			error = e instanceof Error ? e.message : 'Failed to save score';
@@ -150,6 +200,7 @@
 		v[field] = value;
 		editValues.set(studentId, { ...v });
 		editValues = new Map(editValues);
+		if (refusedCells.has(`${studentId}:${field}`)) markRefused(`${studentId}:${field}`, false);
 	}
 
 	async function handleClearAll() {
@@ -157,9 +208,17 @@
 		if (!confirm(`Clear every CA and Exam score on this sheet for ${classLabel}? This can't be undone.`)) return;
 		error = '';
 		try {
-			await Promise.all(
-				students.flatMap((s) => [saveScore(s.id, subjectId, termId!, 'ca', 0), saveScore(s.id, subjectId, termId!, 'exam', 0)])
-			);
+			// Blanks, not zeros: a zero is a real score and would count as "done".
+			// One save to the device for the whole sheet.
+			const changes = students.flatMap((s) => {
+				const e = scoresByStudent.get(s.id);
+				return [
+					...(e?.ca != null ? [{ student_id: s.id, subject_id: subjectId, term_id: termId!, field: 'ca' as const, value: null }] : []),
+					...(e?.exam != null ? [{ student_id: s.id, subject_id: subjectId, term_id: termId!, field: 'exam' as const, value: null }] : [])
+				];
+			});
+			if (changes.length > 0) await saveScores(changes);
+			refusedCells = new Set();
 			await load();
 		} catch (e) {
 			error = e instanceof Error ? e.message : 'Failed to clear scores';
@@ -266,6 +325,7 @@
 								max={maxCA}
 								class="score-input"
 								class:saving={savingCell === `${s.id}:ca`}
+								class:refused={refusedCells.has(`${s.id}:ca`) || isInvalid(s.id, 'ca')}
 								value={editValues.get(s.id)?.ca ?? ''}
 								oninput={(e) => updateValue(s.id, 'ca', (e.target as HTMLInputElement).value)}
 								onfocus={() => (activeField = 'ca')}
@@ -280,6 +340,7 @@
 								max={maxExam}
 								class="score-input"
 								class:saving={savingCell === `${s.id}:exam`}
+								class:refused={refusedCells.has(`${s.id}:exam`) || isInvalid(s.id, 'exam')}
 								value={editValues.get(s.id)?.exam ?? ''}
 								oninput={(e) => updateValue(s.id, 'exam', (e.target as HTMLInputElement).value)}
 								onfocus={() => (activeField = 'exam')}
@@ -301,6 +362,15 @@
 		</div>
 	</div>
 	<p class="autosave-note">Each field saves automatically when you move to the next one.</p>
+	{#if !$saveStatus.ok}
+		<p class="save-state save-state--bad" role="alert">
+			⚠ Not saved on this device: {$saveStatus.error}. Scores typed since then exist only until this page is closed — go to the dashboard and make a backup now.
+		</p>
+	{:else if $saveStatus.lastSavedAt}
+		<p class="save-state">
+			✓ Saved on this device at {new Date($saveStatus.lastSavedAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}. Works without a connection.
+		</p>
+	{/if}
 	{/if}
 </div>
 
@@ -609,6 +679,22 @@
 		outline: none;
 		background: var(--color-white);
 		box-shadow: inset 0 0 0 2px var(--color-purple-mid);
+	}
+	.score-input.refused {
+		border-color: var(--color-wine);
+		background: #fdecea;
+	}
+	.save-state {
+		position: relative;
+		z-index: 1;
+		text-align: center;
+		font-size: var(--text-xs);
+		color: var(--color-ash-dark);
+		margin-top: var(--space-1);
+	}
+	.save-state--bad {
+		color: var(--color-wine);
+		font-weight: 600;
 	}
 	.score-input.saving {
 		background: var(--color-purple-ghost);
