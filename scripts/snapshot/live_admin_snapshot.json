@@ -1,12 +1,5 @@
 {
-  "_about": "Changes found in the one Supabase project reachable from my connector (name: tenderexam, created 2026-08-26) beyond supabase/seed/001: one added student and 2025/2026 terms with Term 3 current. Checked 2026-10-28 by read-only queries; the other 376 students matched the seed exactly (md5), class/subject counts matched, scores table empty. CAUTION: that project is PRE-promotion (no 2026 intake, no alumni, SS3 still enrolled), while supabase/seed/003 says the real school has already run the September 2026 promotion and admitted 58 JSS1 students. So this file is a stale picture of the real state until it is refreshed from the production database. To refresh: export students/terms from production, edit this file (or point the generator at the export), run scripts/generate_teacher_data.py.",
-  "students_added": [
-    [
-      "TCH-2025-377",
-      "Ilo Joseph",
-      "SS1 Actuarial"
-    ]
-  ],
+  "_about": "Terms. The 2025/2026 terms are from the Supabase project my connector could reach (tenderexam). 2026/2027 Term 1 is what run_promotion() creates and makes current (0014_promotion_terms_rollover.sql: next academic year, term 1); the seed supabase/seed/003 and the portal directory both state that the September 2026 promotion has already been run. The roster now comes from roster_2026_2027.json, not from that project (which is still pre-promotion). To refresh: export terms from production, edit this file, run scripts/generate_teacher_data.py.",
   "terms": [
     {
       "id": "2025-2026-T1",
@@ -24,6 +17,12 @@
       "id": "2025-2026-T3",
       "academic_year": "2025/2026",
       "term_number": 3,
+      "is_current": false
+    },
+    {
+      "id": "2026-2027-T1",
+      "academic_year": "2026/2027",
+      "term_number": 1,
       "is_current": true
     }
   ]

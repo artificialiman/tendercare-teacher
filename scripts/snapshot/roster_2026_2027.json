@@ -1,0 +1,1970 @@
+{
+ "_about": "Post-promotion roster for the 2026/2027 session: the September 2026 promotion already applied (JSS1->JSS2, JSS2->JSS3, JSS3->SS1 department-pending, SS1->SS2, SS2->SS3, SS3 graduated) plus the 58-student JSS1 intake. Copied from tendercare-portal src/lib/students.ts at commit 2ea7589 (that directory is hardcoded from the real roster). Two adjustments: the portal's 'SS1 (department pending)' is written here as the database's class id 'SS1 Unassigned'; and TCH-2025-377 Ilo Joseph, an SS1 Actuarial student who joined after the portal roster was loaded, is added as SS2 Actuarial by the same promotion rule. To refresh: re-copy from the portal (or a production export) and run scripts/generate_teacher_data.py.",
+ "students": [
+  [
+   "TCH-2025-001",
+   "Abraham Comfort Princess",
+   "JSS2A"
+  ],
+  [
+   "TCH-2025-002",
+   "Abraham Nanmwa",
+   "JSS2A"
+  ],
+  [
+   "TCH-2025-003",
+   "Adebanjo Anjola",
+   "JSS2A"
+  ],
+  [
+   "TCH-2025-004",
+   "Adegboye Adam",
+   "JSS2A"
+  ],
+  [
+   "TCH-2025-005",
+   "Ademola Daniel",
+   "JSS2A"
+  ],
+  [
+   "TCH-2025-006",
+   "Adeoye Ikimot",
+   "JSS2A"
+  ],
+  [
+   "TCH-2025-007",
+   "Adeyemi Olamide",
+   "JSS2A"
+  ],
+  [
+   "TCH-2025-008",
+   "Adiukwu Chimuanya",
+   "JSS2A"
+  ],
+  [
+   "TCH-2025-009",
+   "Ayegba Anthony",
+   "JSS2A"
+  ],
+  [
+   "TCH-2025-010",
+   "Chris Ukpah Rejoice",
+   "JSS2A"
+  ],
+  [
+   "TCH-2025-011",
+   "Ehigie Jeffrey",
+   "JSS2A"
+  ],
+  [
+   "TCH-2025-012",
+   "Enabulele Newton",
+   "JSS2A"
+  ],
+  [
+   "TCH-2025-013",
+   "Hamzat Alaba",
+   "JSS2A"
+  ],
+  [
+   "TCH-2025-014",
+   "Idowu Taiwo",
+   "JSS2A"
+  ],
+  [
+   "TCH-2025-015",
+   "Jackson Grace",
+   "JSS2A"
+  ],
+  [
+   "TCH-2025-016",
+   "Jimoh Sodiq",
+   "JSS2A"
+  ],
+  [
+   "TCH-2025-017",
+   "Mohammed Abdul-salam",
+   "JSS2A"
+  ],
+  [
+   "TCH-2025-018",
+   "Muritala Farhan",
+   "JSS2A"
+  ],
+  [
+   "TCH-2025-019",
+   "Obaoye Adeola Ruth",
+   "JSS2A"
+  ],
+  [
+   "TCH-2025-020",
+   "Oduwaye Abdul-salam",
+   "JSS2A"
+  ],
+  [
+   "TCH-2025-021",
+   "Ogunlana Aishat",
+   "JSS2A"
+  ],
+  [
+   "TCH-2025-022",
+   "Okwuabudike Michael",
+   "JSS2A"
+  ],
+  [
+   "TCH-2025-023",
+   "Olukoga Akorede",
+   "JSS2A"
+  ],
+  [
+   "TCH-2025-024",
+   "Oni Grace Oluwadarasimi",
+   "JSS2A"
+  ],
+  [
+   "TCH-2025-025",
+   "Otuole Innocent",
+   "JSS2A"
+  ],
+  [
+   "TCH-2025-026",
+   "Peter John",
+   "JSS2A"
+  ],
+  [
+   "TCH-2025-027",
+   "Rafiu Aishat",
+   "JSS2A"
+  ],
+  [
+   "TCH-2025-028",
+   "Soyode Emmanuel",
+   "JSS2A"
+  ],
+  [
+   "TCH-2025-029",
+   "Yusuf Al-meen",
+   "JSS2A"
+  ],
+  [
+   "TCH-2025-030",
+   "Adeniyi Nifemi",
+   "JSS2B"
+  ],
+  [
+   "TCH-2025-031",
+   "Adeniyi Basit",
+   "JSS2B"
+  ],
+  [
+   "TCH-2025-032",
+   "Adeyemi Modesire",
+   "JSS2B"
+  ],
+  [
+   "TCH-2025-033",
+   "Agbo Wonderful",
+   "JSS2B"
+  ],
+  [
+   "TCH-2025-034",
+   "Akeju Emmanuel",
+   "JSS2B"
+  ],
+  [
+   "TCH-2025-035",
+   "Akindutire Michael",
+   "JSS2B"
+  ],
+  [
+   "TCH-2025-036",
+   "Asuluka Obioma",
+   "JSS2B"
+  ],
+  [
+   "TCH-2025-037",
+   "Babarinde Testimony",
+   "JSS2B"
+  ],
+  [
+   "TCH-2025-038",
+   "Dada Ayodeji",
+   "JSS2B"
+  ],
+  [
+   "TCH-2025-039",
+   "Dickson Samson",
+   "JSS2B"
+  ],
+  [
+   "TCH-2025-040",
+   "Idowu Kehinde",
+   "JSS2B"
+  ],
+  [
+   "TCH-2025-041",
+   "Ikujuni Samuel",
+   "JSS2B"
+  ],
+  [
+   "TCH-2025-042",
+   "Irinyemi Halleluyah",
+   "JSS2B"
+  ],
+  [
+   "TCH-2025-043",
+   "Ishola Suliat",
+   "JSS2B"
+  ],
+  [
+   "TCH-2025-044",
+   "Jewoola Olamide",
+   "JSS2B"
+  ],
+  [
+   "TCH-2025-045",
+   "Jonathan Frednard",
+   "JSS2B"
+  ],
+  [
+   "TCH-2025-046",
+   "Makinde Tofunmi",
+   "JSS2B"
+  ],
+  [
+   "TCH-2025-047",
+   "Odulate Boluwatife",
+   "JSS2B"
+  ],
+  [
+   "TCH-2025-048",
+   "Okezueze Ifechukwu",
+   "JSS2B"
+  ],
+  [
+   "TCH-2025-049",
+   "Oni Fikayo",
+   "JSS2B"
+  ],
+  [
+   "TCH-2025-050",
+   "Onibodo Quadri",
+   "JSS2B"
+  ],
+  [
+   "TCH-2025-051",
+   "Owoade Praise",
+   "JSS2B"
+  ],
+  [
+   "TCH-2025-052",
+   "Oyeniran Michelle",
+   "JSS2B"
+  ],
+  [
+   "TCH-2025-053",
+   "Safiriyu Simisola",
+   "JSS2B"
+  ],
+  [
+   "TCH-2025-054",
+   "Sandy Enoch",
+   "JSS2B"
+  ],
+  [
+   "TCH-2025-055",
+   "Shokoya Imole",
+   "JSS2B"
+  ],
+  [
+   "TCH-2025-056",
+   "Tijani Anjolaoluwa",
+   "JSS2B"
+  ],
+  [
+   "TCH-2025-057",
+   "Ubi Richard Victoria",
+   "JSS2B"
+  ],
+  [
+   "TCH-2025-058",
+   "Yusuff Salamat Semilore",
+   "JSS2B"
+  ],
+  [
+   "TCH-2025-059",
+   "Abey Phoebe",
+   "JSS3A"
+  ],
+  [
+   "TCH-2025-060",
+   "Adeniyi Mubarak",
+   "JSS3A"
+  ],
+  [
+   "TCH-2025-061",
+   "Agbabiaka Ella",
+   "JSS3A"
+  ],
+  [
+   "TCH-2025-062",
+   "Alaka Faridat",
+   "JSS3A"
+  ],
+  [
+   "TCH-2025-063",
+   "Aramide Hikimot",
+   "JSS3A"
+  ],
+  [
+   "TCH-2025-064",
+   "Aremu Praise",
+   "JSS3A"
+  ],
+  [
+   "TCH-2025-065",
+   "Ayoade Flourish",
+   "JSS3A"
+  ],
+  [
+   "TCH-2025-066",
+   "Bakare Gabriel",
+   "JSS3A"
+  ],
+  [
+   "TCH-2025-067",
+   "Bamiro David",
+   "JSS3A"
+  ],
+  [
+   "TCH-2025-068",
+   "Biobaku Azraa",
+   "JSS3A"
+  ],
+  [
+   "TCH-2025-069",
+   "Boladale Esther",
+   "JSS3A"
+  ],
+  [
+   "TCH-2025-070",
+   "Edeniyi Ukharia",
+   "JSS3A"
+  ],
+  [
+   "TCH-2025-071",
+   "Falope Kikiope",
+   "JSS3A"
+  ],
+  [
+   "TCH-2025-072",
+   "Ida Wisdom",
+   "JSS3A"
+  ],
+  [
+   "TCH-2025-073",
+   "Mudashiru Abidat",
+   "JSS3A"
+  ],
+  [
+   "TCH-2025-074",
+   "Muh'awwal Alitorf",
+   "JSS3A"
+  ],
+  [
+   "TCH-2025-075",
+   "Musa Isaac",
+   "JSS3A"
+  ],
+  [
+   "TCH-2025-076",
+   "Neri Testimony",
+   "JSS3A"
+  ],
+  [
+   "TCH-2025-077",
+   "Obaoye Dorcas",
+   "JSS3A"
+  ],
+  [
+   "TCH-2025-078",
+   "Ogoyemi Josephine",
+   "JSS3A"
+  ],
+  [
+   "TCH-2025-079",
+   "Olowu Jamal",
+   "JSS3A"
+  ],
+  [
+   "TCH-2025-080",
+   "Olubiyi Godwin",
+   "JSS3A"
+  ],
+  [
+   "TCH-2025-081",
+   "Opeyemi Rosheedat",
+   "JSS3A"
+  ],
+  [
+   "TCH-2025-082",
+   "Oriabor Joy",
+   "JSS3A"
+  ],
+  [
+   "TCH-2025-083",
+   "Orukpe Daniel",
+   "JSS3A"
+  ],
+  [
+   "TCH-2025-084",
+   "Oyeboade Erioluwa",
+   "JSS3A"
+  ],
+  [
+   "TCH-2025-085",
+   "Oyediji Israel",
+   "JSS3A"
+  ],
+  [
+   "TCH-2025-086",
+   "Oyetunji Adejoke",
+   "JSS3A"
+  ],
+  [
+   "TCH-2025-087",
+   "Oyewole Daniel",
+   "JSS3A"
+  ],
+  [
+   "TCH-2025-088",
+   "Rafiu Rofiat",
+   "JSS3A"
+  ],
+  [
+   "TCH-2025-089",
+   "Raji Joshua",
+   "JSS3A"
+  ],
+  [
+   "TCH-2025-090",
+   "Tijani Olamiposi",
+   "JSS3A"
+  ],
+  [
+   "TCH-2025-091",
+   "Abolanle Nancy",
+   "JSS3B"
+  ],
+  [
+   "TCH-2025-092",
+   "Adeboyo Taiwo",
+   "JSS3B"
+  ],
+  [
+   "TCH-2025-093",
+   "Adeniran Isaac",
+   "JSS3B"
+  ],
+  [
+   "TCH-2025-094",
+   "Adesuyi Ademola",
+   "JSS3B"
+  ],
+  [
+   "TCH-2025-095",
+   "Akinade Darasimi",
+   "JSS3B"
+  ],
+  [
+   "TCH-2025-096",
+   "Akinola Abdulhamid",
+   "JSS3B"
+  ],
+  [
+   "TCH-2025-097",
+   "Alexander Chinaza",
+   "JSS3B"
+  ],
+  [
+   "TCH-2025-098",
+   "Balogun Muminat",
+   "JSS3B"
+  ],
+  [
+   "TCH-2025-099",
+   "Fagbola Oladerin Emmanualla",
+   "JSS3B"
+  ],
+  [
+   "TCH-2025-100",
+   "Ganiu Aliyat",
+   "JSS3B"
+  ],
+  [
+   "TCH-2025-101",
+   "Idris Faridat",
+   "JSS3B"
+  ],
+  [
+   "TCH-2025-102",
+   "Ikechukwu Miracle",
+   "JSS3B"
+  ],
+  [
+   "TCH-2025-103",
+   "Kamilu Saheed",
+   "JSS3B"
+  ],
+  [
+   "TCH-2025-104",
+   "Muritala Rokibat",
+   "JSS3B"
+  ],
+  [
+   "TCH-2025-105",
+   "Ochege Rhoda",
+   "JSS3B"
+  ],
+  [
+   "TCH-2025-106",
+   "Ojochegbe Linda",
+   "JSS3B"
+  ],
+  [
+   "TCH-2025-107",
+   "Olaniyi Mary",
+   "JSS3B"
+  ],
+  [
+   "TCH-2025-108",
+   "Olatunbosun Daniel",
+   "JSS3B"
+  ],
+  [
+   "TCH-2025-109",
+   "Ologunre Marvellous",
+   "JSS3B"
+  ],
+  [
+   "TCH-2025-110",
+   "Onifade Ayomide",
+   "JSS3B"
+  ],
+  [
+   "TCH-2025-111",
+   "Oseni Idayat",
+   "JSS3B"
+  ],
+  [
+   "TCH-2025-112",
+   "Sakiru John",
+   "JSS3B"
+  ],
+  [
+   "TCH-2025-113",
+   "Shofowora Nifemi",
+   "JSS3B"
+  ],
+  [
+   "TCH-2025-114",
+   "Suli Fridaus",
+   "JSS3B"
+  ],
+  [
+   "TCH-2025-115",
+   "Yakubu Moses",
+   "JSS3B"
+  ],
+  [
+   "TCH-2025-116",
+   "Abdul Rasheed Rodiat",
+   "SS1 Unassigned"
+  ],
+  [
+   "TCH-2025-117",
+   "Adebayo Dorcas",
+   "SS1 Unassigned"
+  ],
+  [
+   "TCH-2025-118",
+   "Adebayo Favour",
+   "SS1 Unassigned"
+  ],
+  [
+   "TCH-2025-119",
+   "Adeniyi Darasimi",
+   "SS1 Unassigned"
+  ],
+  [
+   "TCH-2025-120",
+   "Afolayan Joshua",
+   "SS1 Unassigned"
+  ],
+  [
+   "TCH-2025-121",
+   "Akanji Favour",
+   "SS1 Unassigned"
+  ],
+  [
+   "TCH-2025-122",
+   "Akinbiyi Glory",
+   "SS1 Unassigned"
+  ],
+  [
+   "TCH-2025-123",
+   "Amusat Khalilulahi O",
+   "SS1 Unassigned"
+  ],
+  [
+   "TCH-2025-124",
+   "Faruk Aransiola",
+   "SS1 Unassigned"
+  ],
+  [
+   "TCH-2025-125",
+   "Balogun Jomiloju",
+   "SS1 Unassigned"
+  ],
+  [
+   "TCH-2025-126",
+   "Emmanuel Ayowole",
+   "SS1 Unassigned"
+  ],
+  [
+   "TCH-2025-127",
+   "Emmanuel Maxwell",
+   "SS1 Unassigned"
+  ],
+  [
+   "TCH-2025-128",
+   "Emmanuel Priscilla",
+   "SS1 Unassigned"
+  ],
+  [
+   "TCH-2025-129",
+   "Fatuki Oluwanifemi",
+   "SS1 Unassigned"
+  ],
+  [
+   "TCH-2025-130",
+   "Folorunsho Precious",
+   "SS1 Unassigned"
+  ],
+  [
+   "TCH-2025-131",
+   "Garba Albarka",
+   "SS1 Unassigned"
+  ],
+  [
+   "TCH-2025-132",
+   "Ibhadore Godswill",
+   "SS1 Unassigned"
+  ],
+  [
+   "TCH-2025-133",
+   "Irinyemi Jomiloju Praise",
+   "SS1 Unassigned"
+  ],
+  [
+   "TCH-2025-134",
+   "Kolade Idera",
+   "SS1 Unassigned"
+  ],
+  [
+   "TCH-2025-135",
+   "Nanmwa Victor",
+   "SS1 Unassigned"
+  ],
+  [
+   "TCH-2025-136",
+   "Nathaniel David",
+   "SS1 Unassigned"
+  ],
+  [
+   "TCH-2025-137",
+   "Nelson Sonia C.C",
+   "SS1 Unassigned"
+  ],
+  [
+   "TCH-2025-138",
+   "Nyakos Nurudeen",
+   "SS1 Unassigned"
+  ],
+  [
+   "TCH-2025-139",
+   "Ogunlana Abdullahi",
+   "SS1 Unassigned"
+  ],
+  [
+   "TCH-2025-140",
+   "Okwuabudike Victoria",
+   "SS1 Unassigned"
+  ],
+  [
+   "TCH-2025-141",
+   "Olatunji Al-meen",
+   "SS1 Unassigned"
+  ],
+  [
+   "TCH-2025-142",
+   "Olowu Fausiyat",
+   "SS1 Unassigned"
+  ],
+  [
+   "TCH-2025-143",
+   "Oluborode True Vine",
+   "SS1 Unassigned"
+  ],
+  [
+   "TCH-2025-144",
+   "Oseni Abdulsamod",
+   "SS1 Unassigned"
+  ],
+  [
+   "TCH-2025-145",
+   "Owoyele Ramadan",
+   "SS1 Unassigned"
+  ],
+  [
+   "TCH-2025-146",
+   "Oyewole Israel",
+   "SS1 Unassigned"
+  ],
+  [
+   "TCH-2025-147",
+   "Salawudeen Fawas",
+   "SS1 Unassigned"
+  ],
+  [
+   "TCH-2025-148",
+   "Sunny Blessing",
+   "SS1 Unassigned"
+  ],
+  [
+   "TCH-2025-149",
+   "Waheed Aduragbemi",
+   "SS1 Unassigned"
+  ],
+  [
+   "TCH-2025-150",
+   "Wisdom Donald",
+   "SS1 Unassigned"
+  ],
+  [
+   "TCH-2025-151",
+   "Yusuf Taiwo",
+   "SS1 Unassigned"
+  ],
+  [
+   "TCH-2025-152",
+   "Yusuff Abdul Sattar",
+   "SS1 Unassigned"
+  ],
+  [
+   "TCH-2025-153",
+   "Abdul Razak Somod",
+   "SS1 Unassigned"
+  ],
+  [
+   "TCH-2025-154",
+   "Adebisi Aishat",
+   "SS1 Unassigned"
+  ],
+  [
+   "TCH-2025-155",
+   "Adebisi Ayomide",
+   "SS1 Unassigned"
+  ],
+  [
+   "TCH-2025-156",
+   "Adebisi Yusuf",
+   "SS1 Unassigned"
+  ],
+  [
+   "TCH-2025-157",
+   "Adeniyi Korede",
+   "SS1 Unassigned"
+  ],
+  [
+   "TCH-2025-158",
+   "Adewunmi Oluwademilade",
+   "SS1 Unassigned"
+  ],
+  [
+   "TCH-2025-159",
+   "Agbo Favour",
+   "SS1 Unassigned"
+  ],
+  [
+   "TCH-2025-160",
+   "Akinfe Christianah",
+   "SS1 Unassigned"
+  ],
+  [
+   "TCH-2025-161",
+   "Ambrose Emmanuella",
+   "SS1 Unassigned"
+  ],
+  [
+   "TCH-2025-162",
+   "Ariyo Moses",
+   "SS1 Unassigned"
+  ],
+  [
+   "TCH-2025-163",
+   "Ayoade Doris",
+   "SS1 Unassigned"
+  ],
+  [
+   "TCH-2025-164",
+   "Balogun Tobiloba",
+   "SS1 Unassigned"
+  ],
+  [
+   "TCH-2025-165",
+   "Enabulele Israel",
+   "SS1 Unassigned"
+  ],
+  [
+   "TCH-2025-166",
+   "Faluyi Israel",
+   "SS1 Unassigned"
+  ],
+  [
+   "TCH-2025-167",
+   "Folorunsho Alexander",
+   "SS1 Unassigned"
+  ],
+  [
+   "TCH-2025-168",
+   "Gabriel Peace",
+   "SS1 Unassigned"
+  ],
+  [
+   "TCH-2025-169",
+   "Lawal Esther",
+   "SS1 Unassigned"
+  ],
+  [
+   "TCH-2025-170",
+   "Medua Angel",
+   "SS1 Unassigned"
+  ],
+  [
+   "TCH-2025-171",
+   "Nyakos Naimat",
+   "SS1 Unassigned"
+  ],
+  [
+   "TCH-2025-172",
+   "Olajesu Kayode",
+   "SS1 Unassigned"
+  ],
+  [
+   "TCH-2025-173",
+   "Olasunkanmi Ayobami",
+   "SS1 Unassigned"
+  ],
+  [
+   "TCH-2025-174",
+   "Olukotun Feranmi",
+   "SS1 Unassigned"
+  ],
+  [
+   "TCH-2025-175",
+   "Onafowokan Ridwan",
+   "SS1 Unassigned"
+  ],
+  [
+   "TCH-2025-176",
+   "Opatimeyin David",
+   "SS1 Unassigned"
+  ],
+  [
+   "TCH-2025-177",
+   "Oyeniyi David",
+   "SS1 Unassigned"
+  ],
+  [
+   "TCH-2025-178",
+   "Popoola Aduragbemi",
+   "SS1 Unassigned"
+  ],
+  [
+   "TCH-2025-179",
+   "Rotimi Eniola",
+   "SS1 Unassigned"
+  ],
+  [
+   "TCH-2025-180",
+   "Samson Loveth",
+   "SS1 Unassigned"
+  ],
+  [
+   "TCH-2025-181",
+   "Samuel Zainab",
+   "SS1 Unassigned"
+  ],
+  [
+   "TCH-2025-182",
+   "Soyode Emmanuella",
+   "SS1 Unassigned"
+  ],
+  [
+   "TCH-2025-183",
+   "Uduakhomo Peace",
+   "SS1 Unassigned"
+  ],
+  [
+   "TCH-2025-184",
+   "Abdullateef Abdulsalam",
+   "SS2 Science"
+  ],
+  [
+   "TCH-2025-185",
+   "Abimbola Israel",
+   "SS2 Science"
+  ],
+  [
+   "TCH-2025-186",
+   "Adebayo Ayomide",
+   "SS2 Science"
+  ],
+  [
+   "TCH-2025-187",
+   "Adesalu Kamal",
+   "SS2 Science"
+  ],
+  [
+   "TCH-2025-188",
+   "Adeshina Fawaz",
+   "SS2 Science"
+  ],
+  [
+   "TCH-2025-189",
+   "Ajayi Aminat",
+   "SS2 Science"
+  ],
+  [
+   "TCH-2025-190",
+   "Ajewole Darasimi",
+   "SS2 Science"
+  ],
+  [
+   "TCH-2025-191",
+   "Ajibola Rodiat",
+   "SS2 Science"
+  ],
+  [
+   "TCH-2025-192",
+   "Akinyogha Taiwo",
+   "SS2 Science"
+  ],
+  [
+   "TCH-2025-193",
+   "Akoshile Hameedah",
+   "SS2 Science"
+  ],
+  [
+   "TCH-2025-194",
+   "Akpoveta Daniel",
+   "SS2 Science"
+  ],
+  [
+   "TCH-2025-195",
+   "Alexander Chukwu",
+   "SS2 Science"
+  ],
+  [
+   "TCH-2025-196",
+   "Amos Savior",
+   "SS2 Science"
+  ],
+  [
+   "TCH-2025-197",
+   "Ashaye Damola",
+   "SS2 Science"
+  ],
+  [
+   "TCH-2025-198",
+   "Ayangbola Dammilola",
+   "SS2 Science"
+  ],
+  [
+   "TCH-2025-199",
+   "Bakare Amirat",
+   "SS2 Science"
+  ],
+  [
+   "TCH-2025-200",
+   "Bakare Nifemi",
+   "SS2 Science"
+  ],
+  [
+   "TCH-2025-201",
+   "Balogun Momeen",
+   "SS2 Science"
+  ],
+  [
+   "TCH-2025-202",
+   "Bamidele Goodluck",
+   "SS2 Science"
+  ],
+  [
+   "TCH-2025-203",
+   "Chukwuemeka Favour",
+   "SS2 Science"
+  ],
+  [
+   "TCH-2025-204",
+   "Durosimi Abdullateef",
+   "SS2 Science"
+  ],
+  [
+   "TCH-2025-205",
+   "Emmanuel Godiva",
+   "SS2 Science"
+  ],
+  [
+   "TCH-2025-206",
+   "Fatai Muinat",
+   "SS2 Science"
+  ],
+  [
+   "TCH-2025-207",
+   "Folorunsho Elijah",
+   "SS2 Science"
+  ],
+  [
+   "TCH-2025-208",
+   "Hassanat",
+   "SS2 Science"
+  ],
+  [
+   "TCH-2025-209",
+   "Hilary Favour",
+   "SS2 Science"
+  ],
+  [
+   "TCH-2025-210",
+   "Jimoh Yewande",
+   "SS2 Science"
+  ],
+  [
+   "TCH-2025-211",
+   "Julius-Caleb Okenwan",
+   "SS2 Science"
+  ],
+  [
+   "TCH-2025-212",
+   "Lawal Promise",
+   "SS2 Science"
+  ],
+  [
+   "TCH-2025-213",
+   "Momoh Divine",
+   "SS2 Science"
+  ],
+  [
+   "TCH-2025-214",
+   "Musa Nimotallahi",
+   "SS2 Science"
+  ],
+  [
+   "TCH-2025-215",
+   "Ogbueje Nannette",
+   "SS2 Science"
+  ],
+  [
+   "TCH-2025-216",
+   "Ogbonna Joshua",
+   "SS2 Science"
+  ],
+  [
+   "TCH-2025-217",
+   "Ojo Precious",
+   "SS2 Science"
+  ],
+  [
+   "TCH-2025-218",
+   "Okebiyi Blessing",
+   "SS2 Science"
+  ],
+  [
+   "TCH-2025-219",
+   "Okebugwu Michael",
+   "SS2 Science"
+  ],
+  [
+   "TCH-2025-220",
+   "Oladipo Oluwabukola",
+   "SS2 Science"
+  ],
+  [
+   "TCH-2025-221",
+   "Olalere Halim",
+   "SS2 Science"
+  ],
+  [
+   "TCH-2025-222",
+   "Olaniyan Emmanuel",
+   "SS2 Science"
+  ],
+  [
+   "TCH-2025-223",
+   "Olubiyi Olamide",
+   "SS2 Science"
+  ],
+  [
+   "TCH-2025-224",
+   "Oluwatoyin Eniola",
+   "SS2 Science"
+  ],
+  [
+   "TCH-2025-225",
+   "Oni Ezekiel",
+   "SS2 Science"
+  ],
+  [
+   "TCH-2025-226",
+   "Onwuegbule Wisdom",
+   "SS2 Science"
+  ],
+  [
+   "TCH-2025-227",
+   "Opaje Teniola",
+   "SS2 Science"
+  ],
+  [
+   "TCH-2025-228",
+   "Opeyemi Michael",
+   "SS2 Science"
+  ],
+  [
+   "TCH-2025-229",
+   "Opeyemi Sultan",
+   "SS2 Science"
+  ],
+  [
+   "TCH-2025-230",
+   "Oyesanya Israel",
+   "SS2 Science"
+  ],
+  [
+   "TCH-2025-231",
+   "Samuel Benjamin",
+   "SS2 Science"
+  ],
+  [
+   "TCH-2025-232",
+   "Sanusi Farahat",
+   "SS2 Science"
+  ],
+  [
+   "TCH-2025-233",
+   "Sunday Isaac",
+   "SS2 Science"
+  ],
+  [
+   "TCH-2025-234",
+   "Abdulmateen saheed",
+   "SS2 Actuarial"
+  ],
+  [
+   "TCH-2025-235",
+   "Arekwen clement",
+   "SS2 Actuarial"
+  ],
+  [
+   "TCH-2025-236",
+   "Ekum honesty",
+   "SS2 Actuarial"
+  ],
+  [
+   "TCH-2025-237",
+   "Kehinde anjolaoluwa",
+   "SS2 Actuarial"
+  ],
+  [
+   "TCH-2025-238",
+   "Khalid lateef",
+   "SS2 Actuarial"
+  ],
+  [
+   "TCH-2025-239",
+   "Oche ojochegbe michael",
+   "SS2 Actuarial"
+  ],
+  [
+   "TCH-2025-240",
+   "Olajire anuoluwapo",
+   "SS2 Actuarial"
+  ],
+  [
+   "TCH-2025-241",
+   "Oni peter",
+   "SS2 Actuarial"
+  ],
+  [
+   "TCH-2025-242",
+   "Rafiu kehinde",
+   "SS2 Actuarial"
+  ],
+  [
+   "TCH-2025-243",
+   "Rafiu taiwo",
+   "SS2 Actuarial"
+  ],
+  [
+   "TCH-2025-244",
+   "Kolawole rereoluwa",
+   "SS2 Actuarial"
+  ],
+  [
+   "TCH-2025-245",
+   "James goodluck",
+   "SS2 Actuarial"
+  ],
+  [
+   "TCH-2025-246",
+   "Azeez malik",
+   "SS2 Actuarial"
+  ],
+  [
+   "TCH-2025-247",
+   "Aiwe Destiny",
+   "SS2 Actuarial"
+  ],
+  [
+   "TCH-2025-248",
+   "Friday Destiny",
+   "SS2 Actuarial"
+  ],
+  [
+   "TCH-2025-249",
+   "Akeju David",
+   "SS2 Actuarial"
+  ],
+  [
+   "TCH-2025-250",
+   "Mohammed fayade",
+   "SS2 Actuarial"
+  ],
+  [
+   "TCH-2025-251",
+   "Adeyemo ikimat",
+   "SS2 Actuarial"
+  ],
+  [
+   "TCH-2025-252",
+   "Ajayi fiyinfoluwa",
+   "SS2 Actuarial"
+  ],
+  [
+   "TCH-2025-253",
+   "Bello opeyemi",
+   "SS2 Actuarial"
+  ],
+  [
+   "TCH-2025-254",
+   "Falope oluwajomiloju",
+   "SS2 Actuarial"
+  ],
+  [
+   "TCH-2025-255",
+   "Fowowe Abigail",
+   "SS2 Actuarial"
+  ],
+  [
+   "TCH-2025-256",
+   "Idowu Amidat",
+   "SS2 Actuarial"
+  ],
+  [
+   "TCH-2025-257",
+   "Ikujuni Oluwasikemi",
+   "SS2 Actuarial"
+  ],
+  [
+   "TCH-2025-258",
+   "Livinus chioma",
+   "SS2 Actuarial"
+  ],
+  [
+   "TCH-2025-259",
+   "Olukoja omowunmi",
+   "SS2 Actuarial"
+  ],
+  [
+   "TCH-2025-260",
+   "Onojah Victoria",
+   "SS2 Actuarial"
+  ],
+  [
+   "TCH-2025-261",
+   "Tijani Aishat",
+   "SS2 Actuarial"
+  ],
+  [
+   "TCH-2025-262",
+   "Tujiki anuoluwapo",
+   "SS2 Actuarial"
+  ],
+  [
+   "TCH-2025-263",
+   "Idris mariam",
+   "SS2 Actuarial"
+  ],
+  [
+   "TCH-2025-264",
+   "Nosiru halimat",
+   "SS2 Actuarial"
+  ],
+  [
+   "TCH-2025-265",
+   "Adeyemi mariam",
+   "SS2 Actuarial"
+  ],
+  [
+   "TCH-2025-266",
+   "Akinyugha kehinde",
+   "SS2 Actuarial"
+  ],
+  [
+   "TCH-2025-267",
+   "Musa emmanuella",
+   "SS2 Actuarial"
+  ],
+  [
+   "TCH-2025-268",
+   "Awodiya Amazing-Grace",
+   "SS2 Actuarial"
+  ],
+  [
+   "TCH-2025-269",
+   "Ofonime Success",
+   "SS2 Actuarial"
+  ],
+  [
+   "TCH-2025-270",
+   "Abdullahi Malik",
+   "SS3 Science"
+  ],
+  [
+   "TCH-2025-271",
+   "Adeoye Rokeeb",
+   "SS3 Science"
+  ],
+  [
+   "TCH-2025-272",
+   "Adeyemi Adesewa",
+   "SS3 Science"
+  ],
+  [
+   "TCH-2025-273",
+   "Adeyemi Emmanuel",
+   "SS3 Science"
+  ],
+  [
+   "TCH-2025-274",
+   "Agbo Queen",
+   "SS3 Science"
+  ],
+  [
+   "TCH-2025-275",
+   "Akindutire Iretiola",
+   "SS3 Science"
+  ],
+  [
+   "TCH-2025-276",
+   "Alejo Samuel",
+   "SS3 Science"
+  ],
+  [
+   "TCH-2025-277",
+   "Babalola Rodiat",
+   "SS3 Science"
+  ],
+  [
+   "TCH-2025-278",
+   "Bakare Aliyat",
+   "SS3 Science"
+  ],
+  [
+   "TCH-2025-279",
+   "Eke Erica",
+   "SS3 Science"
+  ],
+  [
+   "TCH-2025-280",
+   "Emmanuel Annabel",
+   "SS3 Science"
+  ],
+  [
+   "TCH-2025-281",
+   "Enabulele Itohan",
+   "SS3 Science"
+  ],
+  [
+   "TCH-2025-282",
+   "Friday Godspower",
+   "SS3 Science"
+  ],
+  [
+   "TCH-2025-283",
+   "Igbenedion Folabomi",
+   "SS3 Science"
+  ],
+  [
+   "TCH-2025-284",
+   "Itama Daniel",
+   "SS3 Science"
+  ],
+  [
+   "TCH-2025-285",
+   "Jimoh Ganiyat",
+   "SS3 Science"
+  ],
+  [
+   "TCH-2025-286",
+   "Mohammed Awwal",
+   "SS3 Science"
+  ],
+  [
+   "TCH-2025-287",
+   "Mudashiru Usman",
+   "SS3 Science"
+  ],
+  [
+   "TCH-2025-288",
+   "Nelson Victor",
+   "SS3 Science"
+  ],
+  [
+   "TCH-2025-289",
+   "Oduola Olamide",
+   "SS3 Science"
+  ],
+  [
+   "TCH-2025-290",
+   "Okwabudike Mercy",
+   "SS3 Science"
+  ],
+  [
+   "TCH-2025-291",
+   "Olagbo Susan",
+   "SS3 Science"
+  ],
+  [
+   "TCH-2025-292",
+   "Olaniyi David",
+   "SS3 Science"
+  ],
+  [
+   "TCH-2025-293",
+   "Olushesi Basit",
+   "SS3 Science"
+  ],
+  [
+   "TCH-2025-294",
+   "Omotosho Faith",
+   "SS3 Science"
+  ],
+  [
+   "TCH-2025-295",
+   "Oyebanji Victoria",
+   "SS3 Science"
+  ],
+  [
+   "TCH-2025-296",
+   "Oyedeji Emmanuella",
+   "SS3 Science"
+  ],
+  [
+   "TCH-2025-297",
+   "Quadri Oluwadarasimi",
+   "SS3 Science"
+  ],
+  [
+   "TCH-2025-298",
+   "Sandy Karenapuch",
+   "SS3 Science"
+  ],
+  [
+   "TCH-2025-299",
+   "Sanyaolu Kehinde",
+   "SS3 Science"
+  ],
+  [
+   "TCH-2025-300",
+   "Sanyaolu Taiwo",
+   "SS3 Science"
+  ],
+  [
+   "TCH-2025-301",
+   "Sulaimon Alimoh",
+   "SS3 Science"
+  ],
+  [
+   "TCH-2025-302",
+   "Sunday Mary",
+   "SS3 Science"
+  ],
+  [
+   "TCH-2025-303",
+   "Abdulrazak Abdulrahman",
+   "SS3 Actuarial"
+  ],
+  [
+   "TCH-2025-304",
+   "Abdusalam Timileyin",
+   "SS3 Actuarial"
+  ],
+  [
+   "TCH-2025-305",
+   "Abisoye Gold",
+   "SS3 Actuarial"
+  ],
+  [
+   "TCH-2025-306",
+   "Adebayo Isaiah",
+   "SS3 Actuarial"
+  ],
+  [
+   "TCH-2025-307",
+   "Adeniyi Gbolahan",
+   "SS3 Actuarial"
+  ],
+  [
+   "TCH-2025-308",
+   "Adenola Darasimi",
+   "SS3 Actuarial"
+  ],
+  [
+   "TCH-2025-309",
+   "Agboola Daniel",
+   "SS3 Actuarial"
+  ],
+  [
+   "TCH-2025-310",
+   "Azeez Wazilat",
+   "SS3 Actuarial"
+  ],
+  [
+   "TCH-2025-311",
+   "Bakare Bolaji",
+   "SS3 Actuarial"
+  ],
+  [
+   "TCH-2025-312",
+   "Chukwu Samuel",
+   "SS3 Actuarial"
+  ],
+  [
+   "TCH-2025-313",
+   "Ebere Larry",
+   "SS3 Actuarial"
+  ],
+  [
+   "TCH-2025-314",
+   "Eduniyi Gideon",
+   "SS3 Actuarial"
+  ],
+  [
+   "TCH-2025-315",
+   "Ewenla Noah",
+   "SS3 Actuarial"
+  ],
+  [
+   "TCH-2025-316",
+   "Ibadore Miracle",
+   "SS3 Actuarial"
+  ],
+  [
+   "TCH-2025-317",
+   "Ipadeola Idris",
+   "SS3 Actuarial"
+  ],
+  [
+   "TCH-2025-318",
+   "Ipadeola Quadri",
+   "SS3 Actuarial"
+  ],
+  [
+   "TCH-2025-319",
+   "Jewoola Boluwatife",
+   "SS3 Actuarial"
+  ],
+  [
+   "TCH-2025-320",
+   "Lawal Gabriel",
+   "SS3 Actuarial"
+  ],
+  [
+   "TCH-2025-321",
+   "Mathew Glory",
+   "SS3 Actuarial"
+  ],
+  [
+   "TCH-2025-322",
+   "Njoh Ifeoma",
+   "SS3 Actuarial"
+  ],
+  [
+   "TCH-2025-323",
+   "Nwaeke Maryann",
+   "SS3 Actuarial"
+  ],
+  [
+   "TCH-2025-324",
+   "Ochege Sunday",
+   "SS3 Actuarial"
+  ],
+  [
+   "TCH-2025-325",
+   "Okarfor Ifeoma",
+   "SS3 Actuarial"
+  ],
+  [
+   "TCH-2025-326",
+   "Oladeji Ala-meen",
+   "SS3 Actuarial"
+  ],
+  [
+   "TCH-2025-327",
+   "Osiba Temiloluwa",
+   "SS3 Actuarial"
+  ],
+  [
+   "TCH-2025-328",
+   "Osunubi Gbolahan",
+   "SS3 Actuarial"
+  ],
+  [
+   "TCH-2025-329",
+   "Oyebode Precious",
+   "SS3 Actuarial"
+  ],
+  [
+   "TCH-2025-330",
+   "Peter Godwin",
+   "SS3 Actuarial"
+  ],
+  [
+   "TCH-2025-331",
+   "Shobowale Isaac",
+   "SS3 Actuarial"
+  ],
+  [
+   "TCH-2025-332",
+   "Shokoya Samuel",
+   "SS3 Actuarial"
+  ],
+  [
+   "TCH-2025-333",
+   "Sulaimon Aishat",
+   "SS3 Actuarial"
+  ],
+  [
+   "TCH-2025-334",
+   "Zulukadeen Rokeeb",
+   "SS3 Actuarial"
+  ],
+  [
+   "TCH-2025-377",
+   "Ilo Joseph",
+   "SS2 Actuarial"
+  ],
+  [
+   "TCH-2026-001",
+   "Abraham Babayemi",
+   "JSS1A"
+  ],
+  [
+   "TCH-2026-002",
+   "Aduloju Favour",
+   "JSS1A"
+  ],
+  [
+   "TCH-2026-003",
+   "Afuwape Tomiwa",
+   "JSS1A"
+  ],
+  [
+   "TCH-2026-004",
+   "Aniebo Onyekachi",
+   "JSS1A"
+  ],
+  [
+   "TCH-2026-005",
+   "Atunde Praise",
+   "JSS1A"
+  ],
+  [
+   "TCH-2026-006",
+   "Awotoye Anthony",
+   "JSS1A"
+  ],
+  [
+   "TCH-2026-007",
+   "Benson Ezekiel",
+   "JSS1A"
+  ],
+  [
+   "TCH-2026-008",
+   "Folorunsho Boluwatif",
+   "JSS1A"
+  ],
+  [
+   "TCH-2026-009",
+   "Joseph Matthew",
+   "JSS1A"
+  ],
+  [
+   "TCH-2026-010",
+   "Mustapha Ibrahim",
+   "JSS1A"
+  ],
+  [
+   "TCH-2026-011",
+   "Odusanya Semilore",
+   "JSS1A"
+  ],
+  [
+   "TCH-2026-012",
+   "Olalere Habeeb",
+   "JSS1A"
+  ],
+  [
+   "TCH-2026-013",
+   "Paulinus Godwin",
+   "JSS1A"
+  ],
+  [
+   "TCH-2026-014",
+   "Samuel Divine",
+   "JSS1A"
+  ],
+  [
+   "TCH-2026-015",
+   "Tiamyu Elijah",
+   "JSS1A"
+  ],
+  [
+   "TCH-2026-016",
+   "Lateef Mubaraq",
+   "JSS1A"
+  ],
+  [
+   "TCH-2026-017",
+   "Amirat Abdulrahman",
+   "JSS1A"
+  ],
+  [
+   "TCH-2026-018",
+   "Adeboye Imisi",
+   "JSS1A"
+  ],
+  [
+   "TCH-2026-019",
+   "Adeyemo Waliat",
+   "JSS1A"
+  ],
+  [
+   "TCH-2026-020",
+   "Adeboye Waliat",
+   "JSS1A"
+  ],
+  [
+   "TCH-2026-021",
+   "Precious Nehmat",
+   "JSS1A"
+  ],
+  [
+   "TCH-2026-022",
+   "James Cherish",
+   "JSS1A"
+  ],
+  [
+   "TCH-2026-023",
+   "Mmaduabuchi Cynthia",
+   "JSS1A"
+  ],
+  [
+   "TCH-2026-024",
+   "Ologunore Favour",
+   "JSS1A"
+  ],
+  [
+   "TCH-2026-025",
+   "Owolewa Seun",
+   "JSS1A"
+  ],
+  [
+   "TCH-2026-026",
+   "Oyebanji Oluwatobiloba",
+   "JSS1A"
+  ],
+  [
+   "TCH-2026-027",
+   "Oyewole Temiloluwa",
+   "JSS1A"
+  ],
+  [
+   "TCH-2026-028",
+   "Sulaimon Amirat",
+   "JSS1A"
+  ],
+  [
+   "TCH-2026-029",
+   "Sunny Grace",
+   "JSS1A"
+  ],
+  [
+   "TCH-2026-030",
+   "Abdulmojeed Aliamin",
+   "JSS1B"
+  ],
+  [
+   "TCH-2026-031",
+   "Awodiya David Oluwadamilola",
+   "JSS1B"
+  ],
+  [
+   "TCH-2026-032",
+   "Alexander Chibuzor",
+   "JSS1B"
+  ],
+  [
+   "TCH-2026-033",
+   "Amos Owen",
+   "JSS1B"
+  ],
+  [
+   "TCH-2026-034",
+   "Elumezie Goodluck",
+   "JSS1B"
+  ],
+  [
+   "TCH-2026-035",
+   "Idowu Samson",
+   "JSS1B"
+  ],
+  [
+   "TCH-2026-036",
+   "Lateef Malik",
+   "JSS1B"
+  ],
+  [
+   "TCH-2026-037",
+   "Ajayi Inioluwa",
+   "JSS1B"
+  ],
+  [
+   "TCH-2026-038",
+   "Oluwaseun Samuel",
+   "JSS1B"
+  ],
+  [
+   "TCH-2026-039",
+   "Okezuoeze Kamsi",
+   "JSS1B"
+  ],
+  [
+   "TCH-2026-040",
+   "Olowu Faruq",
+   "JSS1B"
+  ],
+  [
+   "TCH-2026-041",
+   "Yusuf Abdulwahab",
+   "JSS1B"
+  ],
+  [
+   "TCH-2026-042",
+   "Olusola James",
+   "JSS1B"
+  ],
+  [
+   "TCH-2026-043",
+   "Oyesiji Prosper",
+   "JSS1B"
+  ],
+  [
+   "TCH-2026-044",
+   "Bakare Bamidele",
+   "JSS1B"
+  ],
+  [
+   "TCH-2026-045",
+   "Akeem Aishat",
+   "JSS1B"
+  ],
+  [
+   "TCH-2026-046",
+   "Ajibola Aishat",
+   "JSS1B"
+  ],
+  [
+   "TCH-2026-047",
+   "Abdulganiu Misturah",
+   "JSS1B"
+  ],
+  [
+   "TCH-2026-048",
+   "Famakinwa Hannah",
+   "JSS1B"
+  ],
+  [
+   "TCH-2026-049",
+   "Hassan Jazeelat",
+   "JSS1B"
+  ],
+  [
+   "TCH-2026-050",
+   "Jimoh Abidat",
+   "JSS1B"
+  ],
+  [
+   "TCH-2026-051",
+   "Law Egbueje Kendra",
+   "JSS1B"
+  ],
+  [
+   "TCH-2026-052",
+   "Olumide Sharon",
+   "JSS1B"
+  ],
+  [
+   "TCH-2026-053",
+   "Okebiyi Phoebe",
+   "JSS1B"
+  ],
+  [
+   "TCH-2026-054",
+   "Obaoye Dasola",
+   "JSS1B"
+  ],
+  [
+   "TCH-2026-055",
+   "Oyebode Mercy",
+   "JSS1B"
+  ],
+  [
+   "TCH-2026-056",
+   "Shobowalw Faith",
+   "JSS1B"
+  ],
+  [
+   "TCH-2026-057",
+   "Sanni Arafat",
+   "JSS1B"
+  ],
+  [
+   "TCH-2026-058",
+   "Toki Abigail",
+   "JSS1B"
+  ]
+ ]
+}
