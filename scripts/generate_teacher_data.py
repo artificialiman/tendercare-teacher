@@ -15,16 +15,22 @@ one-line edits rather than buried in code:
   INCLUDE_SEED_SCORES  Old 2024/25 scores from 002. Off: the live database has
                    none, and every row shipped is something a phone must load.
   CURRENT_TERM_ID  Normally taken from the live snapshot's is_current flag.
+  INCLUDE_TERM_SCORES  Scores merged from teachers' scores files by
+                   scripts/scores/ingest.py (scripts/scores/term_scores/*.json).
+                   On: every device receives the school's merged scores with the
+                   next build; a score typed on a device only overrides one of
+                   these if it was typed later (each field carries its time).
   SUBJECT_ALIASES  002 was loaded "as-is" and uses many spellings for the same
                    subject. Rows are matched to the clean 001 subject list by
                    exact name, then case/whitespace-insensitive name, then this
                    map. Anything still unmatched is skipped and listed in the
                    report printed at the end -- never guessed.
 """
-import json, re, sys
+import json, os, re, sys
 from pathlib import Path
 
 INCLUDE_SEED_SCORES = False  # the live project holds no scores; 2024/25 rows only add bundle weight
+INCLUDE_TERM_SCORES = True
 CURRENT_TERM_ID = '2026-2027-T1'  # the session now running (promotion + JSS1 intake already done).
                              # None -> use whatever the live snapshot marks current (stale: 2025/2026 T3).
                              # If the id is not in the snapshot it is created from its own name (YYYY-YYYY-Tn).
@@ -140,6 +146,22 @@ if INCLUDE_SEED_SCORES:
         num = lambda v: None if v == 'null' else float(v)
         scores.append([stu, subj_id, term, num(ca), num(exam)])
 
+if INCLUDE_TERM_SCORES:
+    term_ids = {t['id'] for t in terms}
+    merged_rows = dropped = 0
+    for f in sorted((Path(os.environ.get('TENDERCARE_SCORES_DIR') or root / 'scripts/scores') / 'term_scores').glob('*.json')):
+        doc = json.loads(f.read_text())
+        for r in doc['rows']:
+            if r['student_id'] not in student_ids or doc['term_id'] not in term_ids:
+                dropped += 1
+                continue
+            row = [r['student_id'], r['subject_id'], doc['term_id'], r['ca'], r['exam']]
+            if r.get('ca_at') or r.get('exam_at'):
+                row += [r.get('ca_at') or '', r.get('exam_at') or '']
+            scores.append(row)
+            merged_rows += 1
+    print(f'merged term scores: {merged_rows} rows' + (f' ({dropped} dropped: student/term not in this build)' if dropped else ''))
+
 # --- emit --------------------------------------------------------------
 j = lambda o: json.dumps(o, ensure_ascii=False, separators=(',', ':'))
 import hashlib
@@ -166,6 +188,9 @@ export interface ScoreRecord {{
 	term_id: string;
 	ca: number | null;
 	exam: number | null;
+	/** When each field was typed (merged scores only). A device edit older than this is ignored. */
+	ca_at?: string;
+	exam_at?: string;
 }}
 export interface RemarkRecord {{
 	student_id: string;
@@ -203,8 +228,16 @@ export const students: Student[] = ({j(students)} as [string, string, string][])
 	}})
 );
 
-export const scores: ScoreRecord[] = ({j(scores)} as [string, string, string, number | null, number | null][]).map(
-	([student_id, subject_id, term_id, ca, exam]) => ({{ student_id, subject_id, term_id, ca, exam }})
+export const scores: ScoreRecord[] = ({j(scores)} as [string, string, string, number | null, number | null, string?, string?][]).map(
+	([student_id, subject_id, term_id, ca, exam, ca_at, exam_at]) => ({{
+		student_id,
+		subject_id,
+		term_id,
+		ca,
+		exam,
+		...(ca_at ? {{ ca_at }} : {{}}),
+		...(exam_at ? {{ exam_at }} : {{}})
+	}})
 );
 
 export const remarks: RemarkRecord[] = [];

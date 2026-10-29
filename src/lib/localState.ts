@@ -148,8 +148,10 @@ function applyEditToScores(e: ScoreEdit): void {
 		scores.push(row);
 		scoreIndex.set(k, row);
 	}
-	if (e.ca !== undefined) row.ca = e.ca;
-	if (e.exam !== undefined) row.exam = e.exam;
+	// A score merged into the shipped baseline carries the time it was typed; a
+	// device edit typed before that is older news and must not undo it.
+	if (e.ca !== undefined && !(row.ca_at && (e.ca_at ?? '') < row.ca_at)) row.ca = e.ca;
+	if (e.exam !== undefined && !(row.exam_at && (e.exam_at ?? '') < row.exam_at)) row.exam = e.exam;
 }
 
 const isScoreOrNull = (v: unknown): v is number | null => v === null || (typeof v === 'number' && Number.isFinite(v));

@@ -20,6 +20,9 @@ export interface ScoreRecord {
 	term_id: string;
 	ca: number | null;
 	exam: number | null;
+	/** When each field was typed (merged scores only). A device edit older than this is ignored. */
+	ca_at?: string;
+	exam_at?: string;
 }
 export interface RemarkRecord {
 	student_id: string;
@@ -57,8 +60,16 @@ export const students: Student[] = ([["TCH-2025-001","Abraham Comfort Princess",
 	})
 );
 
-export const scores: ScoreRecord[] = ([] as [string, string, string, number | null, number | null][]).map(
-	([student_id, subject_id, term_id, ca, exam]) => ({ student_id, subject_id, term_id, ca, exam })
+export const scores: ScoreRecord[] = ([] as [string, string, string, number | null, number | null, string?, string?][]).map(
+	([student_id, subject_id, term_id, ca, exam, ca_at, exam_at]) => ({
+		student_id,
+		subject_id,
+		term_id,
+		ca,
+		exam,
+		...(ca_at ? { ca_at } : {}),
+		...(exam_at ? { exam_at } : {})
+	})
 );
 
 export const remarks: RemarkRecord[] = [];
