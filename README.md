@@ -6,12 +6,20 @@ entry, and the **single source of truth for the student roster**.
 ## Current state: hardcoded data, no sign-in, no network calls
 
 The teacher app does not fetch anything. The school's real classes, subjects,
-class-subject links, roster (377 students as of the 2025/26 snapshot)
-and terms are compiled into the app by `scripts/generate_teacher_data.py`
-(output: `src/lib/teacherData.ts`). Sources: `supabase/seed/001_roster_*.sql`
-and `scripts/snapshot/live_admin_snapshot.json` (what was found in the Supabase
-project reachable at the time -- note it is pre-promotion; see the file's
-`_about`). Re-run the script after either changes.
+class-subject links, roster and terms are compiled into the app by
+`scripts/generate_teacher_data.py` (output: `src/lib/teacherData.ts`):
+
+- **Roster:** `scripts/roster/students.json` -- the one canonical roster (edited only
+  through `scripts/roster/apply_changes.py`, published everywhere by
+  `scripts/roster/publish.py`). The app bundles the 393 active students of the
+  2026/27 session: promotion applied, the 58-student JSS1 intake, and one late
+  joiner. 68 JSS3 leavers sit in **SS1 New** until a teacher assigns their department.
+- **Terms:** `scripts/snapshot/live_admin_snapshot.json` -- 2026/2027 Term 1 is current.
+- **Classes, subjects, class-subject links:** `supabase/seed/001_roster_2024_2025.sql`,
+  plus the SS1 New holding class that the promotion creates.
+
+Re-run the script after any of these files change. Nothing is guessed: if a
+class-subject link or assignment is not in the data, it is not shown.
 
 - **Who I am:** the teacher ticks their subjects and classes once on the home
   page; that is kept in this browser (`src/lib/teacherIdentity.ts`). There is
