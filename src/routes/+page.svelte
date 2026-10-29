@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import Crest from '$lib/components/Crest.svelte';
+	import DeviceSafety from '$lib/components/DeviceSafety.svelte';
 	import { subjects, classes, classSubjects } from '$lib/teacherData';
 	import {
 		getProfile,
@@ -219,6 +220,8 @@
 				{/each}
 			{/if}
 		</div>
+
+		<DeviceSafety />
 	</div>
 {/if}
 
