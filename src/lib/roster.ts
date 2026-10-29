@@ -1,5 +1,5 @@
 import { students, classes, classSubjects, remarks, scores, currentTerm, type ClassRecord, type RemarkRecord } from './teacherData';
-import { persist } from './localState';
+import { persist, forgetScoreEditsFor } from './localState';
 
 // ============================================================================
 // Plain operations on the hardcoded arrays in teacherData.ts. Same function
@@ -83,6 +83,7 @@ export async function permanentlyEraseStudent(id: string): Promise<void> {
 	students.splice(idx, 1);
 	// Same cascade the database had: a student's scores and remarks go with them.
 	for (let i = scores.length - 1; i >= 0; i--) if (scores[i].student_id === id_) scores.splice(i, 1);
+	forgetScoreEditsFor(id_);
 	for (let i = remarks.length - 1; i >= 0; i--) if (remarks[i].student_id === id_) remarks.splice(i, 1);
 	persist();
 }

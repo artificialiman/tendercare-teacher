@@ -1,5 +1,5 @@
 import { subjects, classes, classSubjects, scores, students, terms, currentTerm } from './teacherData';
-import { persist } from './localState';
+import { recordScoreChanges, type SaveStatus, type ScoreChange } from './localState';
 import type { Student } from './roster';
 
 // Plain functions over the hardcoded data in teacherData.ts, with changes
@@ -42,23 +42,24 @@ export async function listScores(
 	return map;
 }
 
-/** Saves one field (CA or exam) for one student, creating the row if needed. */
+/**
+ * Saves one field (CA or exam) for one student. `null` clears the cell. The
+ * returned status says whether this device actually kept it -- callers show
+ * that rather than assuming.
+ */
 export async function saveScore(
 	studentId: string,
 	subjectId: string,
 	termId: string,
 	field: 'ca' | 'exam',
-	value: number
-): Promise<void> {
-	const existing = scores.find(
-		(s) => s.student_id === studentId && s.subject_id === subjectId && s.term_id === termId
-	);
-	if (existing) {
-		existing[field] = value;
-	} else {
-		scores.push({ student_id: studentId, subject_id: subjectId, term_id: termId, ca: null, exam: null, [field]: value });
-	}
-	persist();
+	value: number | null
+): Promise<SaveStatus> {
+	return recordScoreChanges([{ student_id: studentId, subject_id: subjectId, term_id: termId, field, value }]);
+}
+
+/** Many fields in one save to the device (used by "Clear all"). */
+export async function saveScores(changes: ScoreChange[]): Promise<SaveStatus> {
+	return recordScoreChanges(changes);
 }
 
 /** The term every sheet is being filled for. */
