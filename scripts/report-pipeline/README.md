@@ -99,3 +99,23 @@ problem before it's a code problem: it needs real per-student class
 history and CSV term data, not something to synthesize here. This
 pipeline is the mechanism; running it against the full real roster is
 a separate, deliberate next step.
+
+
+## One access code for every transcript
+
+All generated transcripts carry the same code, taken from one place
+(`shared_code.py`), and any `access_code_hint` inside `students/*.json` is
+ignored:
+
+1. `STUDENT_LOGIN_PASSWORD` -- the same setting the result portal reads;
+2. else `STUDENT_PASSWORD_FILE` -- path to a text file whose first non-empty line
+   is the password (spaces and the trailing newline are ignored; a named file
+   that is missing or empty stops the run instead of quietly using a default);
+3. else the old default `12345678`, with a notice printed.
+
+```
+STUDENT_PASSWORD_FILE=~/school/student-password.txt python3 generate.py --all
+```
+
+After changing the code, regenerate (`--all`) and republish the pages -- a page
+already generated keeps the code it was made with.

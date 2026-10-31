@@ -141,7 +141,7 @@ svg.crest-defs { position: absolute; width: 0; height: 0; overflow: hidden; }
     <svg class="gate-crest"><use href="#crest-symbol"/></svg>
     <h1>{{ full_name }}</h1>
     <div class="gate-sub">Tendercare Comprehensive College &middot; {{ student_id }}</div>
-    <div class="gate-note">Temporary access code for all students: <strong>{{ access_code_hint }}</strong></div>
+    <div class="gate-note">Temporary access code for all students: <strong>{{ access_code_hint | e }}</strong></div>
     <input type="password" class="gate-input" id="gate-input" placeholder="Enter access code" autocomplete="off">
     <button type="button" class="gate-btn" id="gate-btn">Unlock Record</button>
     <div class="gate-error" id="gate-error"></div>
@@ -285,7 +285,7 @@ svg.crest-defs { position: absolute; width: 0; height: 0; overflow: hidden; }
 </div>
 
 <script>
-const PLAINTEXT_PASSWORD = "{{ access_code_hint }}";
+const PLAINTEXT_PASSWORD = {{ access_code_hint | tojson }};
 function attemptUnlock() {
     const input = document.getElementById("gate-input");
     const errorEl = document.getElementById("gate-error");

@@ -65,6 +65,8 @@ REMARKS = {
 CLASS_PUBLISH_THRESHOLD = 0.40
 
 
+from shared_code import shared_access_code
+
 def grade_for(total):
     for floor, label, css in GRADE_BANDS:
         if total >= floor:
@@ -204,7 +206,9 @@ def render_student(data: dict, class_stats: dict, warnings: list) -> str:
     template = env.get_template("report_template.html.j2")
 
     context = dict(data)
-    context.setdefault("access_code_hint", "12345678")
+    # One code for every transcript, from one place (shared_code.py). Any
+    # per-student access_code_hint in the JSON is deliberately ignored.
+    context["access_code_hint"] = shared_access_code()
     context["current_term_id"] = find_current_term_id(data["years"])
     return template.render(**context)
 

@@ -110,7 +110,6 @@ def build_skeleton(student: dict, seniority_map: dict) -> dict:
         "full_name": student["full_name"],
         "class_arm": class_arm,
         "entry_year": years[0]["academic_year"],
-        "access_code_hint": "12345678",
         "years": years,
     }
 
