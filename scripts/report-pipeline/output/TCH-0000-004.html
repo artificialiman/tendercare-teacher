@@ -90,6 +90,9 @@ svg.crest-defs { position: absolute; width: 0; height: 0; overflow: hidden; }
 .report-table tbody tr:nth-child(even) { background: #f8faff; }
 .subject-name { text-align: left; padding-left: 12px; font-weight: 500; color: var(--ink); }
 .score-cell { font-family: var(--fd); font-size: 1.08rem; color: var(--ink-s); }
+.score-cell.flagged { background: #fff4d6; color: #8a5a00; font-weight: 700; }
+.flag-cell { background: #fff4d6; color: #8a5a00; font-size: 10px; font-weight: 700; text-align: center; letter-spacing: .02em; }
+.flag-note { border-color: #e8c66a; background: #fff4d6; color: #6b4600; }
 .total-score { font-family: var(--fd); font-size: 1.22rem; color: var(--pd); font-weight: 700; }
 .gdot { display: inline-flex; align-items: center; justify-content: center; width: 27px; height: 27px; border-radius: 50%; font-weight: 700; font-size: 10px; font-family: var(--fn); }
 .ga1 { background: #E8F8E8; color: #1A6640; } .gb2, .gb3 { background: var(--pg); color: var(--p); }
@@ -846,6 +849,7 @@ l-61 -64 20 -38 c30 -60 25 -91 -20 -132 -21 -19 -48 -38 -60 -42 -18 -5 -20
                     <div class="sb-item"><span class="sb-label">Subjects</span><span class="sb-value">5</span></div>
                 </div>
                 <div class="grade-note">&#8505;&#65039; The <strong>Average</strong> above is computed as the sum of subject totals &divide; number of subjects taken this term.</div>
+                
                 <div class="remarks">
                     <div class="remark-box teacher">
                         <div class="remark-label">Class Teacher's Comment</div>

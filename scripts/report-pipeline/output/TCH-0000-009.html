@@ -90,6 +90,9 @@ svg.crest-defs { position: absolute; width: 0; height: 0; overflow: hidden; }
 .report-table tbody tr:nth-child(even) { background: #f8faff; }
 .subject-name { text-align: left; padding-left: 12px; font-weight: 500; color: var(--ink); }
 .score-cell { font-family: var(--fd); font-size: 1.08rem; color: var(--ink-s); }
+.score-cell.flagged { background: #fff4d6; color: #8a5a00; font-weight: 700; }
+.flag-cell { background: #fff4d6; color: #8a5a00; font-size: 10px; font-weight: 700; text-align: center; letter-spacing: .02em; }
+.flag-note { border-color: #e8c66a; background: #fff4d6; color: #6b4600; }
 .total-score { font-family: var(--fd); font-size: 1.22rem; color: var(--pd); font-weight: 700; }
 .gdot { display: inline-flex; align-items: center; justify-content: center; width: 27px; height: 27px; border-radius: 50%; font-weight: 700; font-size: 10px; font-family: var(--fn); }
 .ga1 { background: #E8F8E8; color: #1A6640; } .gb2, .gb3 { background: var(--pg); color: var(--p); }
@@ -1146,48 +1149,48 @@ l-61 -64 20 -38 c30 -60 25 -91 -20 -132 -21 -19 -48 -38 -60 -42 -18 -5 -20
                         
                         <tr>
                             <td class="subject-name">Physics</td>
-                            <td class="score-cell">31</td>
+                            <td class="score-cell flagged">31</td>
                             <td class="score-cell">50</td>
                             
-                            <td class="score-cell total-score">81</td>
-                            <td><span class="gdot ga1">A1</span></td>
+                            <td class="flag-cell" colspan="2">[confirm with your teacher]</td>
                             
                         </tr>
                         
                         <tr>
                             <td class="subject-name">Chemistry</td>
-                            <td class="score-cell">34</td>
+                            <td class="score-cell flagged">34</td>
                             <td class="score-cell">55</td>
                             
-                            <td class="score-cell total-score">89</td>
-                            <td><span class="gdot ga1">A1</span></td>
+                            <td class="flag-cell" colspan="2">[confirm with your teacher]</td>
                             
                         </tr>
                         
                         <tr>
                             <td class="subject-name">Biology</td>
-                            <td class="score-cell">37</td>
+                            <td class="score-cell flagged">37</td>
                             <td class="score-cell">60</td>
                             
-                            <td class="score-cell total-score">97</td>
-                            <td><span class="gdot ga1">A1</span></td>
+                            <td class="flag-cell" colspan="2">[confirm with your teacher]</td>
                             
                         </tr>
                         
                         <tr class="total-row" style="font-weight:700; background:#e6edf5;">
                             <td style="text-align:right; padding-right:15px; font-size:14px;">TOTALS</td>
                             <td>&mdash;</td><td>&mdash;</td>
-                            <td style="font-family:var(--fd); font-size:1.4rem; color:var(--pd);">405</td>
-                            <td style="font-size:10px; color:var(--ash);">/500</td>
+                            <td style="font-family:var(--fd); font-size:1.4rem; color:var(--pd);">138</td>
+                            <td style="font-size:10px; color:var(--ash);">/200</td>
                         </tr>
                     </tbody>
                 </table>
                 <div class="summary-band">
-                    <div class="sb-item"><span class="sb-label">Total Score</span><span class="sb-value">405<span class="sb-unit">/500</span></span></div>
-                    <div class="sb-item"><span class="sb-label">Average</span><span class="sb-value">81.0<span class="sb-unit">/100</span></span></div>
+                    <div class="sb-item"><span class="sb-label">Total Score</span><span class="sb-value">138<span class="sb-unit">/200</span></span></div>
+                    <div class="sb-item"><span class="sb-label">Average</span><span class="sb-value">69.0<span class="sb-unit">/100</span></span></div>
                     <div class="sb-item"><span class="sb-label">Subjects</span><span class="sb-value">5</span></div>
                 </div>
                 <div class="grade-note">&#8505;&#65039; The <strong>Average</strong> above is computed as the sum of subject totals &divide; number of subjects taken this term.</div>
+                
+                <div class="grade-note flag-note">&#9888;&#65039; 3 subjects marked <strong>[confirm with your teacher]</strong>: the recorded scores fall outside the marks allowed for this class (CA 30 + Exam 70). They are shown as recorded, but not graded and not included in the total or average.</div>
+                
                 <div class="remarks">
                     <div class="remark-box teacher">
                         <div class="remark-label">Class Teacher's Comment</div>

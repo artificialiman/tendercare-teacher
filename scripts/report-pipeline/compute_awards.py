@@ -48,6 +48,8 @@ from generate import (
     compute_class_term_stats,
     term_is_complete,
     remark_for,
+    marks_limits_for,
+    subject_flags,
 )
 
 TERM_ORDER = {"First": 1, "Second": 2, "Third": 3}
@@ -87,9 +89,15 @@ def student_average_for_term(student: dict, academic_year: str, term_name: str):
                 continue
             if not term_is_complete(term):
                 return None
-            subjects = term["subjects"]
-            total = sum(s["ca"] + s["exam"] for s in subjects)
-            return round(total / len(subjects), 2)
+            # Same rule as the report sheet: a subject marked
+            # [confirm with your teacher] is left out, so a doubtful score can
+            # never move anyone's rank.
+            limits = marks_limits_for(year.get("class_at_time"))
+            valid = [s for s in term["subjects"] if not any(subject_flags(s, limits))]
+            if not valid:
+                return None
+            total = sum(s["ca"] + s["exam"] for s in valid)
+            return round(total / len(valid), 2)
     return None
 
 

@@ -18,6 +18,22 @@ student file only ever needs raw CA/exam numbers -- the same WAEC-style
 band (A1 >= 75 down to F9 < 40) already used across every existing
 report sheet.
 
+MARKS LIMITS AND THE [confirm with your teacher] FLAG
+------------------------------------------------------
+Every score has a fixed ceiling set by the class the student was in at the
+time (the year's class_at_time):
+
+    Junior (JSS...)   CA 40 + Exam 60 = 100
+    Senior (SS...)    CA 30 + Exam 70 = 100
+
+Anything else -- a CA or Exam above its ceiling, below 0, not a number, or a
+class that is neither JSS nor SS so the ceiling cannot be known -- is not
+printed as a normal result. The numbers recorded are still shown, but the
+subject's Total and Grade are replaced by "[confirm with your teacher]", and
+the subject is left out of the term's total and average (so a doubtful score
+cannot move anyone's average or ranking). A note under the term explains it.
+Nothing is changed or deleted in the student's file.
+
 CLASS COMPLETENESS GATE
 ------------------------
 A term is only ever rendered with real numbers once at least 40% of that
@@ -63,6 +79,36 @@ REMARKS = {
 }
 
 CLASS_PUBLISH_THRESHOLD = 0.40
+
+# (CA ceiling, Exam ceiling). Anything not covered here is flagged.
+MARKS_LIMITS = {"JSS": (40, 60), "SS": (30, 70)}
+FLAG_TEXT = "[confirm with your teacher]"
+
+
+def marks_limits_for(class_at_time):
+    """(max_ca, max_exam) for a class name such as 'JSS2A' or 'SS1 Science',
+    or None if the class is neither -- in which case nothing can be trusted."""
+    c = (class_at_time or "").strip().upper()
+    if c.startswith("JS"):  # JSS1A, JSS2, and the older "JS1" spelling in some records
+        return MARKS_LIMITS["JSS"]
+    if c.startswith("SS"):
+        return MARKS_LIMITS["SS"]
+    return None
+
+
+def _out_of_range(value, ceiling):
+    if value is None:
+        return False  # not entered yet is "pending", not a doubtful score
+    if isinstance(value, bool) or not isinstance(value, (int, float)):
+        return True
+    return value != value or value < 0 or value > ceiling  # NaN, negative, over the ceiling
+
+
+def subject_flags(subject, limits):
+    """(ca_flagged, exam_flagged) for one subject row against its class limits."""
+    if limits is None:  # unknown class: every entered number is unverifiable
+        return subject.get("ca") is not None, subject.get("exam") is not None
+    return _out_of_range(subject.get("ca"), limits[0]), _out_of_range(subject.get("exam"), limits[1])
 
 
 def grade_for(total):
@@ -133,7 +179,39 @@ def compute_class_term_stats(all_students: list[dict]) -> dict:
     return stats
 
 
-def compute_term(term, gate_key, class_stats, warnings):
+def compute_gate_stats(all_students: list[dict]) -> dict:
+    """The publish gate's own statistics: (class_at_time, academic_year,
+    term_name) -> {'complete', 'total', 'pct'}.
+
+    Keyed by the class a student was IN DURING that year, not the class they
+    sit in today. After the September 1st promotion a student's current
+    class_arm moves on, and new intake students are added to the same
+    classes; counting by current class would measure last year's term against
+    people who were not even in the school then (a real result would stay
+    'blocked' because 29 new JSS1 students have no 2025/2026 marks).
+    'total' is every student who has a section for that class and year, so a
+    classmate with an empty term still counts against completeness."""
+    rosters = defaultdict(set)    # (class_at_time, year) -> {student_id}
+    complete = defaultdict(set)   # (class_at_time, year, term) -> {student_id}
+    keys = set()
+    for student in all_students:
+        for year in student.get("years", []):
+            cls = (year.get("class_at_time") or student["class_arm"]).strip()
+            rosters[(cls, year["academic_year"])].add(student["student_id"])
+            for term in year.get("terms", []):
+                key = (cls, year["academic_year"], term["term_name"])
+                keys.add(key)
+                if term_is_complete(term):
+                    complete[key].add(student["student_id"])
+    stats = {}
+    for key in keys:
+        size = len(rosters[(key[0], key[1])])
+        done = len(complete.get(key, set()))
+        stats[key] = {"complete": done, "total": size, "pct": (done / size) if size else 0.0}
+    return stats
+
+
+def compute_term(term, gate_key, class_stats, warnings, class_at_time=None):
     """Fill in per-subject totals/grades and the term summary band, in
     place, from raw ca/exam numbers -- but only if this class+term has
     cleared the 40% class-completeness gate. Below that, the term is
@@ -154,10 +232,25 @@ def compute_term(term, gate_key, class_stats, warnings):
         )
         return {"term_name": term["term_name"], "digitized": False}
 
+    limits = marks_limits_for(class_at_time)
     total_score = 0
     graded_count = 0
+    flagged_count = 0
     for s in term.get("subjects", []):
-        if s.get("ca") is not None and s.get("exam") is not None:
+        ca_bad, exam_bad = subject_flags(s, limits)
+        s["ca_flag"], s["exam_flag"] = ca_bad, exam_bad
+        s["flag"] = ca_bad or exam_bad
+        if s["flag"]:
+            # Shown as recorded, but not graded and not counted anywhere.
+            s["total"] = None
+            s["grade"] = None
+            s["grade_class"] = None
+            flagged_count += 1
+            warnings.append(
+                f"  FLAGGED: {class_at_time or 'unknown class'} {gate_key[1]} {gate_key[2]} "
+                f"{s.get('name')}: CA={s.get('ca')!r} Exam={s.get('exam')!r} outside the allowed marks"
+            )
+        elif s.get("ca") is not None and s.get("exam") is not None:
             s["total"] = s["ca"] + s["exam"]
             s["grade"], s["grade_class"] = grade_for(s["total"])
             total_score += s["total"]
@@ -167,6 +260,9 @@ def compute_term(term, gate_key, class_stats, warnings):
             s["grade"] = None
             s["grade_class"] = None
 
+    term["flagged_count"] = flagged_count
+    term["limits_text"] = f"CA {limits[0]} + Exam {limits[1]}" if limits else None
+    term["flag_text"] = FLAG_TEXT
     term["subject_count"] = len(term.get("subjects", []))
     term["total_score"] = total_score
     term["max_score"] = graded_count * 100
@@ -196,8 +292,8 @@ def render_student(data: dict, class_stats: dict, warnings: list) -> str:
     for year in data["years"]:
         gated_terms = []
         for t in year["terms"]:
-            gate_key = (class_arm, year["academic_year"], t["term_name"])
-            gated_terms.append(compute_term(t, gate_key, class_stats, warnings))
+            gate_key = ((year.get("class_at_time") or class_arm).strip(), year["academic_year"], t["term_name"])
+            gated_terms.append(compute_term(t, gate_key, class_stats, warnings, year.get("class_at_time")))
         year["terms"] = gated_terms
 
     env = Environment(loader=FileSystemLoader(str(TEMPLATES)), autoescape=False)
@@ -242,7 +338,7 @@ def main():
     if not all_students:
         print("No student JSON files found in students/", file=sys.stderr)
         sys.exit(1)
-    class_stats = compute_class_term_stats(all_students)
+    class_stats = compute_gate_stats(all_students)
 
     warnings = []
     if args.all:

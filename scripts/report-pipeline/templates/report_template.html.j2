@@ -90,6 +90,9 @@ svg.crest-defs { position: absolute; width: 0; height: 0; overflow: hidden; }
 .report-table tbody tr:nth-child(even) { background: #f8faff; }
 .subject-name { text-align: left; padding-left: 12px; font-weight: 500; color: var(--ink); }
 .score-cell { font-family: var(--fd); font-size: 1.08rem; color: var(--ink-s); }
+.score-cell.flagged { background: #fff4d6; color: #8a5a00; font-weight: 700; }
+.flag-cell { background: #fff4d6; color: #8a5a00; font-size: 10px; font-weight: 700; text-align: center; letter-spacing: .02em; }
+.flag-note { border-color: #e8c66a; background: #fff4d6; color: #6b4600; }
 .total-score { font-family: var(--fd); font-size: 1.22rem; color: var(--pd); font-weight: 700; }
 .gdot { display: inline-flex; align-items: center; justify-content: center; width: 27px; height: 27px; border-radius: 50%; font-weight: 700; font-size: 10px; font-family: var(--fn); }
 .ga1 { background: #E8F8E8; color: #1A6640; } .gb2, .gb3 { background: var(--pg); color: var(--p); }
@@ -227,9 +230,11 @@ svg.crest-defs { position: absolute; width: 0; height: 0; overflow: hidden; }
                         {% for s in term.subjects %}
                         <tr>
                             <td class="subject-name">{{ s.name }}</td>
-                            <td class="score-cell">{{ s.ca if s.ca is not none else '&mdash;'|safe }}</td>
-                            <td class="score-cell">{{ s.exam if s.exam is not none else '&mdash;'|safe }}</td>
-                            {% if s.total is not none %}
+                            <td class="score-cell{% if s.ca_flag %} flagged{% endif %}">{{ s.ca if s.ca is not none else '&mdash;'|safe }}</td>
+                            <td class="score-cell{% if s.exam_flag %} flagged{% endif %}">{{ s.exam if s.exam is not none else '&mdash;'|safe }}</td>
+                            {% if s.flag %}
+                            <td class="flag-cell" colspan="2">{{ term.flag_text }}</td>
+                            {% elif s.total is not none %}
                             <td class="score-cell total-score">{{ s.total }}</td>
                             <td><span class="gdot {{ s.grade_class }}">{{ s.grade }}</span></td>
                             {% else %}
@@ -252,6 +257,9 @@ svg.crest-defs { position: absolute; width: 0; height: 0; overflow: hidden; }
                     <div class="sb-item"><span class="sb-label">Subjects</span><span class="sb-value">{{ term.subject_count }}</span></div>
                 </div>
                 <div class="grade-note">&#8505;&#65039; The <strong>Average</strong> above is computed as the sum of subject totals &divide; number of subjects taken this term.</div>
+                {% if term.flagged_count %}
+                <div class="grade-note flag-note">&#9888;&#65039; {{ term.flagged_count }} subject{{ '' if term.flagged_count == 1 else 's' }} marked <strong>{{ term.flag_text }}</strong>: the recorded score{{ '' if term.flagged_count == 1 else 's' }} fall{{ 's' if term.flagged_count == 1 else '' }} outside the marks allowed for this class{% if term.limits_text %} ({{ term.limits_text }}){% endif %}. {{ 'It is' if term.flagged_count == 1 else 'They are' }} shown as recorded, but not graded and not included in the total or average.</div>
+                {% endif %}
                 <div class="remarks">
                     <div class="remark-box teacher">
                         <div class="remark-label">Class Teacher's Comment</div>
