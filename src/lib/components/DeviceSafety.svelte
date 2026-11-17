@@ -6,7 +6,9 @@
 		saveScoresFile,
 		restoreScoresFile,
 		lastBackupAt,
-		changesSinceBackup
+		changesSinceBackup,
+		sendRosterFile,
+		hasRosterOnPhone
 	} from '$lib/handIn';
 
 	// Everything on this card is about the one phone in the teacher's hand:
@@ -86,6 +88,16 @@
 			message = 'Scores file saved to this phone (check Downloads).';
 		});
 
+	let rosterOnPhone = $state(false);
+	onMount(() => (rosterOnPhone = hasRosterOnPhone()));
+
+	const sendRoster = () =>
+		run(async () => {
+			const how = await sendRosterFile();
+			if (how === 'shared') message = 'Roster file sent. Nothing on this phone was changed.';
+			else if (how === 'downloaded') message = 'Roster file saved to this phone (check Downloads). Send it to the school from there.';
+		});
+
 	async function onPick(e: Event) {
 		const input = e.currentTarget as HTMLInputElement;
 		const file = input.files?.[0];
@@ -153,6 +165,9 @@
 			<button class="btn-primary" onclick={send} disabled={busy || cells === 0}>Send scores file</button>
 			<button class="btn-quiet" onclick={save} disabled={busy || cells === 0}>Save a copy</button>
 			<button class="btn-quiet" onclick={() => fileInput?.click()} disabled={busy}>Restore from a file</button>
+			{#if rosterOnPhone}
+				<button class="btn-quiet" onclick={sendRoster} disabled={busy}>Send roster file</button>
+			{/if}
 			<input bind:this={fileInput} type="file" accept=".json,application/json" hidden onchange={onPick} />
 		</div>
 

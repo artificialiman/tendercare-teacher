@@ -173,6 +173,64 @@ export async function sendScoresFile(): Promise<SendOutcome> {
 	return 'downloaded';
 }
 
+// ---------------------------------------------------------------------------
+// Roster file: this phone's own roster, classes and departments, exactly as
+// saved here -- including a copy saved under an OLDER build, which the app no
+// longer shows once a new roster ships but leaves untouched in storage until
+// the next roster change on this phone. The tech team applies it centrally
+// (scripts/roster/apply_changes.py); nothing on the phone changes by sending it.
+// ---------------------------------------------------------------------------
+
+export const ROSTER_FORMAT = 'tendercare-roster';
+const ROSTER_KEYS = ['tc_local_state', 'tc_local_state_bak'] as const;
+
+function rawRecord(key: string): unknown {
+	try {
+		const text = localStorage.getItem(key);
+		return text ? JSON.parse(text) : null;
+	} catch {
+		return null;
+	}
+}
+
+/** True if this phone holds any saved roster changes (current or from an older build). */
+export function hasRosterOnPhone(): boolean {
+	return ROSTER_KEYS.some((k) => {
+		const r = rawRecord(k) as { students?: unknown } | null;
+		return !!r && Array.isArray(r.students);
+	});
+}
+
+export async function sendRosterFile(now: Date = new Date()): Promise<SendOutcome> {
+	const profile = getProfile();
+	const records = Object.fromEntries(ROSTER_KEYS.map((k) => [k, rawRecord(k)]));
+	const body = {
+		format: ROSTER_FORMAT,
+		version: 1,
+		exportedAt: now.toISOString(),
+		appDataVersion: DATA_VERSION,
+		device: deviceId(),
+		teacher: { name: profile?.name ?? '' },
+		records,
+		checksum: await sha256Hex(JSON.stringify(records))
+	};
+	const who = (profile?.name || 'teacher').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'teacher';
+	const p = (n: number) => String(n).padStart(2, '0');
+	const name = `tendercare-roster-${who}-${now.getFullYear()}${p(now.getMonth() + 1)}${p(now.getDate())}-${p(now.getHours())}${p(now.getMinutes())}.json`;
+	const file = new File([JSON.stringify(body)], name, { type: 'application/json' });
+	const nav = navigator as Navigator & { canShare?: (d: ShareData) => boolean };
+	if (nav.share && nav.canShare?.({ files: [file] })) {
+		try {
+			await nav.share({ files: [file], title: 'Tendercare roster', text: `Roster from ${profile?.name || 'a teacher'}` });
+			return 'shared';
+		} catch (e) {
+			if ((e as Error)?.name === 'AbortError') return 'cancelled';
+		}
+	}
+	download(file);
+	return 'downloaded';
+}
+
 /** Saves the scores file to the phone without the share sheet. */
 export async function saveScoresFile(): Promise<void> {
 	const { file, hand } = await toFile();
