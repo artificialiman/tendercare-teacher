@@ -1,0 +1,48 @@
+{
+ "academic_year": "2026/2027",
+ "source": "scripts/roster/sources/tendercare-scores-mr-iman-20261117-0829.json (6 SS2 Science students added on the phone, coded 2)",
+ "changes": [
+  {
+   "action": "add",
+   "full_name": "Yusuf Farida Iye",
+   "class_id": "SS2 Science",
+   "admission_type": "transfer_in",
+   "phone_id": "TCH-2026-077"
+  },
+  {
+   "action": "add",
+   "full_name": "Kingsley Wisdom",
+   "class_id": "SS2 Science",
+   "admission_type": "transfer_in",
+   "phone_id": "TCH-2026-078"
+  },
+  {
+   "action": "add",
+   "full_name": "Akeredolu Abigail",
+   "class_id": "SS2 Science",
+   "admission_type": "transfer_in",
+   "phone_id": "TCH-2026-079"
+  },
+  {
+   "action": "add",
+   "full_name": "Inaku Elizabeth",
+   "class_id": "SS2 Science",
+   "admission_type": "transfer_in",
+   "phone_id": "TCH-2026-080"
+  },
+  {
+   "action": "add",
+   "full_name": "Babayemi Favour",
+   "class_id": "SS2 Science",
+   "admission_type": "transfer_in",
+   "phone_id": "TCH-2026-081"
+  },
+  {
+   "action": "add",
+   "full_name": "Olugbodee Tajudeen",
+   "class_id": "SS2 Science",
+   "admission_type": "transfer_in",
+   "phone_id": "TCH-2026-082"
+  }
+ ]
+}

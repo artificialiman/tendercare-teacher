@@ -3720,6 +3720,54 @@
    "status": "active",
    "admitted_academic_year": "2026/2027",
    "admission_type": "transfer_in"
+  },
+  {
+   "id": "TCH-2026-076",
+   "full_name": "Yusuf Farida Iye",
+   "class_id": "SS2 Science",
+   "status": "active",
+   "admitted_academic_year": "2026/2027",
+   "admission_type": "transfer_in"
+  },
+  {
+   "id": "TCH-2026-077",
+   "full_name": "Kingsley Wisdom",
+   "class_id": "SS2 Science",
+   "status": "active",
+   "admitted_academic_year": "2026/2027",
+   "admission_type": "transfer_in"
+  },
+  {
+   "id": "TCH-2026-078",
+   "full_name": "Akeredolu Abigail",
+   "class_id": "SS2 Science",
+   "status": "active",
+   "admitted_academic_year": "2026/2027",
+   "admission_type": "transfer_in"
+  },
+  {
+   "id": "TCH-2026-079",
+   "full_name": "Inaku Elizabeth",
+   "class_id": "SS2 Science",
+   "status": "active",
+   "admitted_academic_year": "2026/2027",
+   "admission_type": "transfer_in"
+  },
+  {
+   "id": "TCH-2026-080",
+   "full_name": "Babayemi Favour",
+   "class_id": "SS2 Science",
+   "status": "active",
+   "admitted_academic_year": "2026/2027",
+   "admission_type": "transfer_in"
+  },
+  {
+   "id": "TCH-2026-081",
+   "full_name": "Olugbodee Tajudeen",
+   "class_id": "SS2 Science",
+   "status": "active",
+   "admitted_academic_year": "2026/2027",
+   "admission_type": "transfer_in"
   }
  ]
 }
