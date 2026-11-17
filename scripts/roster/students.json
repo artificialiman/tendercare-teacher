@@ -1,6 +1,6 @@
 {
  "_about": "CANONICAL roster. Edit only via scripts/roster/apply_changes.py; regenerate every hardcoded copy with scripts/roster/publish.py. status: active | graduated | left. Legacy students (before the 2026/27 session) have null admission fields on purpose -- never inferred.",
- "as_of": "2026-10-28",
+ "as_of": "2026-11-17",
  "session": "2026/2027",
  "students": [
   {
@@ -53,11 +53,17 @@
   },
   {
    "id": "TCH-2025-007",
-   "full_name": "Adeyemi Olamide",
+   "full_name": "Adeyemo Olamide",
    "class_id": "JSS2A",
    "status": "active",
    "admitted_academic_year": null,
-   "admission_type": null
+   "admission_type": null,
+   "former_names": [
+    {
+     "name": "Adeyemi Olamide",
+     "until": "2026-11-17"
+    }
+   ]
   },
   {
    "id": "TCH-2025-008",
@@ -934,7 +940,7 @@
   {
    "id": "TCH-2025-117",
    "full_name": "Adebayo Dorcas",
-   "class_id": "SS1 Unassigned",
+   "class_id": "SS1 Actuarial",
    "status": "active",
    "admitted_academic_year": null,
    "admission_type": null
@@ -942,7 +948,7 @@
   {
    "id": "TCH-2025-118",
    "full_name": "Adebayo Favour",
-   "class_id": "SS1 Unassigned",
+   "class_id": "SS1 Actuarial",
    "status": "active",
    "admitted_academic_year": null,
    "admission_type": null
@@ -950,7 +956,7 @@
   {
    "id": "TCH-2025-119",
    "full_name": "Adeniyi Darasimi",
-   "class_id": "SS1 Unassigned",
+   "class_id": "SS1 Science",
    "status": "active",
    "admitted_academic_year": null,
    "admission_type": null
@@ -1030,7 +1036,7 @@
   {
    "id": "TCH-2025-129",
    "full_name": "Fatuki Oluwanifemi",
-   "class_id": "SS1 Unassigned",
+   "class_id": "SS1 Science",
    "status": "active",
    "admitted_academic_year": null,
    "admission_type": null
@@ -1125,19 +1131,31 @@
   },
   {
    "id": "TCH-2025-141",
-   "full_name": "Olatunji Al-meen",
-   "class_id": "SS1 Unassigned",
+   "full_name": "Olatunji Al-ameen",
+   "class_id": "SS1 Science",
    "status": "active",
    "admitted_academic_year": null,
-   "admission_type": null
+   "admission_type": null,
+   "former_names": [
+    {
+     "name": "Olatunji Al-meen",
+     "until": "2026-11-17"
+    }
+   ]
   },
   {
    "id": "TCH-2025-142",
-   "full_name": "Olowu Fausiyat",
-   "class_id": "SS1 Unassigned",
+   "full_name": "Olowu Faosiyat",
+   "class_id": "SS1 Science",
    "status": "active",
    "admitted_academic_year": null,
-   "admission_type": null
+   "admission_type": null,
+   "former_names": [
+    {
+     "name": "Olowu Fausiyat",
+     "until": "2026-11-17"
+    }
+   ]
   },
   {
    "id": "TCH-2025-143",
@@ -1189,11 +1207,17 @@
   },
   {
    "id": "TCH-2025-149",
-   "full_name": "Waheed Aduragbemi",
-   "class_id": "SS1 Unassigned",
+   "full_name": "Toheeb Waheeb Aduragbemi",
+   "class_id": "SS1 Actuarial",
    "status": "active",
    "admitted_academic_year": null,
-   "admission_type": null
+   "admission_type": null,
+   "former_names": [
+    {
+     "name": "Waheed Aduragbemi",
+     "until": "2026-11-17"
+    }
+   ]
   },
   {
    "id": "TCH-2025-150",
@@ -1221,11 +1245,17 @@
   },
   {
    "id": "TCH-2025-153",
-   "full_name": "Abdul Razak Somod",
-   "class_id": "SS1 Unassigned",
+   "full_name": "Abdul-Rasaq Somod",
+   "class_id": "SS1 Science",
    "status": "active",
    "admitted_academic_year": null,
-   "admission_type": null
+   "admission_type": null,
+   "former_names": [
+    {
+     "name": "Abdul Razak Somod",
+     "until": "2026-11-17"
+    }
+   ]
   },
   {
    "id": "TCH-2025-154",
@@ -1310,7 +1340,7 @@
   {
    "id": "TCH-2025-164",
    "full_name": "Balogun Tobiloba",
-   "class_id": "SS1 Unassigned",
+   "class_id": "SS1 Actuarial",
    "status": "active",
    "admitted_academic_year": null,
    "admission_type": null
@@ -1446,7 +1476,7 @@
   {
    "id": "TCH-2025-181",
    "full_name": "Samuel Zainab",
-   "class_id": "SS1 Unassigned",
+   "class_id": "SS1 Science",
    "status": "active",
    "admitted_academic_year": null,
    "admission_type": null
@@ -1661,11 +1691,17 @@
   },
   {
    "id": "TCH-2025-208",
-   "full_name": "Hassanat",
+   "full_name": "Ramos Hassanat",
    "class_id": "SS2 Science",
    "status": "active",
    "admitted_academic_year": null,
-   "admission_type": null
+   "admission_type": null,
+   "former_names": [
+    {
+     "name": "Hassanat",
+     "until": "2026-11-17"
+    }
+   ]
   },
   {
    "id": "TCH-2025-209",
@@ -1701,11 +1737,17 @@
   },
   {
    "id": "TCH-2025-213",
-   "full_name": "Momoh Divine",
+   "full_name": "Edwin Divine",
    "class_id": "SS2 Science",
    "status": "active",
    "admitted_academic_year": null,
-   "admission_type": null
+   "admission_type": null,
+   "former_names": [
+    {
+     "name": "Momoh Divine",
+     "until": "2026-11-17"
+    }
+   ]
   },
   {
    "id": "TCH-2025-214",
@@ -1869,11 +1911,17 @@
   },
   {
    "id": "TCH-2025-234",
-   "full_name": "Abdulmateen saheed",
+   "full_name": "Abdulmojeed Saheed",
    "class_id": "SS2 Actuarial",
    "status": "active",
    "admitted_academic_year": null,
-   "admission_type": null
+   "admission_type": null,
+   "former_names": [
+    {
+     "name": "Abdulmateen saheed",
+     "until": "2026-11-17"
+    }
+   ]
   },
   {
    "id": "TCH-2025-235",
@@ -2525,11 +2573,17 @@
   },
   {
    "id": "TCH-2025-316",
-   "full_name": "Ibadore Miracle",
+   "full_name": "Ibhadore Miracle",
    "class_id": "SS3 Actuarial",
    "status": "active",
    "admitted_academic_year": null,
-   "admission_type": null
+   "admission_type": null,
+   "former_names": [
+    {
+     "name": "Ibadore Miracle",
+     "until": "2026-11-17"
+    }
+   ]
   },
   {
    "id": "TCH-2025-317",
@@ -3119,11 +3173,17 @@
   },
   {
    "id": "TCH-2026-008",
-   "full_name": "Folorunsho Boluwatif",
+   "full_name": "Folorunsho Boluwatife",
    "class_id": "JSS1A",
    "status": "active",
    "admitted_academic_year": "2026/2027",
-   "admission_type": "intake"
+   "admission_type": "intake",
+   "former_names": [
+    {
+     "name": "Folorunsho Boluwatif",
+     "until": "2026-11-17"
+    }
+   ]
   },
   {
    "id": "TCH-2026-009",
@@ -3524,6 +3584,30 @@
    "status": "active",
    "admitted_academic_year": "2026/2027",
    "admission_type": "intake"
+  },
+  {
+   "id": "TCH-2026-059",
+   "full_name": "Noragbon Beauty",
+   "class_id": "JSS3B",
+   "status": "active",
+   "admitted_academic_year": "2026/2027",
+   "admission_type": "transfer_in"
+  },
+  {
+   "id": "TCH-2026-060",
+   "full_name": "Fakunmoju Enoch",
+   "class_id": "JSS2A",
+   "status": "active",
+   "admitted_academic_year": "2026/2027",
+   "admission_type": "transfer_in"
+  },
+  {
+   "id": "TCH-2026-061",
+   "full_name": "Osideko Oyinkosola Mary",
+   "class_id": "SS1 Actuarial",
+   "status": "active",
+   "admitted_academic_year": "2026/2027",
+   "admission_type": "transfer_in"
   }
  ]
 }

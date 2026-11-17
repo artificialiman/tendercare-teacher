@@ -28,10 +28,13 @@ export interface NewStudentInput {
 	class_id: string;
 }
 
-// Same TCH-<year>-<NNN> shape as the real roster; next number after the highest in use.
+// Same TCH-<session start year>-<NNN> shape as the real roster (apply_changes.py):
+// the current session's prefix, next number after the highest issued under it.
+// Ids made here are provisional until the roster change is applied centrally.
 function nextStudentId(): string {
-	const max = Math.max(0, ...students.map((s) => Number(s.id.slice(-3))));
-	return `TCH-2025-${String(max + 1).padStart(3, '0')}`;
+	const prefix = `TCH-${currentTerm.academic_year.slice(0, 4)}-`;
+	const used = students.filter((s) => s.id.startsWith(prefix)).map((s) => Number(s.id.slice(prefix.length)));
+	return `${prefix}${String(Math.max(0, ...used) + 1).padStart(3, '0')}`;
 }
 
 /** Add a student to the roster. */

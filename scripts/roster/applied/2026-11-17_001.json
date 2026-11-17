@@ -1,0 +1,29 @@
+{
+ "academic_year": "2026/2027",
+ "source": "scripts/roster/sources/tendercare-scores-mr-iman-20261117-0633.json (CA codes: 0 = old spelling, 1 = correct spelling, 2 = carried along, no change)",
+ "changes": [
+  {"action": "rename", "id": "TCH-2025-007", "full_name": "Adeyemo Olamide"},
+  {"action": "rename", "id": "TCH-2026-008", "full_name": "Folorunsho Boluwatife"},
+  {"action": "rename", "id": "TCH-2025-141", "full_name": "Olatunji Al-ameen"},
+  {"action": "rename", "id": "TCH-2025-142", "full_name": "Olowu Faosiyat"},
+  {"action": "rename", "id": "TCH-2025-149", "full_name": "Toheeb Waheeb Aduragbemi"},
+  {"action": "rename", "id": "TCH-2025-153", "full_name": "Abdul-Rasaq Somod"},
+  {"action": "rename", "id": "TCH-2025-208", "full_name": "Ramos Hassanat"},
+  {"action": "rename", "id": "TCH-2025-213", "full_name": "Edwin Divine"},
+  {"action": "rename", "id": "TCH-2025-234", "full_name": "Abdulmojeed Saheed"},
+  {"action": "rename", "id": "TCH-2025-316", "full_name": "Ibhadore Miracle"},
+  {"action": "move", "id": "TCH-2025-117", "class_id": "SS1 Actuarial"},
+  {"action": "move", "id": "TCH-2025-118", "class_id": "SS1 Actuarial"},
+  {"action": "move", "id": "TCH-2025-149", "class_id": "SS1 Actuarial"},
+  {"action": "move", "id": "TCH-2025-164", "class_id": "SS1 Actuarial"},
+  {"action": "move", "id": "TCH-2025-119", "class_id": "SS1 Science"},
+  {"action": "move", "id": "TCH-2025-129", "class_id": "SS1 Science"},
+  {"action": "move", "id": "TCH-2025-141", "class_id": "SS1 Science"},
+  {"action": "move", "id": "TCH-2025-142", "class_id": "SS1 Science"},
+  {"action": "move", "id": "TCH-2025-153", "class_id": "SS1 Science"},
+  {"action": "move", "id": "TCH-2025-181", "class_id": "SS1 Science"},
+  {"action": "add", "full_name": "Noragbon Beauty", "class_id": "JSS3B", "admission_type": "transfer_in"},
+  {"action": "add", "full_name": "Fakunmoju Enoch", "class_id": "JSS2A", "admission_type": "transfer_in"},
+  {"action": "add", "full_name": "Osideko Oyinkosola Mary", "class_id": "SS1 Actuarial", "admission_type": "transfer_in"}
+ ]
+}

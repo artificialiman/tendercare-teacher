@@ -11,9 +11,12 @@ class-subject links, roster and terms are compiled into the app by
 
 - **Roster:** `scripts/roster/students.json` -- the one canonical roster (edited only
   through `scripts/roster/apply_changes.py`, published everywhere by
-  `scripts/roster/publish.py`). The app bundles the 393 active students of the
-  2026/27 session: promotion applied, the 58-student JSS1 intake, and one late
-  joiner. 68 JSS3 leavers sit in **SS1 New** until a teacher assigns their department.
+  `scripts/roster/publish.py`). The app bundles the 396 active students of the
+  2026/27 session: promotion applied, the 58-student JSS1 intake, one late
+  joiner, and 3 transfer-ins (TCH-2026-059..061). 58 JSS3 leavers still sit in
+  **SS1 New** until a teacher assigns their department.
+  Name corrections use `{"action": "rename", ...}` and keep the student's id;
+  the replaced spelling is kept in that student's `former_names`.
 - **Terms:** `scripts/snapshot/live_admin_snapshot.json` -- 2026/2027 Term 1 is current.
 - **Classes, subjects, class-subject links:** `supabase/seed/001_roster_2024_2025.sql`,
   plus the SS1 New holding class that the promotion creates.

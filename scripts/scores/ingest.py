@@ -28,6 +28,12 @@ What it does, in order, for each file:
      different phones with different values is listed as a CONFLICT for
      a human to look at -- the newer one is applied, the other is in the report.
 
+Fields typed as ROSTER CODES rather than scores are skipped: any scores file
+kept in scripts/roster/sources/ was used to signal roster changes (e.g. CA 0 =
+old spelling, 1 = correct spelling), so a field matching one of those files
+exactly (student, subject, term, field, time typed) is never merged as a score.
+Retyping the real score gives it a new time, and that is merged normally.
+
 Re-running the same file changes nothing (idempotent). Inputs are archived in
 scripts/scores/applied/; a dated report is written to scripts/scores/reports/.
 Canonical output: scripts/scores/term_scores/<term_id>.json
@@ -44,6 +50,7 @@ OUT_DIR = BASE / 'term_scores'
 APPLIED = BASE / 'applied'
 REPORTS = BASE / 'reports'
 FORMAT, VERSION = 'tendercare-scores', 1
+ROSTER_SIGNALS = ROOT / 'scripts' / 'roster' / 'sources'
 
 
 def ts_array(text: str, name: str):
@@ -69,6 +76,23 @@ def js_checksum(edits) -> str:
     return hashlib.sha256(json.dumps(edits, ensure_ascii=False, separators=(',', ':')).encode('utf-8')).hexdigest()
 
 
+def roster_signal_fields() -> set:
+    """(student, subject, term, field, typed_at) of every field used as a roster code, not a score."""
+    out = set()
+    for f in sorted(ROSTER_SIGNALS.glob('*.json')) if ROSTER_SIGNALS.is_dir() else []:
+        try:
+            doc = json.loads(f.read_text())
+        except Exception:
+            continue
+        if doc.get('format') != FORMAT:
+            continue
+        for e in doc.get('edits', []):
+            for fld in ('ca', 'exam'):
+                if fld in e:
+                    out.add((e.get('student_id'), e.get('subject_id'), e.get('term_id'), fld, e.get(f'{fld}_at') or ''))
+    return out
+
+
 def norm(name: str) -> str:
     return re.sub(r'\s+', ' ', (name or '').strip().lower())
 
@@ -87,11 +111,12 @@ def main():
     a = ap.parse_args()
 
     students, subjects, links, terms = load_reference()
+    signals = roster_signal_fields()
     store: dict[str, dict] = {}                     # term_id -> term document
     index: dict[tuple, dict] = {}                   # (term, student, subject) -> row
     log: list[str] = []
     refused: list[str] = []
-    tally = {'files': 0, 'applied': 0, 'unchanged': 0, 'older': 0, 'rejected': 0, 'warned': 0, 'conflicts': 0}
+    tally = {'files': 0, 'roster_codes': 0, 'applied': 0, 'unchanged': 0, 'older': 0, 'rejected': 0, 'warned': 0, 'conflicts': 0}
 
     def row_for(term_id, stu, subj):
         k = (term_id, stu, subj)
@@ -145,6 +170,8 @@ def main():
                 if f not in e:
                     continue
                 v, at = e[f], e.get(f'{f}_at', '') or ''
+                if (sid, sub, term, f, at) in signals:
+                    log.append(f'  SKIP    {tag} {f.upper()} {v!r}: roster code from scripts/roster/sources/, not a score'); tally['roster_codes'] += 1; continue
                 if v is not None and not (isinstance(v, (int, float)) and not isinstance(v, bool) and 0 <= v <= 100):
                     log.append(f'  REJECT  {tag}: {f.upper()} {v!r} is not a number from 0 to 100'); tally['rejected'] += 1; continue
                 row = row_for(term, sid, sub)
@@ -165,7 +192,8 @@ def main():
     stamp = datetime.now(timezone.utc).strftime('%Y%m%d-%H%M%S')
     summary = [f'scores ingest {stamp}', f'files accepted {tally["files"]}, refused {len(refused)}',
                f'fields applied {tally["applied"]}, already present {tally["unchanged"]}, older/ignored {tally["older"]}',
-               f'entries rejected {tally["rejected"]}, warnings {tally["warned"]}, conflicts {tally["conflicts"]}']
+               f'entries rejected {tally["rejected"]}, warnings {tally["warned"]}, conflicts {tally["conflicts"]}',
+               f'roster codes skipped (not scores) {tally["roster_codes"]}']
     if refused:
         summary += ['', 'REFUSED FILES (nothing from these was applied):'] + [f'  {r}' for r in refused]
     report = '\n'.join(summary + [''] + log) + '\n'

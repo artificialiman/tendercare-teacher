@@ -1,0 +1,386 @@
+{
+ "format": "tendercare-scores",
+ "version": 1,
+ "exportedAt": "2026-11-17T14:33:02.241Z",
+ "dataVersion": "0c174c2354",
+ "termId": "2026-2027-T1",
+ "device": "1cb243bb-d4e3-442d-bc10-c2978aea6583",
+ "teacher": {
+  "name": "Mr Iman",
+  "subjectIds": [
+   "business-studies",
+   "data-processing",
+   "further-math",
+   "history",
+   "mathematics"
+  ],
+  "classIds": [
+   "JSS1A",
+   "JSS1B",
+   "JSS2A",
+   "JSS2B",
+   "JSS3A",
+   "JSS3B",
+   "SS1 Science",
+   "SS1 Actuarial",
+   "SS2 Science",
+   "SS2 Actuarial",
+   "SS3 Science",
+   "SS3 Actuarial",
+   "SS1 Unassigned"
+  ]
+ },
+ "edits": [
+  {
+   "student_id": "TCH-2025-007",
+   "subject_id": "business-studies",
+   "term_id": "2026-2027-T1",
+   "ca": 0,
+   "ca_at": "2026-11-17T14:20:30.590Z",
+   "student_name": "Adeyemi Olamide",
+   "class_id": "JSS2A",
+   "subject_name": "Business Studies"
+  },
+  {
+   "student_id": "TCH-2025-030",
+   "subject_id": "business-studies",
+   "term_id": "2026-2027-T1",
+   "ca": 2,
+   "ca_at": "2026-11-17T14:32:13.658Z",
+   "student_name": "Adeniyi Nifemi",
+   "class_id": "JSS2B",
+   "subject_name": "Business Studies"
+  },
+  {
+   "student_id": "TCH-2025-059",
+   "subject_id": "business-studies",
+   "term_id": "2026-2027-T1",
+   "ca": 1,
+   "ca_at": "2026-11-17T14:22:27.510Z",
+   "student_name": "Abey Phoebe",
+   "class_id": "JSS3A",
+   "subject_name": "Business Studies"
+  },
+  {
+   "student_id": "TCH-2025-091",
+   "subject_id": "business-studies",
+   "term_id": "2026-2027-T1",
+   "ca": 2,
+   "ca_at": "2026-11-17T14:23:18.672Z",
+   "student_name": "Abolanle Nancy",
+   "class_id": "JSS3B",
+   "subject_name": "Business Studies"
+  },
+  {
+   "student_id": "TCH-2025-393",
+   "subject_id": "business-studies",
+   "term_id": "2026-2027-T1",
+   "ca": 2,
+   "ca_at": "2026-11-17T14:23:21.868Z",
+   "student_name": "Noragbon Beauty",
+   "class_id": "JSS3B",
+   "subject_name": "Business Studies"
+  },
+  {
+   "student_id": "TCH-2025-401",
+   "subject_id": "business-studies",
+   "term_id": "2026-2027-T1",
+   "ca": null,
+   "ca_at": "2026-11-17T14:21:27.637Z",
+   "student_name": "Fakunmoju Enoch",
+   "class_id": "JSS2A",
+   "subject_name": "Business Studies"
+  },
+  {
+   "student_id": "TCH-2025-432",
+   "subject_id": "business-studies",
+   "term_id": "2026-2027-T1",
+   "ca": 1,
+   "ca_at": "2026-11-17T14:16:55.038Z",
+   "student_name": "Folorunsho Boluwatife",
+   "class_id": "JSS1A",
+   "subject_name": "Business Studies"
+  },
+  {
+   "student_id": "TCH-2025-433",
+   "subject_id": "business-studies",
+   "term_id": "2026-2027-T1",
+   "ca": 1,
+   "ca_at": "2026-11-17T14:21:30.626Z",
+   "student_name": "Adeyemo Olamide",
+   "class_id": "JSS2A",
+   "subject_name": "Business Studies"
+  },
+  {
+   "student_id": "TCH-2026-008",
+   "subject_id": "business-studies",
+   "term_id": "2026-2027-T1",
+   "ca": 0,
+   "ca_at": "2026-11-17T14:16:50.151Z",
+   "student_name": "Folorunsho Boluwatif",
+   "class_id": "JSS1A",
+   "subject_name": "Business Studies"
+  },
+  {
+   "student_id": "TCH-2026-030",
+   "subject_id": "business-studies",
+   "term_id": "2026-2027-T1",
+   "ca": 2,
+   "ca_at": "2026-11-17T14:31:47.178Z",
+   "student_name": "Abdulmojeed Aliamin",
+   "class_id": "JSS1B",
+   "subject_name": "Business Studies"
+  },
+  {
+   "student_id": "TCH-2025-117",
+   "subject_id": "data-processing",
+   "term_id": "2026-2027-T1",
+   "ca": null,
+   "ca_at": "2026-11-17T14:25:36.118Z",
+   "student_name": "Adebayo Dorcas",
+   "class_id": "SS1 Actuarial",
+   "subject_name": "Data Processing"
+  },
+  {
+   "student_id": "TCH-2025-118",
+   "subject_id": "data-processing",
+   "term_id": "2026-2027-T1",
+   "ca": null,
+   "ca_at": "2026-11-17T14:25:39.403Z",
+   "student_name": "Adebayo Favour",
+   "class_id": "SS1 Actuarial",
+   "subject_name": "Data Processing"
+  },
+  {
+   "student_id": "TCH-2025-119",
+   "subject_id": "data-processing",
+   "term_id": "2026-2027-T1",
+   "ca": null,
+   "ca_at": "2026-11-17T14:23:47.686Z",
+   "student_name": "Adeniyi Darasimi",
+   "class_id": "SS1 Science",
+   "subject_name": "Data Processing"
+  },
+  {
+   "student_id": "TCH-2025-141",
+   "subject_id": "data-processing",
+   "term_id": "2026-2027-T1",
+   "ca": 0,
+   "ca_at": "2026-11-17T14:23:54.969Z",
+   "student_name": "Olatunji Al-meen",
+   "class_id": "SS1 Science",
+   "subject_name": "Data Processing"
+  },
+  {
+   "student_id": "TCH-2025-142",
+   "subject_id": "data-processing",
+   "term_id": "2026-2027-T1",
+   "ca": 0,
+   "ca_at": "2026-11-17T14:28:01.718Z",
+   "student_name": "Olowu Fausiyat",
+   "class_id": "SS1 Science",
+   "subject_name": "Data Processing"
+  },
+  {
+   "student_id": "TCH-2025-149",
+   "subject_id": "data-processing",
+   "term_id": "2026-2027-T1",
+   "ca": 0,
+   "ca_at": "2026-11-17T14:26:04.133Z",
+   "student_name": "Waheed Aduragbemi",
+   "class_id": "SS1 Actuarial",
+   "subject_name": "Data Processing"
+  },
+  {
+   "student_id": "TCH-2025-153",
+   "subject_id": "data-processing",
+   "term_id": "2026-2027-T1",
+   "ca": 0,
+   "ca_at": "2026-11-17T14:24:18.429Z",
+   "student_name": "Abdul Razak Somod",
+   "class_id": "SS1 Science",
+   "subject_name": "Data Processing"
+  },
+  {
+   "student_id": "TCH-2025-164",
+   "subject_id": "data-processing",
+   "term_id": "2026-2027-T1",
+   "ca": null,
+   "ca_at": "2026-11-17T14:25:46.949Z",
+   "student_name": "Balogun Tobiloba",
+   "class_id": "SS1 Actuarial",
+   "subject_name": "Data Processing"
+  },
+  {
+   "student_id": "TCH-2025-181",
+   "subject_id": "data-processing",
+   "term_id": "2026-2027-T1",
+   "ca": null,
+   "ca_at": "2026-11-17T14:24:56.423Z",
+   "student_name": "Samuel Zainab",
+   "class_id": "SS1 Science",
+   "subject_name": "Data Processing"
+  },
+  {
+   "student_id": "TCH-2025-208",
+   "subject_id": "data-processing",
+   "term_id": "2026-2027-T1",
+   "ca": 0,
+   "ca_at": "2026-11-17T14:26:46.078Z",
+   "student_name": "Hassanat",
+   "class_id": "SS2 Science",
+   "subject_name": "Data Processing"
+  },
+  {
+   "student_id": "TCH-2025-213",
+   "subject_id": "data-processing",
+   "term_id": "2026-2027-T1",
+   "ca": 0,
+   "ca_at": "2026-11-17T14:27:10.133Z",
+   "student_name": "Momoh Divine",
+   "class_id": "SS2 Science",
+   "subject_name": "Data Processing"
+  },
+  {
+   "student_id": "TCH-2025-234",
+   "subject_id": "data-processing",
+   "term_id": "2026-2027-T1",
+   "ca": 0,
+   "ca_at": "2026-11-17T14:28:29.811Z",
+   "student_name": "Abdulmateen saheed",
+   "class_id": "SS2 Actuarial",
+   "subject_name": "Data Processing"
+  },
+  {
+   "student_id": "TCH-2025-270",
+   "subject_id": "data-processing",
+   "term_id": "2026-2027-T1",
+   "ca": 2,
+   "ca_at": "2026-11-17T14:32:46.694Z",
+   "student_name": "Abdullahi Malik",
+   "class_id": "SS3 Science",
+   "subject_name": "Data Processing"
+  },
+  {
+   "student_id": "TCH-2025-316",
+   "subject_id": "data-processing",
+   "term_id": "2026-2027-T1",
+   "ca": 0,
+   "ca_at": "2026-11-17T14:30:52.134Z",
+   "student_name": "Ibadore Miracle",
+   "class_id": "SS3 Actuarial",
+   "subject_name": "Data Processing"
+  },
+  {
+   "student_id": "TCH-2025-394",
+   "subject_id": "data-processing",
+   "term_id": "2026-2027-T1",
+   "ca": 1,
+   "ca_at": "2026-11-17T14:26:52.762Z",
+   "student_name": "Ramos Hassanat",
+   "class_id": "SS2 Science",
+   "subject_name": "Data Processing"
+  },
+  {
+   "student_id": "TCH-2025-395",
+   "subject_id": "data-processing",
+   "term_id": "2026-2027-T1",
+   "ca": 1,
+   "ca_at": "2026-11-17T14:27:01.429Z",
+   "student_name": "Edwin Divine",
+   "class_id": "SS2 Science",
+   "subject_name": "Data Processing"
+  },
+  {
+   "student_id": "TCH-2025-396",
+   "subject_id": "data-processing",
+   "term_id": "2026-2027-T1",
+   "ca": 1,
+   "ca_at": "2026-11-17T14:28:35.919Z",
+   "student_name": "Abdulmojeed Saheed",
+   "class_id": "SS2 Actuarial",
+   "subject_name": "Data Processing"
+  },
+  {
+   "student_id": "TCH-2025-413",
+   "subject_id": "data-processing",
+   "term_id": "2026-2027-T1",
+   "ca": 1,
+   "ca_at": "2026-11-17T14:25:58.722Z",
+   "student_name": "Toheeb Waheeb Aduragbemi",
+   "class_id": "SS1 Actuarial",
+   "subject_name": "Data Processing"
+  },
+  {
+   "student_id": "TCH-2025-416",
+   "subject_id": "data-processing",
+   "term_id": "2026-2027-T1",
+   "ca": null,
+   "ca_at": "2026-11-17T14:26:11.030Z",
+   "student_name": "Osideko Oyinkosola Mary",
+   "class_id": "SS1 Actuarial",
+   "subject_name": "Data Processing"
+  },
+  {
+   "student_id": "TCH-2025-423",
+   "subject_id": "data-processing",
+   "term_id": "2026-2027-T1",
+   "ca": 1,
+   "ca_at": "2026-11-17T14:25:05.087Z",
+   "student_name": "Olatunji Al-ameen",
+   "class_id": "SS1 Science",
+   "subject_name": "Data Processing"
+  },
+  {
+   "student_id": "TCH-2025-424",
+   "subject_id": "data-processing",
+   "term_id": "2026-2027-T1",
+   "ca": 1,
+   "ca_at": "2026-11-17T14:24:33.956Z",
+   "student_name": "Abdul-Rasaq Somod",
+   "class_id": "SS1 Science",
+   "subject_name": "Data Processing"
+  },
+  {
+   "student_id": "TCH-2025-427",
+   "subject_id": "data-processing",
+   "term_id": "2026-2027-T1",
+   "ca": 1,
+   "ca_at": "2026-11-17T14:28:08.496Z",
+   "student_name": "Olowu Faosiyat",
+   "class_id": "SS1 Science",
+   "subject_name": "Data Processing"
+  },
+  {
+   "student_id": "TCH-2025-434",
+   "subject_id": "data-processing",
+   "term_id": "2026-2027-T1",
+   "ca": 1,
+   "ca_at": "2026-11-17T14:30:57.429Z",
+   "student_name": "Ibhadore Miracle",
+   "class_id": "SS3 Actuarial",
+   "subject_name": "Data Processing"
+  },
+  {
+   "student_id": "TCH-2025-119",
+   "subject_id": "further-math",
+   "term_id": "2026-2027-T1",
+   "ca": 0,
+   "ca_at": "2026-11-17T13:46:44.784Z",
+   "student_name": "Adeniyi Darasimi",
+   "class_id": "SS1 Science",
+   "subject_name": "Further Math"
+  },
+  {
+   "student_id": "TCH-2025-129",
+   "subject_id": "further-math",
+   "term_id": "2026-2027-T1",
+   "ca": 0,
+   "ca_at": "2026-11-17T13:46:49.555Z",
+   "student_name": "Fatuki Oluwanifemi",
+   "class_id": "SS1 Science",
+   "subject_name": "Further Math"
+  }
+ ],
+ "checksum": "f7618e2d207518a28cb651fd975be884892fffe2f3702062a3d8d1685bf1ce08"
+}

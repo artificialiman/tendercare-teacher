@@ -11,6 +11,7 @@ Change file (what the admin app's "Add Students" page downloads):
     {"action": "add",    "full_name": "Okoro Chiamaka", "class_id": "SS2 Science", "admission_type": "transfer_in"},
     {"action": "add",    "full_name": "Adeyemi Tola",   "class_id": "JSS1A",       "admission_type": "intake"},
     {"action": "move",   "id": "TCH-2025-014", "class_id": "JSS3B"},
+    {"action": "rename", "id": "TCH-2025-141", "full_name": "Olatunji Al-ameen"},
     {"action": "remove", "id": "TCH-2025-120", "reason": "withdrawn"}
   ]
 }
@@ -78,6 +79,20 @@ def main():
                 fail(f'change {n}: no class "{ch.get("class_id")}"')
             log.append(f'move   {s["id"]} {s["full_name"]}: {s["class_id"]} -> {ch["class_id"]}')
             s["class_id"] = ch["class_id"]
+        elif act == "rename":
+            # A spelling correction keeps the student's id (transcripts and portal
+            # passwords are gated on it); the replaced spelling is kept in former_names.
+            s = by_id.get(ch.get("id"))
+            name = (ch.get("full_name") or "").strip()
+            if not s or s["status"] != "active":
+                fail(f'change {n}: {ch.get("id")} is not an active student')
+            if not name:
+                fail(f"change {n}: full_name missing")
+            if name == s["full_name"]:
+                fail(f'change {n}: {s["id"]} is already named "{name}"')
+            log.append(f'rename {s["id"]}: {s["full_name"]} -> {name}')
+            s.setdefault("former_names", []).append({"name": s["full_name"], "until": date.today().isoformat()})
+            s["full_name"] = name
         elif act == "remove":
             s = by_id.get(ch.get("id"))
             if not s or s["status"] != "active":
