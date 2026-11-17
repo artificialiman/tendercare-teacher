@@ -358,6 +358,17 @@ function load(): void {
 		if (Array.isArray(saved.remarks)) replaceContents(remarks, saved.remarks);
 		// Older builds kept the entire score table in this record.
 		if (Array.isArray(saved.scores)) legacyScores = saved.scores;
+		if (saved.version !== DATA_VERSION && Array.isArray(saved.students)) {
+			// A new roster shipped. This phone's own roster changes are no longer
+			// shown, but they are kept, frozen, under their build's version and
+			// never overwritten -- "Send roster file" hands them in.
+			const frozen = `${KEY}_v_${saved.version}`;
+			try {
+				if (!localStorage.getItem(frozen)) localStorage.setItem(frozen, JSON.stringify(saved));
+			} catch {
+				/* storage full: the live record is still there until the next roster change */
+			}
+		}
 		if (saved.version === DATA_VERSION) {
 			if (Array.isArray(saved.students)) replaceContents(students, saved.students);
 			if (Array.isArray(saved.classes)) replaceContents(classes, saved.classes);

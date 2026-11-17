@@ -182,7 +182,18 @@ export async function sendScoresFile(): Promise<SendOutcome> {
 // ---------------------------------------------------------------------------
 
 export const ROSTER_FORMAT = 'tendercare-roster';
-const ROSTER_KEYS = ['tc_local_state', 'tc_local_state_bak'] as const;
+function rosterKeys(): string[] {
+	const keys = ['tc_local_state', 'tc_local_state_bak'];
+	try {
+		for (let i = 0; i < localStorage.length; i++) {
+			const k = localStorage.key(i);
+			if (k?.startsWith('tc_local_state_v_')) keys.push(k);
+		}
+	} catch {
+		/* no storage */
+	}
+	return keys;
+}
 
 function rawRecord(key: string): unknown {
 	try {
@@ -195,7 +206,7 @@ function rawRecord(key: string): unknown {
 
 /** True if this phone holds any saved roster changes (current or from an older build). */
 export function hasRosterOnPhone(): boolean {
-	return ROSTER_KEYS.some((k) => {
+	return rosterKeys().some((k) => {
 		const r = rawRecord(k) as { students?: unknown } | null;
 		return !!r && Array.isArray(r.students);
 	});
@@ -203,7 +214,7 @@ export function hasRosterOnPhone(): boolean {
 
 export async function sendRosterFile(now: Date = new Date()): Promise<SendOutcome> {
 	const profile = getProfile();
-	const records = Object.fromEntries(ROSTER_KEYS.map((k) => [k, rawRecord(k)]));
+	const records = Object.fromEntries(rosterKeys().map((k) => [k, rawRecord(k)]));
 	const body = {
 		format: ROSTER_FORMAT,
 		version: 1,

@@ -123,4 +123,14 @@ await test('a rebuilt baseline drops roster edits but keeps every typed score', 
 	assert.equal(td.scores.find((r) => r.student_id === 'S1')!.ca, 14);
 });
 
+await test('roster changes from an older build are frozen, not lost', async () => {
+	const ls = new FakeStorage(); let st = await fresh(ls);
+	const old = JSON.stringify({ version: 'old-version', students: [{ id: 'X', full_name: 'Phone Only' }], remarks: [] });
+	ls.data.set('tc_local_state', old);
+	st = await fresh(ls);
+	assert.equal(ls.data.get('tc_local_state_v_old-version'), old, 'frozen copy kept');
+	st.persist(); st.persist(); // two roster changes on the new build
+	assert.equal(ls.data.get('tc_local_state_v_old-version'), old, 'frozen copy survives later saves');
+});
+
 console.log(`\n${passed} passed`);
