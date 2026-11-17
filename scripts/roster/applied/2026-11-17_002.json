@@ -1,0 +1,354 @@
+{
+ "academic_year": "2026/2027",
+ "source": "scripts/roster/sources/tendercare-scores-mr-iman-20261117-0704.json (SS1 departments, all coded 2; new SS1 students added on the phone)",
+ "changes": [
+  {
+   "action": "move",
+   "id": "TCH-2025-120",
+   "class_id": "SS1 Actuarial"
+  },
+  {
+   "action": "move",
+   "id": "TCH-2025-121",
+   "class_id": "SS1 Actuarial"
+  },
+  {
+   "action": "move",
+   "id": "TCH-2025-122",
+   "class_id": "SS1 Actuarial"
+  },
+  {
+   "action": "move",
+   "id": "TCH-2025-125",
+   "class_id": "SS1 Science"
+  },
+  {
+   "action": "move",
+   "id": "TCH-2025-127",
+   "class_id": "SS1 Science"
+  },
+  {
+   "action": "move",
+   "id": "TCH-2025-128",
+   "class_id": "SS1 Science"
+  },
+  {
+   "action": "move",
+   "id": "TCH-2025-130",
+   "class_id": "SS1 Science"
+  },
+  {
+   "action": "move",
+   "id": "TCH-2025-131",
+   "class_id": "SS1 Actuarial"
+  },
+  {
+   "action": "move",
+   "id": "TCH-2025-132",
+   "class_id": "SS1 Actuarial"
+  },
+  {
+   "action": "move",
+   "id": "TCH-2025-133",
+   "class_id": "SS1 Actuarial"
+  },
+  {
+   "action": "move",
+   "id": "TCH-2025-134",
+   "class_id": "SS1 Science"
+  },
+  {
+   "action": "move",
+   "id": "TCH-2025-135",
+   "class_id": "SS1 Actuarial"
+  },
+  {
+   "action": "move",
+   "id": "TCH-2025-136",
+   "class_id": "SS1 Science"
+  },
+  {
+   "action": "move",
+   "id": "TCH-2025-137",
+   "class_id": "SS1 Science"
+  },
+  {
+   "action": "move",
+   "id": "TCH-2025-138",
+   "class_id": "SS1 Actuarial"
+  },
+  {
+   "action": "move",
+   "id": "TCH-2025-139",
+   "class_id": "SS1 Science"
+  },
+  {
+   "action": "move",
+   "id": "TCH-2025-140",
+   "class_id": "SS1 Actuarial"
+  },
+  {
+   "action": "move",
+   "id": "TCH-2025-143",
+   "class_id": "SS1 Actuarial"
+  },
+  {
+   "action": "move",
+   "id": "TCH-2025-144",
+   "class_id": "SS1 Science"
+  },
+  {
+   "action": "move",
+   "id": "TCH-2025-145",
+   "class_id": "SS1 Science"
+  },
+  {
+   "action": "move",
+   "id": "TCH-2025-146",
+   "class_id": "SS1 Science"
+  },
+  {
+   "action": "move",
+   "id": "TCH-2025-148",
+   "class_id": "SS1 Actuarial"
+  },
+  {
+   "action": "move",
+   "id": "TCH-2025-150",
+   "class_id": "SS1 Science"
+  },
+  {
+   "action": "move",
+   "id": "TCH-2025-151",
+   "class_id": "SS1 Actuarial"
+  },
+  {
+   "action": "move",
+   "id": "TCH-2025-152",
+   "class_id": "SS1 Science"
+  },
+  {
+   "action": "move",
+   "id": "TCH-2025-154",
+   "class_id": "SS1 Science"
+  },
+  {
+   "action": "move",
+   "id": "TCH-2025-155",
+   "class_id": "SS1 Actuarial"
+  },
+  {
+   "action": "move",
+   "id": "TCH-2025-156",
+   "class_id": "SS1 Science"
+  },
+  {
+   "action": "move",
+   "id": "TCH-2025-157",
+   "class_id": "SS1 Science"
+  },
+  {
+   "action": "move",
+   "id": "TCH-2025-158",
+   "class_id": "SS1 Science"
+  },
+  {
+   "action": "move",
+   "id": "TCH-2025-159",
+   "class_id": "SS1 Science"
+  },
+  {
+   "action": "move",
+   "id": "TCH-2025-160",
+   "class_id": "SS1 Science"
+  },
+  {
+   "action": "move",
+   "id": "TCH-2025-165",
+   "class_id": "SS1 Actuarial"
+  },
+  {
+   "action": "move",
+   "id": "TCH-2025-166",
+   "class_id": "SS1 Actuarial"
+  },
+  {
+   "action": "move",
+   "id": "TCH-2025-167",
+   "class_id": "SS1 Science"
+  },
+  {
+   "action": "move",
+   "id": "TCH-2025-168",
+   "class_id": "SS1 Science"
+  },
+  {
+   "action": "move",
+   "id": "TCH-2025-169",
+   "class_id": "SS1 Science"
+  },
+  {
+   "action": "move",
+   "id": "TCH-2025-170",
+   "class_id": "SS1 Actuarial"
+  },
+  {
+   "action": "move",
+   "id": "TCH-2025-171",
+   "class_id": "SS1 Actuarial"
+  },
+  {
+   "action": "move",
+   "id": "TCH-2025-172",
+   "class_id": "SS1 Science"
+  },
+  {
+   "action": "move",
+   "id": "TCH-2025-173",
+   "class_id": "SS1 Science"
+  },
+  {
+   "action": "move",
+   "id": "TCH-2025-174",
+   "class_id": "SS1 Science"
+  },
+  {
+   "action": "move",
+   "id": "TCH-2025-175",
+   "class_id": "SS1 Actuarial"
+  },
+  {
+   "action": "move",
+   "id": "TCH-2025-176",
+   "class_id": "SS1 Actuarial"
+  },
+  {
+   "action": "move",
+   "id": "TCH-2025-177",
+   "class_id": "SS1 Science"
+  },
+  {
+   "action": "move",
+   "id": "TCH-2025-178",
+   "class_id": "SS1 Science"
+  },
+  {
+   "action": "move",
+   "id": "TCH-2025-179",
+   "class_id": "SS1 Science"
+  },
+  {
+   "action": "move",
+   "id": "TCH-2025-180",
+   "class_id": "SS1 Science"
+  },
+  {
+   "action": "move",
+   "id": "TCH-2025-182",
+   "class_id": "SS1 Science"
+  },
+  {
+   "action": "move",
+   "id": "TCH-2025-183",
+   "class_id": "SS1 Science"
+  },
+  {
+   "action": "add",
+   "full_name": "Akeredolu Damilare",
+   "class_id": "SS1 Actuarial",
+   "admission_type": "transfer_in",
+   "phone_id": "TCH-2025-409"
+  },
+  {
+   "action": "add",
+   "full_name": "Akintoye Ibrahim",
+   "class_id": "SS1 Actuarial",
+   "admission_type": "transfer_in",
+   "phone_id": "TCH-2025-410"
+  },
+  {
+   "action": "add",
+   "full_name": "Murphy Ubongabasi",
+   "class_id": "SS1 Actuarial",
+   "admission_type": "transfer_in",
+   "phone_id": "TCH-2025-411"
+  },
+  {
+   "action": "add",
+   "full_name": "Obiora Kenneth",
+   "class_id": "SS1 Actuarial",
+   "admission_type": "transfer_in",
+   "phone_id": "TCH-2025-412"
+  },
+  {
+   "action": "add",
+   "full_name": "Monday Hope",
+   "class_id": "SS1 Actuarial",
+   "admission_type": "transfer_in",
+   "phone_id": "TCH-2025-414"
+  },
+  {
+   "action": "add",
+   "full_name": "Bello Ibrahim",
+   "class_id": "SS1 Actuarial",
+   "admission_type": "transfer_in",
+   "phone_id": "TCH-2025-415"
+  },
+  {
+   "action": "add",
+   "full_name": "Omotosho Elisha",
+   "class_id": "SS1 Science",
+   "admission_type": "transfer_in",
+   "phone_id": "TCH-2025-417"
+  },
+  {
+   "action": "add",
+   "full_name": "Hassan Haniff",
+   "class_id": "SS1 Science",
+   "admission_type": "transfer_in",
+   "phone_id": "TCH-2025-418"
+  },
+  {
+   "action": "add",
+   "full_name": "Salimonu Maimuna",
+   "class_id": "SS1 Science",
+   "admission_type": "transfer_in",
+   "phone_id": "TCH-2025-419"
+  },
+  {
+   "action": "add",
+   "full_name": "Oladeji Abdul-Ganiyu",
+   "class_id": "SS1 Science",
+   "admission_type": "transfer_in",
+   "phone_id": "TCH-2025-420"
+  },
+  {
+   "action": "add",
+   "full_name": "Dominion Nekabari",
+   "class_id": "SS1 Science",
+   "admission_type": "transfer_in",
+   "phone_id": "TCH-2025-421"
+  },
+  {
+   "action": "add",
+   "full_name": "Ajayi Toluwase",
+   "class_id": "SS1 Science",
+   "admission_type": "transfer_in",
+   "phone_id": "TCH-2025-425"
+  },
+  {
+   "action": "add",
+   "full_name": "Odunsi Oluwadarasimi",
+   "class_id": "SS1 Science",
+   "admission_type": "transfer_in",
+   "phone_id": "TCH-2025-426"
+  },
+  {
+   "action": "add",
+   "full_name": "Obaoye Daniel",
+   "class_id": "SS1 Science",
+   "admission_type": "transfer_in",
+   "phone_id": "TCH-2025-428"
+  }
+ ]
+}

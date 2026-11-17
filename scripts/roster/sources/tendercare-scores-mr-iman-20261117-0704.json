@@ -1,0 +1,1046 @@
+{
+ "format": "tendercare-scores",
+ "version": 1,
+ "exportedAt": "2026-11-17T15:04:14.005Z",
+ "dataVersion": "0c174c2354",
+ "termId": "2026-2027-T1",
+ "device": "1cb243bb-d4e3-442d-bc10-c2978aea6583",
+ "teacher": {
+  "name": "Mr Iman",
+  "subjectIds": [
+   "business-studies",
+   "data-processing",
+   "further-math",
+   "history",
+   "mathematics"
+  ],
+  "classIds": [
+   "JSS1A",
+   "JSS1B",
+   "JSS2A",
+   "JSS2B",
+   "JSS3A",
+   "JSS3B",
+   "SS1 Science",
+   "SS1 Actuarial",
+   "SS2 Science",
+   "SS2 Actuarial",
+   "SS3 Science",
+   "SS3 Actuarial",
+   "SS1 Unassigned"
+  ]
+ },
+ "edits": [
+  {
+   "student_id": "TCH-2025-007",
+   "subject_id": "business-studies",
+   "term_id": "2026-2027-T1",
+   "ca": 0,
+   "ca_at": "2026-11-17T14:20:30.590Z",
+   "student_name": "Adeyemi Olamide",
+   "class_id": "JSS2A",
+   "subject_name": "Business Studies"
+  },
+  {
+   "student_id": "TCH-2025-030",
+   "subject_id": "business-studies",
+   "term_id": "2026-2027-T1",
+   "ca": 2,
+   "ca_at": "2026-11-17T14:32:13.658Z",
+   "student_name": "Adeniyi Nifemi",
+   "class_id": "JSS2B",
+   "subject_name": "Business Studies"
+  },
+  {
+   "student_id": "TCH-2025-059",
+   "subject_id": "business-studies",
+   "term_id": "2026-2027-T1",
+   "ca": 1,
+   "ca_at": "2026-11-17T14:22:27.510Z",
+   "student_name": "Abey Phoebe",
+   "class_id": "JSS3A",
+   "subject_name": "Business Studies"
+  },
+  {
+   "student_id": "TCH-2025-091",
+   "subject_id": "business-studies",
+   "term_id": "2026-2027-T1",
+   "ca": 2,
+   "ca_at": "2026-11-17T14:23:18.672Z",
+   "student_name": "Abolanle Nancy",
+   "class_id": "JSS3B",
+   "subject_name": "Business Studies"
+  },
+  {
+   "student_id": "TCH-2025-393",
+   "subject_id": "business-studies",
+   "term_id": "2026-2027-T1",
+   "ca": 2,
+   "ca_at": "2026-11-17T14:23:21.868Z",
+   "student_name": "Noragbon Beauty",
+   "class_id": "JSS3B",
+   "subject_name": "Business Studies"
+  },
+  {
+   "student_id": "TCH-2025-401",
+   "subject_id": "business-studies",
+   "term_id": "2026-2027-T1",
+   "ca": null,
+   "ca_at": "2026-11-17T14:21:27.637Z",
+   "student_name": "Fakunmoju Enoch",
+   "class_id": "JSS2A",
+   "subject_name": "Business Studies"
+  },
+  {
+   "student_id": "TCH-2025-432",
+   "subject_id": "business-studies",
+   "term_id": "2026-2027-T1",
+   "ca": 1,
+   "ca_at": "2026-11-17T14:16:55.038Z",
+   "student_name": "Folorunsho Boluwatife",
+   "class_id": "JSS1A",
+   "subject_name": "Business Studies"
+  },
+  {
+   "student_id": "TCH-2025-433",
+   "subject_id": "business-studies",
+   "term_id": "2026-2027-T1",
+   "ca": 1,
+   "ca_at": "2026-11-17T14:21:30.626Z",
+   "student_name": "Adeyemo Olamide",
+   "class_id": "JSS2A",
+   "subject_name": "Business Studies"
+  },
+  {
+   "student_id": "TCH-2026-008",
+   "subject_id": "business-studies",
+   "term_id": "2026-2027-T1",
+   "ca": 0,
+   "ca_at": "2026-11-17T14:16:50.151Z",
+   "student_name": "Folorunsho Boluwatif",
+   "class_id": "JSS1A",
+   "subject_name": "Business Studies"
+  },
+  {
+   "student_id": "TCH-2026-030",
+   "subject_id": "business-studies",
+   "term_id": "2026-2027-T1",
+   "ca": 2,
+   "ca_at": "2026-11-17T14:31:47.178Z",
+   "student_name": "Abdulmojeed Aliamin",
+   "class_id": "JSS1B",
+   "subject_name": "Business Studies"
+  },
+  {
+   "student_id": "TCH-2025-117",
+   "subject_id": "data-processing",
+   "term_id": "2026-2027-T1",
+   "ca": 2,
+   "ca_at": "2026-11-17T15:01:24.050Z",
+   "student_name": "Adebayo Dorcas",
+   "class_id": "SS1 Actuarial",
+   "subject_name": "Data Processing"
+  },
+  {
+   "student_id": "TCH-2025-118",
+   "subject_id": "data-processing",
+   "term_id": "2026-2027-T1",
+   "ca": 2,
+   "ca_at": "2026-11-17T15:01:25.396Z",
+   "student_name": "Adebayo Favour",
+   "class_id": "SS1 Actuarial",
+   "subject_name": "Data Processing"
+  },
+  {
+   "student_id": "TCH-2025-119",
+   "subject_id": "data-processing",
+   "term_id": "2026-2027-T1",
+   "ca": 2,
+   "ca_at": "2026-11-17T14:59:35.164Z",
+   "student_name": "Adeniyi Darasimi",
+   "class_id": "SS1 Science",
+   "subject_name": "Data Processing"
+  },
+  {
+   "student_id": "TCH-2025-120",
+   "subject_id": "data-processing",
+   "term_id": "2026-2027-T1",
+   "ca": 2,
+   "ca_at": "2026-11-17T15:01:26.679Z",
+   "student_name": "Afolayan Joshua",
+   "class_id": "SS1 Actuarial",
+   "subject_name": "Data Processing"
+  },
+  {
+   "student_id": "TCH-2025-121",
+   "subject_id": "data-processing",
+   "term_id": "2026-2027-T1",
+   "ca": 2,
+   "ca_at": "2026-11-17T15:01:28.232Z",
+   "student_name": "Akanji Favour",
+   "class_id": "SS1 Actuarial",
+   "subject_name": "Data Processing"
+  },
+  {
+   "student_id": "TCH-2025-122",
+   "subject_id": "data-processing",
+   "term_id": "2026-2027-T1",
+   "ca": 2,
+   "ca_at": "2026-11-17T15:01:29.536Z",
+   "student_name": "Akinbiyi Glory",
+   "class_id": "SS1 Actuarial",
+   "subject_name": "Data Processing"
+  },
+  {
+   "student_id": "TCH-2025-125",
+   "subject_id": "data-processing",
+   "term_id": "2026-2027-T1",
+   "ca": 2,
+   "ca_at": "2026-11-17T14:59:36.552Z",
+   "student_name": "Balogun Jomiloju",
+   "class_id": "SS1 Science",
+   "subject_name": "Data Processing"
+  },
+  {
+   "student_id": "TCH-2025-127",
+   "subject_id": "data-processing",
+   "term_id": "2026-2027-T1",
+   "ca": 2,
+   "ca_at": "2026-11-17T14:59:42.637Z",
+   "student_name": "Emmanuel Maxwell",
+   "class_id": "SS1 Science",
+   "subject_name": "Data Processing"
+  },
+  {
+   "student_id": "TCH-2025-128",
+   "subject_id": "data-processing",
+   "term_id": "2026-2027-T1",
+   "ca": 2,
+   "ca_at": "2026-11-17T14:59:47.131Z",
+   "student_name": "Emmanuel Priscilla",
+   "class_id": "SS1 Science",
+   "subject_name": "Data Processing"
+  },
+  {
+   "student_id": "TCH-2025-129",
+   "subject_id": "data-processing",
+   "term_id": "2026-2027-T1",
+   "ca": 2,
+   "ca_at": "2026-11-17T14:59:52.019Z",
+   "student_name": "Fatuki Oluwanifemi",
+   "class_id": "SS1 Science",
+   "subject_name": "Data Processing"
+  },
+  {
+   "student_id": "TCH-2025-130",
+   "subject_id": "data-processing",
+   "term_id": "2026-2027-T1",
+   "ca": 2,
+   "ca_at": "2026-11-17T14:59:53.533Z",
+   "student_name": "Folorunsho Precious",
+   "class_id": "SS1 Science",
+   "subject_name": "Data Processing"
+  },
+  {
+   "student_id": "TCH-2025-131",
+   "subject_id": "data-processing",
+   "term_id": "2026-2027-T1",
+   "ca": 2,
+   "ca_at": "2026-11-17T15:01:30.778Z",
+   "student_name": "Garba Albarka",
+   "class_id": "SS1 Actuarial",
+   "subject_name": "Data Processing"
+  },
+  {
+   "student_id": "TCH-2025-132",
+   "subject_id": "data-processing",
+   "term_id": "2026-2027-T1",
+   "ca": 2,
+   "ca_at": "2026-11-17T15:01:32.012Z",
+   "student_name": "Ibhadore Godswill",
+   "class_id": "SS1 Actuarial",
+   "subject_name": "Data Processing"
+  },
+  {
+   "student_id": "TCH-2025-133",
+   "subject_id": "data-processing",
+   "term_id": "2026-2027-T1",
+   "ca": 2,
+   "ca_at": "2026-11-17T15:01:33.125Z",
+   "student_name": "Irinyemi Jomiloju Praise",
+   "class_id": "SS1 Actuarial",
+   "subject_name": "Data Processing"
+  },
+  {
+   "student_id": "TCH-2025-134",
+   "subject_id": "data-processing",
+   "term_id": "2026-2027-T1",
+   "ca": 2,
+   "ca_at": "2026-11-17T14:59:55.023Z",
+   "student_name": "Kolade Idera",
+   "class_id": "SS1 Science",
+   "subject_name": "Data Processing"
+  },
+  {
+   "student_id": "TCH-2025-135",
+   "subject_id": "data-processing",
+   "term_id": "2026-2027-T1",
+   "ca": 2,
+   "ca_at": "2026-11-17T15:01:34.312Z",
+   "student_name": "Nanmwa Victor",
+   "class_id": "SS1 Actuarial",
+   "subject_name": "Data Processing"
+  },
+  {
+   "student_id": "TCH-2025-136",
+   "subject_id": "data-processing",
+   "term_id": "2026-2027-T1",
+   "ca": 2,
+   "ca_at": "2026-11-17T14:59:56.521Z",
+   "student_name": "Nathaniel David",
+   "class_id": "SS1 Science",
+   "subject_name": "Data Processing"
+  },
+  {
+   "student_id": "TCH-2025-137",
+   "subject_id": "data-processing",
+   "term_id": "2026-2027-T1",
+   "ca": 2,
+   "ca_at": "2026-11-17T14:59:57.692Z",
+   "student_name": "Nelson Sonia C.C",
+   "class_id": "SS1 Science",
+   "subject_name": "Data Processing"
+  },
+  {
+   "student_id": "TCH-2025-138",
+   "subject_id": "data-processing",
+   "term_id": "2026-2027-T1",
+   "ca": 2,
+   "ca_at": "2026-11-17T15:01:37.300Z",
+   "student_name": "Nyakos Nurudeen",
+   "class_id": "SS1 Actuarial",
+   "subject_name": "Data Processing"
+  },
+  {
+   "student_id": "TCH-2025-139",
+   "subject_id": "data-processing",
+   "term_id": "2026-2027-T1",
+   "ca": 2,
+   "ca_at": "2026-11-17T14:59:59.659Z",
+   "student_name": "Ogunlana Abdullahi",
+   "class_id": "SS1 Science",
+   "subject_name": "Data Processing"
+  },
+  {
+   "student_id": "TCH-2025-140",
+   "subject_id": "data-processing",
+   "term_id": "2026-2027-T1",
+   "ca": 2,
+   "ca_at": "2026-11-17T15:01:41.136Z",
+   "student_name": "Okwuabudike Victoria",
+   "class_id": "SS1 Actuarial",
+   "subject_name": "Data Processing"
+  },
+  {
+   "student_id": "TCH-2025-141",
+   "subject_id": "data-processing",
+   "term_id": "2026-2027-T1",
+   "ca": 0,
+   "ca_at": "2026-11-17T14:23:54.969Z",
+   "student_name": "Olatunji Al-meen",
+   "class_id": "SS1 Science",
+   "subject_name": "Data Processing"
+  },
+  {
+   "student_id": "TCH-2025-142",
+   "subject_id": "data-processing",
+   "term_id": "2026-2027-T1",
+   "ca": 0,
+   "ca_at": "2026-11-17T14:28:01.718Z",
+   "student_name": "Olowu Fausiyat",
+   "class_id": "SS1 Science",
+   "subject_name": "Data Processing"
+  },
+  {
+   "student_id": "TCH-2025-143",
+   "subject_id": "data-processing",
+   "term_id": "2026-2027-T1",
+   "ca": 2,
+   "ca_at": "2026-11-17T15:01:42.386Z",
+   "student_name": "Oluborode True Vine",
+   "class_id": "SS1 Actuarial",
+   "subject_name": "Data Processing"
+  },
+  {
+   "student_id": "TCH-2025-144",
+   "subject_id": "data-processing",
+   "term_id": "2026-2027-T1",
+   "ca": 2,
+   "ca_at": "2026-11-17T15:00:03.489Z",
+   "student_name": "Oseni Abdulsamod",
+   "class_id": "SS1 Science",
+   "subject_name": "Data Processing"
+  },
+  {
+   "student_id": "TCH-2025-145",
+   "subject_id": "data-processing",
+   "term_id": "2026-2027-T1",
+   "ca": 2,
+   "ca_at": "2026-11-17T15:00:04.793Z",
+   "student_name": "Owoyele Ramadan",
+   "class_id": "SS1 Science",
+   "subject_name": "Data Processing"
+  },
+  {
+   "student_id": "TCH-2025-146",
+   "subject_id": "data-processing",
+   "term_id": "2026-2027-T1",
+   "ca": 2,
+   "ca_at": "2026-11-17T15:00:06.007Z",
+   "student_name": "Oyewole Israel",
+   "class_id": "SS1 Science",
+   "subject_name": "Data Processing"
+  },
+  {
+   "student_id": "TCH-2025-148",
+   "subject_id": "data-processing",
+   "term_id": "2026-2027-T1",
+   "ca": 2,
+   "ca_at": "2026-11-17T15:01:44.112Z",
+   "student_name": "Sunny Blessing",
+   "class_id": "SS1 Actuarial",
+   "subject_name": "Data Processing"
+  },
+  {
+   "student_id": "TCH-2025-149",
+   "subject_id": "data-processing",
+   "term_id": "2026-2027-T1",
+   "ca": 0,
+   "ca_at": "2026-11-17T14:26:04.133Z",
+   "student_name": "Waheed Aduragbemi",
+   "class_id": "SS1 Actuarial",
+   "subject_name": "Data Processing"
+  },
+  {
+   "student_id": "TCH-2025-150",
+   "subject_id": "data-processing",
+   "term_id": "2026-2027-T1",
+   "ca": 2,
+   "ca_at": "2026-11-17T15:00:07.194Z",
+   "student_name": "Wisdom Donald",
+   "class_id": "SS1 Science",
+   "subject_name": "Data Processing"
+  },
+  {
+   "student_id": "TCH-2025-151",
+   "subject_id": "data-processing",
+   "term_id": "2026-2027-T1",
+   "ca": 2,
+   "ca_at": "2026-11-17T15:01:45.754Z",
+   "student_name": "Yusuf Taiwo",
+   "class_id": "SS1 Actuarial",
+   "subject_name": "Data Processing"
+  },
+  {
+   "student_id": "TCH-2025-152",
+   "subject_id": "data-processing",
+   "term_id": "2026-2027-T1",
+   "ca": 2,
+   "ca_at": "2026-11-17T15:00:08.825Z",
+   "student_name": "Yusuff Abdul Sattar",
+   "class_id": "SS1 Science",
+   "subject_name": "Data Processing"
+  },
+  {
+   "student_id": "TCH-2025-153",
+   "subject_id": "data-processing",
+   "term_id": "2026-2027-T1",
+   "ca": 0,
+   "ca_at": "2026-11-17T14:24:18.429Z",
+   "student_name": "Abdul Razak Somod",
+   "class_id": "SS1 Science",
+   "subject_name": "Data Processing"
+  },
+  {
+   "student_id": "TCH-2025-154",
+   "subject_id": "data-processing",
+   "term_id": "2026-2027-T1",
+   "ca": 2,
+   "ca_at": "2026-11-17T15:00:12.932Z",
+   "student_name": "Adebisi Aishat",
+   "class_id": "SS1 Science",
+   "subject_name": "Data Processing"
+  },
+  {
+   "student_id": "TCH-2025-155",
+   "subject_id": "data-processing",
+   "term_id": "2026-2027-T1",
+   "ca": 2,
+   "ca_at": "2026-11-17T15:01:49.447Z",
+   "student_name": "Adebisi Ayomide",
+   "class_id": "SS1 Actuarial",
+   "subject_name": "Data Processing"
+  },
+  {
+   "student_id": "TCH-2025-156",
+   "subject_id": "data-processing",
+   "term_id": "2026-2027-T1",
+   "ca": 2,
+   "ca_at": "2026-11-17T15:00:14.154Z",
+   "student_name": "Adebisi Yusuf",
+   "class_id": "SS1 Science",
+   "subject_name": "Data Processing"
+  },
+  {
+   "student_id": "TCH-2025-157",
+   "subject_id": "data-processing",
+   "term_id": "2026-2027-T1",
+   "ca": 2,
+   "ca_at": "2026-11-17T15:00:15.999Z",
+   "student_name": "Adeniyi Korede",
+   "class_id": "SS1 Science",
+   "subject_name": "Data Processing"
+  },
+  {
+   "student_id": "TCH-2025-158",
+   "subject_id": "data-processing",
+   "term_id": "2026-2027-T1",
+   "ca": 2,
+   "ca_at": "2026-11-17T15:00:17.292Z",
+   "student_name": "Adewunmi Oluwademilade",
+   "class_id": "SS1 Science",
+   "subject_name": "Data Processing"
+  },
+  {
+   "student_id": "TCH-2025-159",
+   "subject_id": "data-processing",
+   "term_id": "2026-2027-T1",
+   "ca": 2,
+   "ca_at": "2026-11-17T15:00:20.819Z",
+   "student_name": "Agbo Favour",
+   "class_id": "SS1 Science",
+   "subject_name": "Data Processing"
+  },
+  {
+   "student_id": "TCH-2025-160",
+   "subject_id": "data-processing",
+   "term_id": "2026-2027-T1",
+   "ca": 2,
+   "ca_at": "2026-11-17T15:00:22.171Z",
+   "student_name": "Akinfe Christianah",
+   "class_id": "SS1 Science",
+   "subject_name": "Data Processing"
+  },
+  {
+   "student_id": "TCH-2025-164",
+   "subject_id": "data-processing",
+   "term_id": "2026-2027-T1",
+   "ca": 2,
+   "ca_at": "2026-11-17T15:01:51.559Z",
+   "student_name": "Balogun Tobiloba",
+   "class_id": "SS1 Actuarial",
+   "subject_name": "Data Processing"
+  },
+  {
+   "student_id": "TCH-2025-165",
+   "subject_id": "data-processing",
+   "term_id": "2026-2027-T1",
+   "ca": 2,
+   "ca_at": "2026-11-17T15:01:53.140Z",
+   "student_name": "Enabulele Israel",
+   "class_id": "SS1 Actuarial",
+   "subject_name": "Data Processing"
+  },
+  {
+   "student_id": "TCH-2025-166",
+   "subject_id": "data-processing",
+   "term_id": "2026-2027-T1",
+   "ca": 2,
+   "ca_at": "2026-11-17T15:01:54.486Z",
+   "student_name": "Faluyi Israel",
+   "class_id": "SS1 Actuarial",
+   "subject_name": "Data Processing"
+  },
+  {
+   "student_id": "TCH-2025-167",
+   "subject_id": "data-processing",
+   "term_id": "2026-2027-T1",
+   "ca": 2,
+   "ca_at": "2026-11-17T15:00:23.447Z",
+   "student_name": "Folorunsho Alexander",
+   "class_id": "SS1 Science",
+   "subject_name": "Data Processing"
+  },
+  {
+   "student_id": "TCH-2025-168",
+   "subject_id": "data-processing",
+   "term_id": "2026-2027-T1",
+   "ca": 2,
+   "ca_at": "2026-11-17T15:00:24.662Z",
+   "student_name": "Gabriel Peace",
+   "class_id": "SS1 Science",
+   "subject_name": "Data Processing"
+  },
+  {
+   "student_id": "TCH-2025-169",
+   "subject_id": "data-processing",
+   "term_id": "2026-2027-T1",
+   "ca": 2,
+   "ca_at": "2026-11-17T15:00:28.399Z",
+   "student_name": "Lawal Esther",
+   "class_id": "SS1 Science",
+   "subject_name": "Data Processing"
+  },
+  {
+   "student_id": "TCH-2025-170",
+   "subject_id": "data-processing",
+   "term_id": "2026-2027-T1",
+   "ca": 2,
+   "ca_at": "2026-11-17T15:01:58.602Z",
+   "student_name": "Medua Angel",
+   "class_id": "SS1 Actuarial",
+   "subject_name": "Data Processing"
+  },
+  {
+   "student_id": "TCH-2025-171",
+   "subject_id": "data-processing",
+   "term_id": "2026-2027-T1",
+   "ca": 2,
+   "ca_at": "2026-11-17T15:01:59.731Z",
+   "student_name": "Nyakos Naimat",
+   "class_id": "SS1 Actuarial",
+   "subject_name": "Data Processing"
+  },
+  {
+   "student_id": "TCH-2025-172",
+   "subject_id": "data-processing",
+   "term_id": "2026-2027-T1",
+   "ca": 2,
+   "ca_at": "2026-11-17T15:00:29.755Z",
+   "student_name": "Olajesu Kayode",
+   "class_id": "SS1 Science",
+   "subject_name": "Data Processing"
+  },
+  {
+   "student_id": "TCH-2025-173",
+   "subject_id": "data-processing",
+   "term_id": "2026-2027-T1",
+   "ca": 2,
+   "ca_at": "2026-11-17T15:00:30.880Z",
+   "student_name": "Olasunkanmi Ayobami",
+   "class_id": "SS1 Science",
+   "subject_name": "Data Processing"
+  },
+  {
+   "student_id": "TCH-2025-174",
+   "subject_id": "data-processing",
+   "term_id": "2026-2027-T1",
+   "ca": 2,
+   "ca_at": "2026-11-17T15:00:32.081Z",
+   "student_name": "Olukotun Feranmi",
+   "class_id": "SS1 Science",
+   "subject_name": "Data Processing"
+  },
+  {
+   "student_id": "TCH-2025-175",
+   "subject_id": "data-processing",
+   "term_id": "2026-2027-T1",
+   "ca": 2,
+   "ca_at": "2026-11-17T15:02:04.134Z",
+   "student_name": "Onafowokan Ridwan",
+   "class_id": "SS1 Actuarial",
+   "subject_name": "Data Processing"
+  },
+  {
+   "student_id": "TCH-2025-176",
+   "subject_id": "data-processing",
+   "term_id": "2026-2027-T1",
+   "ca": 2,
+   "ca_at": "2026-11-17T15:02:06.563Z",
+   "student_name": "Opatimeyin David",
+   "class_id": "SS1 Actuarial",
+   "subject_name": "Data Processing"
+  },
+  {
+   "student_id": "TCH-2025-177",
+   "subject_id": "data-processing",
+   "term_id": "2026-2027-T1",
+   "ca": 2,
+   "ca_at": "2026-11-17T15:00:33.393Z",
+   "student_name": "Oyeniyi David",
+   "class_id": "SS1 Science",
+   "subject_name": "Data Processing"
+  },
+  {
+   "student_id": "TCH-2025-178",
+   "subject_id": "data-processing",
+   "term_id": "2026-2027-T1",
+   "ca": 2,
+   "ca_at": "2026-11-17T15:00:34.593Z",
+   "student_name": "Popoola Aduragbemi",
+   "class_id": "SS1 Science",
+   "subject_name": "Data Processing"
+  },
+  {
+   "student_id": "TCH-2025-179",
+   "subject_id": "data-processing",
+   "term_id": "2026-2027-T1",
+   "ca": 2,
+   "ca_at": "2026-11-17T15:00:38.361Z",
+   "student_name": "Rotimi Eniola",
+   "class_id": "SS1 Science",
+   "subject_name": "Data Processing"
+  },
+  {
+   "student_id": "TCH-2025-180",
+   "subject_id": "data-processing",
+   "term_id": "2026-2027-T1",
+   "ca": 2,
+   "ca_at": "2026-11-17T15:00:45.112Z",
+   "student_name": "Samson Loveth",
+   "class_id": "SS1 Science",
+   "subject_name": "Data Processing"
+  },
+  {
+   "student_id": "TCH-2025-181",
+   "subject_id": "data-processing",
+   "term_id": "2026-2027-T1",
+   "ca": 2,
+   "ca_at": "2026-11-17T15:00:46.257Z",
+   "student_name": "Samuel Zainab",
+   "class_id": "SS1 Science",
+   "subject_name": "Data Processing"
+  },
+  {
+   "student_id": "TCH-2025-182",
+   "subject_id": "data-processing",
+   "term_id": "2026-2027-T1",
+   "ca": 2,
+   "ca_at": "2026-11-17T15:00:50.035Z",
+   "student_name": "Soyode Emmanuella",
+   "class_id": "SS1 Science",
+   "subject_name": "Data Processing"
+  },
+  {
+   "student_id": "TCH-2025-183",
+   "subject_id": "data-processing",
+   "term_id": "2026-2027-T1",
+   "ca": 2,
+   "ca_at": "2026-11-17T15:00:51.912Z",
+   "student_name": "Uduakhomo Peace",
+   "class_id": "SS1 Science",
+   "subject_name": "Data Processing"
+  },
+  {
+   "student_id": "TCH-2025-208",
+   "subject_id": "data-processing",
+   "term_id": "2026-2027-T1",
+   "ca": 0,
+   "ca_at": "2026-11-17T14:26:46.078Z",
+   "student_name": "Hassanat",
+   "class_id": "SS2 Science",
+   "subject_name": "Data Processing"
+  },
+  {
+   "student_id": "TCH-2025-213",
+   "subject_id": "data-processing",
+   "term_id": "2026-2027-T1",
+   "ca": 0,
+   "ca_at": "2026-11-17T14:27:10.133Z",
+   "student_name": "Momoh Divine",
+   "class_id": "SS2 Science",
+   "subject_name": "Data Processing"
+  },
+  {
+   "student_id": "TCH-2025-234",
+   "subject_id": "data-processing",
+   "term_id": "2026-2027-T1",
+   "ca": 0,
+   "ca_at": "2026-11-17T14:28:29.811Z",
+   "student_name": "Abdulmateen saheed",
+   "class_id": "SS2 Actuarial",
+   "subject_name": "Data Processing"
+  },
+  {
+   "student_id": "TCH-2025-270",
+   "subject_id": "data-processing",
+   "term_id": "2026-2027-T1",
+   "ca": 2,
+   "ca_at": "2026-11-17T14:32:46.694Z",
+   "student_name": "Abdullahi Malik",
+   "class_id": "SS3 Science",
+   "subject_name": "Data Processing"
+  },
+  {
+   "student_id": "TCH-2025-316",
+   "subject_id": "data-processing",
+   "term_id": "2026-2027-T1",
+   "ca": 0,
+   "ca_at": "2026-11-17T14:30:52.134Z",
+   "student_name": "Ibadore Miracle",
+   "class_id": "SS3 Actuarial",
+   "subject_name": "Data Processing"
+  },
+  {
+   "student_id": "TCH-2025-394",
+   "subject_id": "data-processing",
+   "term_id": "2026-2027-T1",
+   "ca": 1,
+   "ca_at": "2026-11-17T14:26:52.762Z",
+   "student_name": "Ramos Hassanat",
+   "class_id": "SS2 Science",
+   "subject_name": "Data Processing"
+  },
+  {
+   "student_id": "TCH-2025-395",
+   "subject_id": "data-processing",
+   "term_id": "2026-2027-T1",
+   "ca": 1,
+   "ca_at": "2026-11-17T14:27:01.429Z",
+   "student_name": "Edwin Divine",
+   "class_id": "SS2 Science",
+   "subject_name": "Data Processing"
+  },
+  {
+   "student_id": "TCH-2025-396",
+   "subject_id": "data-processing",
+   "term_id": "2026-2027-T1",
+   "ca": 1,
+   "ca_at": "2026-11-17T14:28:35.919Z",
+   "student_name": "Abdulmojeed Saheed",
+   "class_id": "SS2 Actuarial",
+   "subject_name": "Data Processing"
+  },
+  {
+   "student_id": "TCH-2025-409",
+   "subject_id": "data-processing",
+   "term_id": "2026-2027-T1",
+   "ca": 2,
+   "ca_at": "2026-11-17T15:02:09.337Z",
+   "student_name": "Akeredolu Damilare",
+   "class_id": "SS1 Actuarial",
+   "subject_name": "Data Processing"
+  },
+  {
+   "student_id": "TCH-2025-410",
+   "subject_id": "data-processing",
+   "term_id": "2026-2027-T1",
+   "ca": 2,
+   "ca_at": "2026-11-17T15:02:11.628Z",
+   "student_name": "Akintoye Ibrahim",
+   "class_id": "SS1 Actuarial",
+   "subject_name": "Data Processing"
+  },
+  {
+   "student_id": "TCH-2025-411",
+   "subject_id": "data-processing",
+   "term_id": "2026-2027-T1",
+   "ca": 2,
+   "ca_at": "2026-11-17T15:02:12.905Z",
+   "student_name": "Murphy Ubongabasi",
+   "class_id": "SS1 Actuarial",
+   "subject_name": "Data Processing"
+  },
+  {
+   "student_id": "TCH-2025-412",
+   "subject_id": "data-processing",
+   "term_id": "2026-2027-T1",
+   "ca": 2,
+   "ca_at": "2026-11-17T15:02:14.230Z",
+   "student_name": "Obiora Kenneth",
+   "class_id": "SS1 Actuarial",
+   "subject_name": "Data Processing"
+  },
+  {
+   "student_id": "TCH-2025-413",
+   "subject_id": "data-processing",
+   "term_id": "2026-2027-T1",
+   "ca": 1,
+   "ca_at": "2026-11-17T14:25:58.722Z",
+   "student_name": "Toheeb Waheeb Aduragbemi",
+   "class_id": "SS1 Actuarial",
+   "subject_name": "Data Processing"
+  },
+  {
+   "student_id": "TCH-2025-414",
+   "subject_id": "data-processing",
+   "term_id": "2026-2027-T1",
+   "ca": 2,
+   "ca_at": "2026-11-17T15:02:17.729Z",
+   "student_name": "Monday Hope",
+   "class_id": "SS1 Actuarial",
+   "subject_name": "Data Processing"
+  },
+  {
+   "student_id": "TCH-2025-415",
+   "subject_id": "data-processing",
+   "term_id": "2026-2027-T1",
+   "ca": 2,
+   "ca_at": "2026-11-17T15:02:18.909Z",
+   "student_name": "Bello Ibrahim",
+   "class_id": "SS1 Actuarial",
+   "subject_name": "Data Processing"
+  },
+  {
+   "student_id": "TCH-2025-416",
+   "subject_id": "data-processing",
+   "term_id": "2026-2027-T1",
+   "ca": 2,
+   "ca_at": "2026-11-17T15:02:20.767Z",
+   "student_name": "Osideko Oyinkosola Mary",
+   "class_id": "SS1 Actuarial",
+   "subject_name": "Data Processing"
+  },
+  {
+   "student_id": "TCH-2025-417",
+   "subject_id": "data-processing",
+   "term_id": "2026-2027-T1",
+   "ca": 2,
+   "ca_at": "2026-11-17T15:00:53.120Z",
+   "student_name": "Omotosho Elisha",
+   "class_id": "SS1 Science",
+   "subject_name": "Data Processing"
+  },
+  {
+   "student_id": "TCH-2025-418",
+   "subject_id": "data-processing",
+   "term_id": "2026-2027-T1",
+   "ca": 2,
+   "ca_at": "2026-11-17T15:00:54.777Z",
+   "student_name": "Hassan Haniff",
+   "class_id": "SS1 Science",
+   "subject_name": "Data Processing"
+  },
+  {
+   "student_id": "TCH-2025-419",
+   "subject_id": "data-processing",
+   "term_id": "2026-2027-T1",
+   "ca": 2,
+   "ca_at": "2026-11-17T15:00:56.115Z",
+   "student_name": "Salimonu Maimuna",
+   "class_id": "SS1 Science",
+   "subject_name": "Data Processing"
+  },
+  {
+   "student_id": "TCH-2025-420",
+   "subject_id": "data-processing",
+   "term_id": "2026-2027-T1",
+   "ca": 2,
+   "ca_at": "2026-11-17T15:00:57.413Z",
+   "student_name": "Oladeji Abdul-Ganiyu",
+   "class_id": "SS1 Science",
+   "subject_name": "Data Processing"
+  },
+  {
+   "student_id": "TCH-2025-421",
+   "subject_id": "data-processing",
+   "term_id": "2026-2027-T1",
+   "ca": 2,
+   "ca_at": "2026-11-17T15:01:01.332Z",
+   "student_name": "Dominion Nekabari",
+   "class_id": "SS1 Science",
+   "subject_name": "Data Processing"
+  },
+  {
+   "student_id": "TCH-2025-422",
+   "subject_id": "data-processing",
+   "term_id": "2026-2027-T1",
+   "ca": 2,
+   "ca_at": "2026-11-17T15:01:02.823Z",
+   "student_name": "Rotimi Eniola",
+   "class_id": "SS1 Science",
+   "subject_name": "Data Processing"
+  },
+  {
+   "student_id": "TCH-2025-423",
+   "subject_id": "data-processing",
+   "term_id": "2026-2027-T1",
+   "ca": 1,
+   "ca_at": "2026-11-17T14:25:05.087Z",
+   "student_name": "Olatunji Al-ameen",
+   "class_id": "SS1 Science",
+   "subject_name": "Data Processing"
+  },
+  {
+   "student_id": "TCH-2025-424",
+   "subject_id": "data-processing",
+   "term_id": "2026-2027-T1",
+   "ca": 1,
+   "ca_at": "2026-11-17T14:24:33.956Z",
+   "student_name": "Abdul-Rasaq Somod",
+   "class_id": "SS1 Science",
+   "subject_name": "Data Processing"
+  },
+  {
+   "student_id": "TCH-2025-425",
+   "subject_id": "data-processing",
+   "term_id": "2026-2027-T1",
+   "ca": 2,
+   "ca_at": "2026-11-17T15:01:04.003Z",
+   "student_name": "Ajayi Toluwase",
+   "class_id": "SS1 Science",
+   "subject_name": "Data Processing"
+  },
+  {
+   "student_id": "TCH-2025-426",
+   "subject_id": "data-processing",
+   "term_id": "2026-2027-T1",
+   "ca": 2,
+   "ca_at": "2026-11-17T15:01:05.688Z",
+   "student_name": "Odunsi Oluwadarasimi",
+   "class_id": "SS1 Science",
+   "subject_name": "Data Processing"
+  },
+  {
+   "student_id": "TCH-2025-427",
+   "subject_id": "data-processing",
+   "term_id": "2026-2027-T1",
+   "ca": 1,
+   "ca_at": "2026-11-17T14:28:08.496Z",
+   "student_name": "Olowu Faosiyat",
+   "class_id": "SS1 Science",
+   "subject_name": "Data Processing"
+  },
+  {
+   "student_id": "TCH-2025-428",
+   "subject_id": "data-processing",
+   "term_id": "2026-2027-T1",
+   "ca": 2,
+   "ca_at": "2026-11-17T15:01:07.054Z",
+   "student_name": "Obaoye Daniel",
+   "class_id": "SS1 Science",
+   "subject_name": "Data Processing"
+  },
+  {
+   "student_id": "TCH-2025-434",
+   "subject_id": "data-processing",
+   "term_id": "2026-2027-T1",
+   "ca": 1,
+   "ca_at": "2026-11-17T14:30:57.429Z",
+   "student_name": "Ibhadore Miracle",
+   "class_id": "SS3 Actuarial",
+   "subject_name": "Data Processing"
+  },
+  {
+   "student_id": "TCH-2025-119",
+   "subject_id": "further-math",
+   "term_id": "2026-2027-T1",
+   "ca": 0,
+   "ca_at": "2026-11-17T13:46:44.784Z",
+   "student_name": "Adeniyi Darasimi",
+   "class_id": "SS1 Science",
+   "subject_name": "Further Math"
+  },
+  {
+   "student_id": "TCH-2025-129",
+   "subject_id": "further-math",
+   "term_id": "2026-2027-T1",
+   "ca": 0,
+   "ca_at": "2026-11-17T13:46:49.555Z",
+   "student_name": "Fatuki Oluwanifemi",
+   "class_id": "SS1 Science",
+   "subject_name": "Further Math"
+  }
+ ],
+ "checksum": "41b497853aa5d674894d25d34b7af7e4b0b9e23da8132357a0d9ae9e952b16bb"
+}

@@ -1,0 +1,84 @@
+{
+  "student_id": "TCH-2026-074",
+  "full_name": "Odunsi Oluwadarasimi",
+  "class_arm": "SS1 Science",
+  "entry_year": "2023/2024",
+  "years": [
+    {
+      "academic_year": "2023/2024",
+      "class_at_time": "(prior year, not tracked yet)",
+      "is_current": false,
+      "terms": [
+        {
+          "term_name": "First",
+          "digitized": false
+        },
+        {
+          "term_name": "Second",
+          "digitized": false
+        },
+        {
+          "term_name": "Third",
+          "digitized": false
+        }
+      ]
+    },
+    {
+      "academic_year": "2024/2025",
+      "class_at_time": "(prior year, not tracked yet)",
+      "is_current": false,
+      "terms": [
+        {
+          "term_name": "First",
+          "digitized": false
+        },
+        {
+          "term_name": "Second",
+          "digitized": false
+        },
+        {
+          "term_name": "Third",
+          "digitized": false
+        }
+      ]
+    },
+    {
+      "academic_year": "2025/2026",
+      "class_at_time": "(prior year, not tracked yet)",
+      "is_current": false,
+      "terms": [
+        {
+          "term_name": "First",
+          "digitized": false
+        },
+        {
+          "term_name": "Second",
+          "digitized": false
+        },
+        {
+          "term_name": "Third",
+          "digitized": false
+        }
+      ]
+    },
+    {
+      "academic_year": "2026/2027",
+      "class_at_time": "SS1 Science",
+      "is_current": true,
+      "terms": [
+        {
+          "term_name": "First",
+          "digitized": false
+        },
+        {
+          "term_name": "Second",
+          "digitized": false
+        },
+        {
+          "term_name": "Third",
+          "digitized": false
+        }
+      ]
+    }
+  ]
+}
