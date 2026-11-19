@@ -19,6 +19,7 @@
 <svelte:head>
 	<link rel="icon" href={favicon} />
 	<link rel="manifest" href="/manifest.json" />
+	<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
 	<meta name="theme-color" content="#3A1A5C" />
 </svelte:head>
 
