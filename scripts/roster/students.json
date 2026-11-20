@@ -1,6 +1,6 @@
 {
  "_about": "CANONICAL roster. Edit only via scripts/roster/apply_changes.py; regenerate every hardcoded copy with scripts/roster/publish.py. status: active | graduated | left. Legacy students (before the 2026/27 session) have null admission fields on purpose -- never inferred.",
- "as_of": "2026-11-17",
+ "as_of": "2026-11-20",
  "session": "2026/2027",
  "students": [
   {
@@ -3765,6 +3765,46 @@
    "id": "TCH-2026-081",
    "full_name": "Olugbodee Tajudeen",
    "class_id": "SS2 Science",
+   "status": "active",
+   "admitted_academic_year": "2026/2027",
+   "admission_type": "transfer_in"
+  },
+  {
+   "id": "TCH-2026-082",
+   "full_name": "Falola Omotayo",
+   "class_id": "SS2 Actuarial",
+   "status": "active",
+   "admitted_academic_year": "2026/2027",
+   "admission_type": "transfer_in"
+  },
+  {
+   "id": "TCH-2026-083",
+   "full_name": "Aduloju Fortune",
+   "class_id": "SS2 Actuarial",
+   "status": "active",
+   "admitted_academic_year": "2026/2027",
+   "admission_type": "transfer_in"
+  },
+  {
+   "id": "TCH-2026-084",
+   "full_name": "Olayinka Keziah",
+   "class_id": "SS2 Actuarial",
+   "status": "active",
+   "admitted_academic_year": "2026/2027",
+   "admission_type": "transfer_in"
+  },
+  {
+   "id": "TCH-2026-085",
+   "full_name": "Adamolekun Delight",
+   "class_id": "SS1 Science",
+   "status": "active",
+   "admitted_academic_year": "2026/2027",
+   "admission_type": "transfer_in"
+  },
+  {
+   "id": "TCH-2026-086",
+   "full_name": "Ochube David",
+   "class_id": "SS1 Science",
    "status": "active",
    "admitted_academic_year": "2026/2027",
    "admission_type": "transfer_in"

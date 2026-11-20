@@ -1,0 +1,11 @@
+{
+ "academic_year": "2026/2027",
+ "source": "Mr Iman, chat message 2026-11-20: names added on his phone earlier but never handed in (phone-only additions lost when the phone's older roster copy was overwritten on 17 Nov)",
+ "changes": [
+  {"action": "add", "full_name": "Falola Omotayo", "class_id": "SS2 Actuarial", "admission_type": "transfer_in"},
+  {"action": "add", "full_name": "Aduloju Fortune", "class_id": "SS2 Actuarial", "admission_type": "transfer_in"},
+  {"action": "add", "full_name": "Olayinka Keziah", "class_id": "SS2 Actuarial", "admission_type": "transfer_in"},
+  {"action": "add", "full_name": "Adamolekun Delight", "class_id": "SS1 Science", "admission_type": "transfer_in"},
+  {"action": "add", "full_name": "Ochube David", "class_id": "SS1 Science", "admission_type": "transfer_in"}
+ ]
+}

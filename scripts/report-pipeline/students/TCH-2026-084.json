@@ -1,0 +1,103 @@
+{
+  "student_id": "TCH-2026-084",
+  "full_name": "Olayinka Keziah",
+  "class_arm": "SS2 Actuarial",
+  "entry_year": "2022/2023",
+  "years": [
+    {
+      "academic_year": "2022/2023",
+      "class_at_time": "(prior year, not tracked yet)",
+      "is_current": false,
+      "terms": [
+        {
+          "term_name": "First",
+          "digitized": false
+        },
+        {
+          "term_name": "Second",
+          "digitized": false
+        },
+        {
+          "term_name": "Third",
+          "digitized": false
+        }
+      ]
+    },
+    {
+      "academic_year": "2023/2024",
+      "class_at_time": "(prior year, not tracked yet)",
+      "is_current": false,
+      "terms": [
+        {
+          "term_name": "First",
+          "digitized": false
+        },
+        {
+          "term_name": "Second",
+          "digitized": false
+        },
+        {
+          "term_name": "Third",
+          "digitized": false
+        }
+      ]
+    },
+    {
+      "academic_year": "2024/2025",
+      "class_at_time": "(prior year, not tracked yet)",
+      "is_current": false,
+      "terms": [
+        {
+          "term_name": "First",
+          "digitized": false
+        },
+        {
+          "term_name": "Second",
+          "digitized": false
+        },
+        {
+          "term_name": "Third",
+          "digitized": false
+        }
+      ]
+    },
+    {
+      "academic_year": "2025/2026",
+      "class_at_time": "(prior year, not tracked yet)",
+      "is_current": false,
+      "terms": [
+        {
+          "term_name": "First",
+          "digitized": false
+        },
+        {
+          "term_name": "Second",
+          "digitized": false
+        },
+        {
+          "term_name": "Third",
+          "digitized": false
+        }
+      ]
+    },
+    {
+      "academic_year": "2026/2027",
+      "class_at_time": "SS2 Actuarial",
+      "is_current": true,
+      "terms": [
+        {
+          "term_name": "First",
+          "digitized": false
+        },
+        {
+          "term_name": "Second",
+          "digitized": false
+        },
+        {
+          "term_name": "Third",
+          "digitized": false
+        }
+      ]
+    }
+  ]
+}
