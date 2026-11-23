@@ -3838,6 +3838,38 @@
    "status": "active",
    "admitted_academic_year": "2026/2027",
    "admission_type": "intake"
+  },
+  {
+   "id": "TCH-2026-090",
+   "full_name": "Adedokun Oluwadarasimi",
+   "class_id": "JSS3B",
+   "status": "active",
+   "admitted_academic_year": "2026/2027",
+   "admission_type": "transfer_in"
+  },
+  {
+   "id": "TCH-2026-091",
+   "full_name": "Adio Daniel Oluwadami",
+   "class_id": "JSS3A",
+   "status": "active",
+   "admitted_academic_year": "2026/2027",
+   "admission_type": "transfer_in"
+  },
+  {
+   "id": "TCH-2026-092",
+   "full_name": "Adio Daniel Araoluwa",
+   "class_id": "JSS3B",
+   "status": "active",
+   "admitted_academic_year": "2026/2027",
+   "admission_type": "transfer_in"
+  },
+  {
+   "id": "TCH-2026-093",
+   "full_name": "Adewale Shedrack",
+   "class_id": "JSS3B",
+   "status": "active",
+   "admitted_academic_year": "2026/2027",
+   "admission_type": "transfer_in"
   }
  ]
 }

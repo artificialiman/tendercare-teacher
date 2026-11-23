@@ -1,0 +1,10 @@
+{
+ "academic_year": "2026/2027",
+ "source": "Mr Iman, chat message 2026-11-23 00:18: JSS3 names missing from the original directory. Adio Daniel Oluwadami was already in last session's JSS2A score sheet (Teacher-care j2a.csv, 'Adio Daniel'), never matched because the directory lacked him",
+ "changes": [
+  {"action": "add", "full_name": "Adedokun Oluwadarasimi", "class_id": "JSS3B", "admission_type": "transfer_in"},
+  {"action": "add", "full_name": "Adio Daniel Oluwadami",  "class_id": "JSS3A", "admission_type": "transfer_in"},
+  {"action": "add", "full_name": "Adio Daniel Araoluwa",   "class_id": "JSS3B", "admission_type": "transfer_in"},
+  {"action": "add", "full_name": "Adewale Shedrack",       "class_id": "JSS3B", "admission_type": "transfer_in"}
+ ]
+}
