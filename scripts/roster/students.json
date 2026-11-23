@@ -796,7 +796,7 @@
   {
    "id": "TCH-2025-099",
    "full_name": "Fagbola Oladerin Emmanualla",
-   "class_id": "JSS3B",
+   "class_id": "JSS3A",
    "status": "active",
    "admitted_academic_year": null,
    "admission_type": null
@@ -3867,6 +3867,94 @@
    "id": "TCH-2026-093",
    "full_name": "Adewale Shedrack",
    "class_id": "JSS3B",
+   "status": "active",
+   "admitted_academic_year": "2026/2027",
+   "admission_type": "transfer_in"
+  },
+  {
+   "id": "TCH-2026-094",
+   "full_name": "Babayemi David",
+   "class_id": "JSS3A",
+   "status": "active",
+   "admitted_academic_year": "2026/2027",
+   "admission_type": "transfer_in"
+  },
+  {
+   "id": "TCH-2026-095",
+   "full_name": "Aniebo Munachi",
+   "class_id": "JSS3A",
+   "status": "active",
+   "admitted_academic_year": "2026/2027",
+   "admission_type": "transfer_in"
+  },
+  {
+   "id": "TCH-2026-096",
+   "full_name": "Adebayo Abdulrahmon",
+   "class_id": "JSS3A",
+   "status": "active",
+   "admitted_academic_year": "2026/2027",
+   "admission_type": "transfer_in"
+  },
+  {
+   "id": "TCH-2026-097",
+   "full_name": "Oyelakin Lateefat",
+   "class_id": "JSS3A",
+   "status": "active",
+   "admitted_academic_year": "2026/2027",
+   "admission_type": "transfer_in"
+  },
+  {
+   "id": "TCH-2026-098",
+   "full_name": "Muhammed Okiki",
+   "class_id": "JSS3A",
+   "status": "active",
+   "admitted_academic_year": "2026/2027",
+   "admission_type": "transfer_in"
+  },
+  {
+   "id": "TCH-2026-099",
+   "full_name": "Oluwatoyin Pemisire",
+   "class_id": "JSS3A",
+   "status": "active",
+   "admitted_academic_year": "2026/2027",
+   "admission_type": "transfer_in"
+  },
+  {
+   "id": "TCH-2026-100",
+   "full_name": "Adedeji Christianah",
+   "class_id": "JSS3B",
+   "status": "active",
+   "admitted_academic_year": "2026/2027",
+   "admission_type": "transfer_in"
+  },
+  {
+   "id": "TCH-2026-101",
+   "full_name": "Odekoya Subomi",
+   "class_id": "JSS1A",
+   "status": "active",
+   "admitted_academic_year": "2026/2027",
+   "admission_type": "intake"
+  },
+  {
+   "id": "TCH-2026-102",
+   "full_name": "Oyeniran Rokibat",
+   "class_id": "JSS2B",
+   "status": "active",
+   "admitted_academic_year": "2026/2027",
+   "admission_type": "transfer_in"
+  },
+  {
+   "id": "TCH-2026-103",
+   "full_name": "Olushola Esther",
+   "class_id": "JSS2B",
+   "status": "active",
+   "admitted_academic_year": "2026/2027",
+   "admission_type": "transfer_in"
+  },
+  {
+   "id": "TCH-2026-104",
+   "full_name": "Busari Yusuf",
+   "class_id": "JSS2B",
    "status": "active",
    "admitted_academic_year": "2026/2027",
    "admission_type": "transfer_in"

@@ -1,0 +1,18 @@
+{
+ "academic_year": "2026/2027",
+ "source": "Mr Iman, chat messages 2026-11-23 01:17: class cross-check ahead of the exam-season roster. Fagbola Oladerin Emmanualla is 'Fagbola Emmanualla' of last session's JSS2B sheet (j2b.csv), now JSS3A. Oyeniran Rokibat (sheet: 'Oyeniran Rukibat') and Olushola Esther are in last session's JSS1B sheet (j1b.csv); all three were set aside by seed 002 as unmatched",
+ "changes": [
+  {"action": "move", "id": "TCH-2025-099", "class_id": "JSS3A"},
+  {"action": "add", "full_name": "Babayemi David",      "class_id": "JSS3A", "admission_type": "transfer_in"},
+  {"action": "add", "full_name": "Aniebo Munachi",      "class_id": "JSS3A", "admission_type": "transfer_in"},
+  {"action": "add", "full_name": "Adebayo Abdulrahmon", "class_id": "JSS3A", "admission_type": "transfer_in"},
+  {"action": "add", "full_name": "Oyelakin Lateefat",   "class_id": "JSS3A", "admission_type": "transfer_in"},
+  {"action": "add", "full_name": "Muhammed Okiki",      "class_id": "JSS3A", "admission_type": "transfer_in"},
+  {"action": "add", "full_name": "Oluwatoyin Pemisire", "class_id": "JSS3A", "admission_type": "transfer_in"},
+  {"action": "add", "full_name": "Adedeji Christianah", "class_id": "JSS3B", "admission_type": "transfer_in"},
+  {"action": "add", "full_name": "Odekoya Subomi",      "class_id": "JSS1A", "admission_type": "intake"},
+  {"action": "add", "full_name": "Oyeniran Rokibat",    "class_id": "JSS2B", "admission_type": "transfer_in"},
+  {"action": "add", "full_name": "Olushola Esther",     "class_id": "JSS2B", "admission_type": "transfer_in"},
+  {"action": "add", "full_name": "Busari Yusuf",        "class_id": "JSS2B", "admission_type": "transfer_in"}
+ ]
+}
