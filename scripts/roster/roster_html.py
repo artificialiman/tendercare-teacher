@@ -70,7 +70,7 @@ def main():
     today = datetime.date.today().strftime('%-d %B %Y')
     page = f'''<!DOCTYPE html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Tendercare Comprehensive College: Student roster {e(doc.get("academic_year", ""))}</title>
+<title>Tendercare Comprehensive College: Student roster {e(doc.get("session", ""))}</title>
 <style>
 :root{{--cream:#faf6ec;--purple:#4b2a6b;--green:#2f6b3f;--line:#e4dccb}}
 *{{box-sizing:border-box}}body{{margin:0;font:14px/1.45 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:var(--cream);color:#222}}
@@ -86,7 +86,7 @@ tr.new td{{background:#eef6ef}}input{{width:100%;padding:8px 10px;border:1px sol
 .note{{color:#666;font-size:13px}}
 @media print{{header{{background:none;color:#000;padding:0}}nav,input,.noprint{{display:none}}th{{position:static}}h3{{break-after:avoid}}body{{background:#fff}}}}
 </style></head><body>
-<header><h1>Tendercare Comprehensive College: Student roster</h1><p>{e(doc.get("academic_year", ""))} session. {len(rows)} active students. Generated {today} from the canonical roster.</p></header>
+<header><h1>Tendercare Comprehensive College: Student roster</h1><p>{e(doc.get("session", ""))} session. {len(rows)} active students. Generated {today} from the canonical roster.</p></header>
 <main>
 <h2>Students added since {since}</h2>
 <div class="summary"><div><b>{len(new)}</b>added</div>{"".join(f"<div><b>{n}</b>{day(k)}</div>" for k, n in sorted(bydate.items()))}</div>
