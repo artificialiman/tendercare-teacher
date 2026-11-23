@@ -1,6 +1,6 @@
 {
  "_about": "CANONICAL roster. Edit only via scripts/roster/apply_changes.py; regenerate every hardcoded copy with scripts/roster/publish.py. status: active | graduated | left. Legacy students (before the 2026/27 session) have null admission fields on purpose -- never inferred.",
- "as_of": "2026-11-20",
+ "as_of": "2026-11-23",
  "session": "2026/2027",
  "students": [
   {
@@ -3475,11 +3475,17 @@
   },
   {
    "id": "TCH-2026-045",
-   "full_name": "Akeem Aishat",
+   "full_name": "Abdulakeem Aishat",
    "class_id": "JSS1B",
    "status": "active",
    "admitted_academic_year": "2026/2027",
-   "admission_type": "intake"
+   "admission_type": "intake",
+   "former_names": [
+    {
+     "name": "Akeem Aishat",
+     "until": "2026-11-23"
+    }
+   ]
   },
   {
    "id": "TCH-2026-046",
@@ -3808,6 +3814,30 @@
    "status": "active",
    "admitted_academic_year": "2026/2027",
    "admission_type": "transfer_in"
+  },
+  {
+   "id": "TCH-2026-087",
+   "full_name": "Fakunle Eniola",
+   "class_id": "JSS1B",
+   "status": "active",
+   "admitted_academic_year": "2026/2027",
+   "admission_type": "intake"
+  },
+  {
+   "id": "TCH-2026-088",
+   "full_name": "Odekoya Sulaimon",
+   "class_id": "JSS1A",
+   "status": "active",
+   "admitted_academic_year": "2026/2027",
+   "admission_type": "intake"
+  },
+  {
+   "id": "TCH-2026-089",
+   "full_name": "Bello Sulaimon",
+   "class_id": "JSS1A",
+   "status": "active",
+   "admitted_academic_year": "2026/2027",
+   "admission_type": "intake"
   }
  ]
 }

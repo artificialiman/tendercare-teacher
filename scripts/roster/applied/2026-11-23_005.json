@@ -1,0 +1,10 @@
+{
+ "academic_year": "2026/2027",
+ "source": "Mr Iman, chat message 2026-11-23: JSS1 cross-check. Famakinwa Hannah (TCH-2026-048) and Folorunsho Boluwatife (TCH-2026-008) already present; Abdulakeem Aishat confirmed as the same girl as Akeem Aishat; 'bllo' confirmed as Bello",
+ "changes": [
+  {"action": "rename", "id": "TCH-2026-045", "full_name": "Abdulakeem Aishat"},
+  {"action": "add", "full_name": "Fakunle Eniola", "class_id": "JSS1B", "admission_type": "intake"},
+  {"action": "add", "full_name": "Odekoya Sulaimon", "class_id": "JSS1A", "admission_type": "intake"},
+  {"action": "add", "full_name": "Bello Sulaimon", "class_id": "JSS1A", "admission_type": "intake"}
+ ]
+}
