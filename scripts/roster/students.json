@@ -3990,6 +3990,14 @@
    "status": "active",
    "admitted_academic_year": "2026/2027",
    "admission_type": "transfer_in"
+  },
+  {
+   "id": "TCH-2026-109",
+   "full_name": "Ogunleye Joshua",
+   "class_id": "JSS2A",
+   "status": "active",
+   "admitted_academic_year": "2026/2027",
+   "admission_type": "transfer_in"
   }
  ]
 }
