@@ -1,6 +1,6 @@
 {
  "_about": "CANONICAL roster. Edit only via scripts/roster/apply_changes.py; regenerate every hardcoded copy with scripts/roster/publish.py. status: active | graduated | left. Legacy students (before the 2026/27 session) have null admission fields on purpose -- never inferred.",
- "as_of": "2026-11-23",
+ "as_of": "2026-11-24",
  "session": "2026/2027",
  "students": [
   {
@@ -3955,6 +3955,30 @@
    "id": "TCH-2026-104",
    "full_name": "Busari Yusuf",
    "class_id": "JSS2B",
+   "status": "active",
+   "admitted_academic_year": "2026/2027",
+   "admission_type": "transfer_in"
+  },
+  {
+   "id": "TCH-2026-105",
+   "full_name": "Olayinka Caleb",
+   "class_id": "JSS2A",
+   "status": "active",
+   "admitted_academic_year": "2026/2027",
+   "admission_type": "transfer_in"
+  },
+  {
+   "id": "TCH-2026-106",
+   "full_name": "Oloyede Oluwatomisin",
+   "class_id": "JSS2A",
+   "status": "active",
+   "admitted_academic_year": "2026/2027",
+   "admission_type": "transfer_in"
+  },
+  {
+   "id": "TCH-2026-107",
+   "full_name": "Monday Victory",
+   "class_id": "JSS2A",
    "status": "active",
    "admitted_academic_year": "2026/2027",
    "admission_type": "transfer_in"

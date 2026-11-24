@@ -1,0 +1,46 @@
+{
+  "student_id": "TCH-2026-105",
+  "full_name": "Olayinka Caleb",
+  "class_arm": "JSS2A",
+  "entry_year": "2025/2026",
+  "years": [
+    {
+      "academic_year": "2025/2026",
+      "class_at_time": "(prior year, not tracked yet)",
+      "is_current": false,
+      "terms": [
+        {
+          "term_name": "First",
+          "digitized": false
+        },
+        {
+          "term_name": "Second",
+          "digitized": false
+        },
+        {
+          "term_name": "Third",
+          "digitized": false
+        }
+      ]
+    },
+    {
+      "academic_year": "2026/2027",
+      "class_at_time": "JSS2A",
+      "is_current": true,
+      "terms": [
+        {
+          "term_name": "First",
+          "digitized": false
+        },
+        {
+          "term_name": "Second",
+          "digitized": false
+        },
+        {
+          "term_name": "Third",
+          "digitized": false
+        }
+      ]
+    }
+  ]
+}

@@ -11,10 +11,10 @@ class-subject links, roster and terms are compiled into the app by
 
 - **Roster:** `scripts/roster/students.json` -- the one canonical roster (edited only
   through `scripts/roster/apply_changes.py`, published everywhere by
-  `scripts/roster/publish.py`). The app bundles the 439 active students of the
+  `scripts/roster/publish.py`). The app bundles the 442 active students of the
   2026/27 session: promotion applied, the 62-student JSS1 intake (58 from the
-  intake list, 4 late: TCH-2026-087..089, 101), one late joiner, and 42 transfer-ins
-  (TCH-2026-059..086, 090..100, 102..104). 8 JSS3 leavers still sit in
+  intake list, 4 late: TCH-2026-087..089, 101), one late joiner, and 45 transfer-ins
+  (TCH-2026-059..086, 090..100, 102..107). 8 JSS3 leavers still sit in
   **SS1 New** until a teacher assigns their department.
   Name corrections use `{"action": "rename", ...}` and keep the student's id;
   the replaced spelling is kept in that student's `former_names`.
