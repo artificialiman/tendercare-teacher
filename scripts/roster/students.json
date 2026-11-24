@@ -3982,6 +3982,14 @@
    "status": "active",
    "admitted_academic_year": "2026/2027",
    "admission_type": "transfer_in"
+  },
+  {
+   "id": "TCH-2026-108",
+   "full_name": "Ndubuisi Favour",
+   "class_id": "JSS2A",
+   "status": "active",
+   "admitted_academic_year": "2026/2027",
+   "admission_type": "transfer_in"
   }
  ]
 }
