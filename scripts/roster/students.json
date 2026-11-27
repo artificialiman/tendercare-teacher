@@ -2473,11 +2473,17 @@
   },
   {
    "id": "TCH-2025-302",
-   "full_name": "Sunday Mary",
+   "full_name": "Sunny Mary",
    "class_id": "SS3 Science",
    "status": "active",
    "admitted_academic_year": null,
-   "admission_type": null
+   "admission_type": null,
+   "former_names": [
+    {
+     "name": "Sunday Mary",
+     "until": "2026-11-27"
+    }
+   ]
   },
   {
    "id": "TCH-2025-303",

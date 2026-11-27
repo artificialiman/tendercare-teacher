@@ -1,0 +1,7 @@
+{
+ "academic_year": "2026/2027",
+ "source": "Mr Iman, chat message 2026-11-27 01:19: 'Sunny Mary not Sunday'",
+ "changes": [
+  {"action": "rename", "id": "TCH-2025-302", "full_name": "Sunny Mary"}
+ ]
+}
