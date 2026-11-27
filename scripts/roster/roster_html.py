@@ -27,6 +27,15 @@ def added_dates() -> dict:
     return out
 
 
+def added_for(s: dict, adds: dict) -> str:
+    """Date a student was added, matched by name under any spelling they have had."""
+    names = [s['full_name']] + [f['name'] for f in s.get('former_names', [])]
+    for n in names:
+        if (n, s['class_id']) in adds:
+            return adds[(n, s['class_id'])]
+    return next((d for (n, _), d in adds.items() if n in names), '')
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--since', default='2026-11-11', help='list students added after this date at the top')
@@ -39,10 +48,7 @@ def main():
     for s in doc['students']:
         if s['status'] != 'active':
             continue
-        added = adds.get((s['full_name'], s['class_id']), '')
-        # A student moved after being added keeps the add date of the class they were added to.
-        if not added:
-            added = next((d for (n, c), d in adds.items() if n == s['full_name']), '')
+        added = added_for(s, adds)
         rows.append(dict(id=s['id'], name=s['full_name'], cls=s['class_id'],
                          adm=ADMISSION.get(s.get('admission_type'), s.get('admission_type')),
                          added=added if added > a.since else '',

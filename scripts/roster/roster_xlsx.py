@@ -29,7 +29,7 @@ def main():
     for s in doc['students']:
         if s['status'] != 'active':
             continue
-        added = adds.get((s['full_name'], s['class_id']), '') or next((d for (n, _), d in adds.items() if n == s['full_name']), '')
+        added = rh.added_for(s, adds)
         rows.append([s['id'], s['full_name'], rh.LABEL.get(s['class_id'], s['class_id']),
                      rh.ADMISSION.get(s.get('admission_type'), s.get('admission_type')),
                      datetime.date.fromisoformat(added) if added > a.since else None,
