@@ -1563,11 +1563,17 @@
   },
   {
    "id": "TCH-2025-192",
-   "full_name": "Akinyogha Taiwo",
+   "full_name": "Akinyugha Taiwo",
    "class_id": "SS2 Science",
    "status": "active",
    "admitted_academic_year": null,
-   "admission_type": null
+   "admission_type": null,
+   "former_names": [
+    {
+     "name": "Akinyogha Taiwo",
+     "until": "2026-11-27"
+    }
+   ]
   },
   {
    "id": "TCH-2025-193",
