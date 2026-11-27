@@ -3781,11 +3781,17 @@
   },
   {
    "id": "TCH-2026-081",
-   "full_name": "Olugbodee Tajudeen",
+   "full_name": "Olugbode Tajudeen",
    "class_id": "SS2 Science",
    "status": "active",
    "admitted_academic_year": "2026/2027",
-   "admission_type": "transfer_in"
+   "admission_type": "transfer_in",
+   "former_names": [
+    {
+     "name": "Olugbodee Tajudeen",
+     "until": "2026-11-27"
+    }
+   ]
   },
   {
    "id": "TCH-2026-082",
