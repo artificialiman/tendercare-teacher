@@ -1,6 +1,6 @@
 {
  "_about": "CANONICAL roster. Edit only via scripts/roster/apply_changes.py; regenerate every hardcoded copy with scripts/roster/publish.py. status: active | graduated | left. Legacy students (before the 2026/27 session) have null admission fields on purpose -- never inferred.",
- "as_of": "2026-11-24",
+ "as_of": "2026-11-27",
  "session": "2026/2027",
  "students": [
   {
@@ -1603,19 +1603,31 @@
   },
   {
    "id": "TCH-2025-197",
-   "full_name": "Ashaye Damola",
+   "full_name": "Ashaye Damilola",
    "class_id": "SS2 Science",
    "status": "active",
    "admitted_academic_year": null,
-   "admission_type": null
+   "admission_type": null,
+   "former_names": [
+    {
+     "name": "Ashaye Damola",
+     "until": "2026-11-27"
+    }
+   ]
   },
   {
    "id": "TCH-2025-198",
-   "full_name": "Ayangbola Dammilola",
+   "full_name": "Ayangbola Damola",
    "class_id": "SS2 Science",
    "status": "active",
    "admitted_academic_year": null,
-   "admission_type": null
+   "admission_type": null,
+   "former_names": [
+    {
+     "name": "Ayangbola Dammilola",
+     "until": "2026-11-27"
+    }
+   ]
   },
   {
    "id": "TCH-2025-199",
